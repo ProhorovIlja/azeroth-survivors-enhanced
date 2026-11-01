@@ -65,3 +65,13 @@ That inspection is also name-only, not a complete game rules database.
 - Benchmark low-input Warlock Imp/Felguard and Shaman Wolves under controlled identical runs.
 
 **Safety:** all game assets remain in the owner's private game copy; this repository only contains open code and aggregate metadata.
+
+## Optional read-only Lua advisor export
+
+Once you have edited and validated a draft, export a **single custom preset** as a self-contained Lua 5.0 table for our self-authored `AZSEnhancedAdvisor`:
+
+```powershell
+py -m planner.addon_export --game-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe" --build artifacts\\my-warlock.json --out artifacts\\CustomPresets.lua
+```
+
+This produces **only a new local source file**, never touches the game or an existing addon. It escapes user-controlled strings and refuses to overwrite any file. For later in-game testing, make a **separate disposable copy** of the advisor's source folder, replace that copy's `Presets.lua` with the generated `CustomPresets.lua`, and manually install the test copy with backups/rollback enabled. There is **no automatic talent allocation**, no guarantee a custom build is legal and no proven runtime compatibility yet. The output's UI fields explicitly say `name_only_unverified` and `NOT LEGALITY-TESTED`.
