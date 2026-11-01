@@ -1,0 +1,31 @@
+name: AZSE Control Center Lua smoke tests
+on:
+  pull_request:
+    paths:
+      - 'addons/AZSEControlCenter/**'
+      - 'tests/test_control_center.py'
+      - '.github/workflows/control-center-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'addons/AZSEControlCenter/**'
+      - 'tests/test_control_center.py'
+      - '.github/workflows/control-center-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lua-api-simulation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install disposable Lua parser/runtime for smoke tests
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq liblua5.4-0
+      - name: Run real Lua control actions against mocked documented game APIs
+        run: python -m unittest discover -s tests -p test_control_center.py -v

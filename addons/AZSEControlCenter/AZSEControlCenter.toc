@@ -1,0 +1,7 @@
+## Interface: 11200
+## Title: AZSE Control Center
+## Notes: In-game options: HUD, stored level-ups, status, and cheat capability audit
+## Author: Azeroth Survivors Enhanced (independent)
+## Version: 0.1.0-preview
+## SavedVariables: AZSCC_DB
+Core.lua
