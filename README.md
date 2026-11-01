@@ -129,3 +129,10 @@ Verified owner EXE SHA-256: `aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd
 The independent [official update watcher](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/issues/11) was merged into `main` in PR #12 and **successfully contacted both real endpoints**, confirming the EXE manifest reported `0.137.0`. It checks four times a day, comments on changes, and never installs anything. The local Build Studio CLI now accepts the new EXE hash while preserving unknown-client refusal. Full metadata: `docs/WINDOWS_CLIENT_0137.md`.
 
 The old Windows game has not been launched for actual QA; static talent names do not prove legality. The entire original game and its MPQs remain private.
+
+
+### Important correction for Windows 0.137 Shaman
+
+The 345-name original ordered trees are **only legacy embedded localization data**. The user's new 0.137 EXE also contains **13 appended Shaman Enhancement name candidates** outside those trees; the 0.136 backup has 12. Build Studio now detects these separately, warns when a Shaman build chooses only old embedded names, and allows exact-current-client appended candidates as *unverified research*, not legal talent allocations. Review `docs/ENHANCEMENT_PATCH_OVERLAY.md` before using Shaman presets.
+
+A reusable read-only comparison tool is available: `python -m tools.compare_game_versions --old-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.old" --new-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe"`. It does not run the game or copy original localization descriptions into this repository.
