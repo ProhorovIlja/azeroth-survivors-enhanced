@@ -140,3 +140,8 @@ A reusable read-only comparison tool is available: `python -m tools.compare_game
 ### 0.137 classification correction (important)
 
 The **13 short entries** in the appended Shaman section include **11 talent-name candidates and 2 gear/amulet names**: `Eye of the Tempest` and `Heart of the Earthbreaker`. The backup 0.136 section contains 11 talent candidates and one amulet. Do **not** allocate talent points to jewelry. The newer Warlock Demonology names `Demonic Familiar`, `Legion Gate`, `Demonic Supremacy`, `Butcher` and `Pact of the Nathrezim` are also present in the current client; older `Summon Felguard` / `Demonic Pact` strings are historical and do not prove active talents. Our version-aware Build Studio now exposes both candidate layers separately and warns about legacy-only choices. No live talent graph has been verified.
+
+
+### Two 0.137 Warlock idle research routes (not tested rankings)
+
+`catalog/0137_warlock_afk_experiments.json` and `docs/WARLOCK_DEMONOLOGY_0137.md` outline **lesser-demon swarm** (`Demonic Familiar` + `Legion Gate`) and **permanent greater demons** (`Summon Infernal`, `Summon Doomguard`, `Demonic Supremacy`). Both are source-backed *hypotheses*, not complete 51-point builds. Current Windows 0.137 text states `Butcher` and `Pact of the Nathrezim` are exclusive capstones, and `Demonic Supremacy` prevents lesser-demon summons. The Build Studio validator now rejects both capstones selected together and warns when Supremacy conflicts with Legion Gate or Demonic Familiar. Real low-input DPS/uptime benchmarks and game-rank validation are still required.
