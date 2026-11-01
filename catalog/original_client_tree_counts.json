@@ -59,8 +59,10 @@
     "tree_sections": 27,
     "short_name_candidates": 345,
     "verified_in_game": false,
-    "note": "345 old ordered labels plus an extra 13 short appended Enhancement candidate labels. Old ordered labels are not necessarily active.",
-    "appended_shaman_enhancement_candidates": 13,
-    "legacy_tree_runtime_verified": false
+    "note": "345 retained older ordered names plus 11 Shaman Enhancement talent-name candidates and 2 amulet labels in a separate appended locale block. No active skill tree is validated.",
+    "appended_shaman_enhancement_candidates": 11,
+    "legacy_tree_runtime_verified": false,
+    "appended_shaman_amulet_candidates": 2,
+    "modern_warlock_demonology_name_candidates": 7
   }
 }
