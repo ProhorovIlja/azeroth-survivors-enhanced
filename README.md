@@ -79,3 +79,14 @@ py -m tools.upstream_watch --run --limit 30
 ```
 
 The daily `upstream-watch.yml` workflow is configured but **does not run on a schedule until merged to main**. Its public metadata report is an expiring GitHub Actions artifact; web/Reddit/video research still requires independent review. See `docs/UPSTREAM_MONITORING.md`.
+
+## Original Windows executable is **not** browser v0.135.1
+
+Static inspection of the user's exact original Windows executable (SHA-256 in `catalog/client_profiles.json`) confirmed English labels for **older Demonology (`Demonic Pact`, `Summon Felguard`)** and **older Enhancement (`Windfury`, `Feral Spirit`)**. Newer browser 0.135.1 talent names such as `Legion Gate`, `Pact of the Nathrezim`, `Rockbiter Weapon` and `Stormbound Echoes` were not observed in that EXE. This does **not** establish the exact game version or verify talent gameplay.
+
+```powershell
+py -m tools.talent_probe --game-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe"
+py -m tools.talent_probe --game-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe" --require-modern
+```
+
+The second command is supposed to return code 2 on an unrecognized/legacy client. No automated game patching is authorized by either command. See `docs/ORIGINAL_CLIENT_TALENTS_2026-11-01.md` and `catalog/original_client_archetypes.json`. All 11 early builds remain **unverified editorial sketches**, not tested optimal strategies.

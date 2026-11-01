@@ -18,7 +18,7 @@
       "note": "AoE draft; measure against the current patch.",
       "review_status": "unverified_editorial",
       "last_reviewed": "2026-11-01",
-      "baseline_game_version": "0.135.1 (unverified community report)",
+      "baseline_game_version": "Windows EXE version UNKNOWN; original talent labels differ from browser v0.135.1",
       "source_urls": [
         "https://survivorsdb.com/azeroth-survivors/builds"
       ]
@@ -40,7 +40,7 @@
       "note": "Defensive low-input baseline; compare survival and effective damage.",
       "review_status": "unverified_editorial",
       "last_reviewed": "2026-11-01",
-      "baseline_game_version": "0.135.1 (unverified community report)",
+      "baseline_game_version": "Windows EXE version UNKNOWN; original talent labels differ from browser v0.135.1",
       "source_urls": [
         "https://survivorsdb.com/azeroth-survivors/builds"
       ]
@@ -62,7 +62,7 @@
       "note": "Validate pet contribution with per-spell and pet meter.",
       "review_status": "unverified_editorial",
       "last_reviewed": "2026-11-01",
-      "baseline_game_version": "0.135.1 (unverified community report)",
+      "baseline_game_version": "Windows EXE version UNKNOWN; original talent labels differ from browser v0.135.1",
       "source_urls": [
         "https://survivorsdb.com/azeroth-survivors/builds"
       ]
@@ -85,7 +85,7 @@
       "note": "Offense hypothesis, not benchmarked.",
       "review_status": "unverified_editorial",
       "last_reviewed": "2026-11-01",
-      "baseline_game_version": "0.135.1 (unverified community report)",
+      "baseline_game_version": "Windows EXE version UNKNOWN; original talent labels differ from browser v0.135.1",
       "source_urls": [
         "https://survivorsdb.com/azeroth-survivors/builds"
       ]
@@ -107,7 +107,7 @@
       "note": "Test damage vs sustain.",
       "review_status": "unverified_editorial",
       "last_reviewed": "2026-11-01",
-      "baseline_game_version": "0.135.1 (unverified community report)",
+      "baseline_game_version": "Windows EXE version UNKNOWN; original talent labels differ from browser v0.135.1",
       "source_urls": [
         "https://survivorsdb.com/azeroth-survivors/builds"
       ]
@@ -130,7 +130,7 @@
       "note": "Needs specific talent tree and version verification.",
       "review_status": "unverified_editorial",
       "last_reviewed": "2026-11-01",
-      "baseline_game_version": "0.135.1 (unverified community report)",
+      "baseline_game_version": "Windows EXE version UNKNOWN; original talent labels differ from browser v0.135.1",
       "source_urls": [
         "https://survivorsdb.com/azeroth-survivors/builds"
       ]
@@ -153,7 +153,7 @@
       "note": "Determine Pyroclasm proc attribution with meter.",
       "review_status": "unverified_editorial",
       "last_reviewed": "2026-11-01",
-      "baseline_game_version": "0.135.1 (unverified community report)",
+      "baseline_game_version": "Windows EXE version UNKNOWN; original talent labels differ from browser v0.135.1",
       "source_urls": [
         "https://azerothsurvivorsgame.com/builds/"
       ]
@@ -176,7 +176,7 @@
       "note": "Idle hypothesis only, not top-tier proven.",
       "review_status": "unverified_editorial",
       "last_reviewed": "2026-11-01",
-      "baseline_game_version": "0.135.1 (unverified community report)",
+      "baseline_game_version": "Windows EXE version UNKNOWN; original talent labels differ from browser v0.135.1",
       "source_urls": [
         "https://azerothsurvivorsgame.com/builds/"
       ]
@@ -195,12 +195,17 @@
         "survival",
         "cooldown reduction"
       ],
-      "note": "Experimental placeholder; minion/talent routing not verified.",
+      "note": "Legacy Windows research hypothesis: EXE contains Summon Imp, Demonic Pact, Summon Felguard; legal point order, gameplay and actual damage remain UNVERIFIED.",
       "review_status": "unverified_editorial",
       "last_reviewed": "2026-11-01",
-      "baseline_game_version": "0.135.1 (unverified community report)",
+      "baseline_game_version": "Windows EXE version UNKNOWN; original talent labels differ from browser v0.135.1",
       "source_urls": [
         "https://survivorsdb.com/azeroth-survivors/builds"
+      ],
+      "requires_observed_talents": [
+        "Summon Imp",
+        "Demonic Pact",
+        "Summon Felguard"
       ]
     },
     {
@@ -221,7 +226,7 @@
       "note": "Defensive hypothesis; test exact spell/talent interaction.",
       "review_status": "unverified_editorial",
       "last_reviewed": "2026-11-01",
-      "baseline_game_version": "0.135.1 (unverified community report)",
+      "baseline_game_version": "Windows EXE version UNKNOWN; original talent labels differ from browser v0.135.1",
       "source_urls": [
         "https://survivorsdb.com/azeroth-survivors/builds"
       ]
@@ -243,7 +248,7 @@
       "note": "Survival alternative to Fire, not ranked empirically.",
       "review_status": "unverified_editorial",
       "last_reviewed": "2026-11-01",
-      "baseline_game_version": "0.135.1 (unverified community report)",
+      "baseline_game_version": "Windows EXE version UNKNOWN; original talent labels differ from browser v0.135.1",
       "source_urls": [
         "https://survivorsdb.com/azeroth-survivors/builds"
       ]
