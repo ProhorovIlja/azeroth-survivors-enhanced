@@ -90,3 +90,15 @@ py -m tools.talent_probe --game-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivo
 ```
 
 The second command is supposed to return code 2 on an unrecognized/legacy client. No automated game patching is authorized by either command. See `docs/ORIGINAL_CLIENT_TALENTS_2026-11-01.md` and `catalog/original_client_archetypes.json`. All 11 early builds remain **unverified editorial sketches**, not tested optimal strategies.
+
+## Offline addon installation (safe preview / rollback)
+
+The developer-preview installer manages **only** the self-authored AZSEnhancedAdvisor folder under the original game's benilla-config/AddOns directory. No MPQ, EXE, save or third-party addon is changed. Inspect the game's Options > AddOns > Open AddOns Folder location before using it. **Game runtime compatibility is not yet certified.**
+
+```powershell
+py -m tools.addon_package plan --game-root "C:\\Games\\AzerothSurvivors"
+py -m tools.addon_package install --game-root "C:\\Games\\AzerothSurvivors" --yes
+py -m tools.addon_package rollback --game-root "C:\\Games\\AzerothSurvivors" --yes
+```
+
+Install refuses a different EXE SHA unless an explicit --allow-unknown-client override is provided. Pre-existing addon directories require --replace-existing and are backed up. Rollback refuses to overwrite modified user files. See docs/SAFE_ADDON_INSTALLER.md for the full safety and interrupted-transaction procedure.
