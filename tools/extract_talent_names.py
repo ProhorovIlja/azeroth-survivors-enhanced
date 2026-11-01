@@ -127,11 +127,22 @@ def build_index(mapping):
     return trees
 
 
-def extract_patch_overlay(mapping, digest):
-    """Collect separately appended Shaman labels (not the old ordered tree).
+# Derived from the owner's exact 0.136/0.137 English dictionaries, with
+# independent ASBuilder release evidence that named rings/amulets are gear.
+# Localization name alone never proves actual talent-tree availability.
+SHAMAN_GEAR_LABELS = frozenset(("Eye of the Tempest", "Heart of the Earthbreaker"))
+MODERN_DEMONOLOGY_CANDIDATES = (
+    "Demonic Familiar", "Legion Gate", "Summon Infernal", "Summon Doomguard",
+    "Demonic Supremacy", "Pact of the Nathrezim", "Butcher",
+)
 
-    Old English tree sections can remain embedded after game balance patches.
-    The appended enhancement names are *candidates*, not proof of active talents.
+
+def extract_patch_overlay(mapping, digest):
+    """Return name-only *talent candidates*, excluding known gear labels.
+
+    The ordered 27-tree block is retained legacy text in recent binaries.
+    This newer Shaman section and the separate Warlock label set must not be
+    interpreted as verified current gameplay or talent prerequisites.
     """
     supported = {
         "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
@@ -143,13 +154,38 @@ def extract_patch_overlay(mapping, digest):
     if "ability.stormstrike.name" not in mapping:
         raise ValueError("Expected enhancement patch marker missing")
     anchor = keys.index("ability.stormstrike.name")
-    names = [
+    shaman_all = [
         key for key in keys[anchor + 1:]
         if is_short_talent_label(key, mapping[key])
     ]
-    if not 10 <= len(names) <= 20:
-        raise ValueError("Unexpected appended enhancement label count")
-    return {"shaman": {"Enhancement": names}}
+    if not 11 <= len(shaman_all) <= 14:
+        raise ValueError("Unexpected appended Enhancement labels")
+    shaman_talents = [n for n in shaman_all if n not in SHAMAN_GEAR_LABELS]
+    if len(shaman_talents) != 11:
+        raise ValueError("Unexpected Enhancement talent-candidate count")
+    warlock_candidates = [
+        n for n in MODERN_DEMONOLOGY_CANDIDATES
+        if mapping.get(n) == n
+    ]
+    if len(warlock_candidates) != len(MODERN_DEMONOLOGY_CANDIDATES):
+        raise ValueError("Expected modern Demonology candidates missing")
+    return {
+        "shaman": {"Enhancement": shaman_talents},
+        "warlock": {"Demonology": warlock_candidates},
+    }
+
+
+def extract_gear_overlay(mapping, digest):
+    """Known jewelry labels; they are explicitly NOT talents."""
+    if digest not in {
+        "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
+        "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c",
+    }:
+        return {}
+    return {"shaman": {"amulet_candidates": [
+        n for n in ("Eye of the Tempest", "Heart of the Earthbreaker")
+        if mapping.get(n) == n
+    ]}}
 
 
 def extract(path):
@@ -159,6 +195,7 @@ def extract(path):
     mapping = decode_english_map(path, start)
     trees = build_index(mapping)
     patch_overlay = extract_patch_overlay(mapping, digest)
+    gear_overlay = extract_gear_overlay(mapping, digest)
     return {
         "schema_version": 1,
         "client_sha256": digest,
@@ -167,6 +204,7 @@ def extract(path):
         "runtime_verified": False, "points_and_prerequisites_known": False,
         "classes": trees,
         "patch_overlay": patch_overlay,
+        "gear_overlay": gear_overlay,
         "overlay_is_runtime_verified": False,
         "counts_are_heuristic": True,
         "caution": "Name candidates only, not a verified ability graph, max-rank map or build",
@@ -189,8 +227,10 @@ def main(argv=None):
     print(f"Detected {len(data['classes'])} classes, {tree_count} tree sections, {n} short talent-name candidates")
     print("Exact point costs, prerequisites and runtime behavior NOT VERIFIED")
     if data["patch_overlay"]:
-        print("IMPORTANT: newer client also has appended Enhancement patch labels outside the old trees")
-        print("Appended Shaman candidates:", ", ".join(data["patch_overlay"]["shaman"]["Enhancement"]))
+        print("IMPORTANT: retained ordered trees contain historical labels; patch candidates require live verification")
+        print("Enhancement candidate names:", ", ".join(data["patch_overlay"]["shaman"]["Enhancement"]))
+        print("Newer Demonology candidate names:", ", ".join(data["patch_overlay"]["warlock"]["Demonology"]))
+        print("Jewelry, NOT talents:", ", ".join(data["gear_overlay"]["shaman"]["amulet_candidates"]))
     for cls, trees in data["classes"].items():
         print(cls + ": " + ", ".join(t + " (" + str(len(names)) + ")" for t, names in trees.items()))
     if args.out:
