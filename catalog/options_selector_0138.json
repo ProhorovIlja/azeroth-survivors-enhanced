@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "exe_sha256": "eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e",
+  "version_literal": "0.138.0",
+  "evidence": "read_only_disassembled_selector_branch_structure",
+  "options_function_rva": "0x3f74c0",
+  "page_selector_field_offset": "0x1da",
+  "selector_fetch_rva": "0x3f83b3",
+  "compared_0x06_branch_rva": "0x3f84ca",
+  "compared_0x0b_saves_branch_rva": "0x3f84b2",
+  "compared_0x0a_nonmatching_branch_rva": "0x3f842a",
+  "observed_saves_value": "0x0b",
+  "observed_addons_value": "0x0a",
+  "bevy_selector_type_verified": false,
+  "safe_write_or_hook_verified": false,
+  "cheat_menu_installed": false,
+  "gameplay_cheats_implemented": false,
+  "note": "Branch observations require live Windows UI state verification; do NOT modify selector memory."
+}

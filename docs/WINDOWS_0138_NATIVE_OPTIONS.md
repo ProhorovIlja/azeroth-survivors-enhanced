@@ -52,3 +52,18 @@ The EXE still embeds `https://wow.aethus.pl/exe/latest.json` and `https://wow.ae
 4. Record a genuine Windows screenshot and test result before describing the native menu or cheats as implemented.
 
 The user's requested **native Cheats & Enhancements page is not yet installed or functional**. This document is an evidence-backed step toward it, not a release.
+
+## Selector dispatch branch confirmed in code
+
+A second targeted LLVM disassembly of the **original exact 0.138 EXE** identified a byte read from an options state structure at displacement **`0x1DA`**, in the reviewed central Options function. The code compares this selector with **`0x06`**, **`0x0A`**, and **`0x0B`**, and conditionally branches into page handlers. The `0x0B` path reaches the verified Saves function, and the `0x0A` path reaches the verified AddOns function. This makes page selection a narrower research target than the generic Bevy UI label search.
+
+- Selector read: **`0x3F83B3`**.
+- Comparison against `0x06` dispatches to `0x3F84CA`, which calls another function, role unverified.
+- Comparison against `0x0B` dispatches to `0x3F84B2`, followed by call to Saves content at `0x3F84C3`.
+- Comparison against `0x0A` controls a path that reaches `0x3F8511`, followed by the AddOns call at `0x3F8521`.
+
+`tools.native_options_dispatch` now statically verifies the original load/compare/branch instruction shapes against the **whole-file known 0.138 SHA-256** and produces metadata in `catalog/options_selector_0138.json`. It **cannot** prove that the selector is a public/safe runtime API or that an unassigned value can create a new Bevy page. Writing it at runtime is not supported; there is **no** installed UI hook or cheat backend. Compare source-level and live debugger evidence before proceeding.
+
+## MPQ checksum spot-check
+
+Four re-uploaded **private** MPQs were freshly hashed and compared to SHA values recorded before the 0.138 update. All four were **identical**: `patch-8.MPQ`, `patch-9.MPQ`, `patch-A.MPQ` and `patch-B.MPQ`. They also still have valid `MPQ\x1a` headers. This does **not** certify the other seven archives. SHA results are in `catalog/mpq_spotcheck_0138.json`; no archive bytes are in GitHub.
