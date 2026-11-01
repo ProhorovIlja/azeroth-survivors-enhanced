@@ -1,0 +1,24 @@
+name: Official Aethus updater schema probe
+on:
+  pull_request:
+    paths:
+      - 'tools/official_manifest_probe.py'
+      - 'tests/test_official_manifest_probe.py'
+      - '.github/workflows/updater-schema-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  schema:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic JSON schema probe tests
+        run: python -m unittest discover -s tests -p test_official_manifest_probe.py -v
+      - name: Discover public official manifest schema without following download links
+        shell: bash
+        run: python -m tools.official_manifest_probe
