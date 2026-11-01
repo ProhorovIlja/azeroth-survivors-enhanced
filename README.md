@@ -117,3 +117,15 @@ py -m planner.build_studio encode --game-exe "C:\\Games\\AzerothSurvivors\\Azero
 For import use `py -m planner.build_studio decode --code "AZSE3:..." --out artifacts\\imported.json` and revalidate the result. It does **not** auto-allocate talents, prove level/rank prerequisites, or certify build strength. Share codes are compressed plain data, **not encrypted**. Complete guide: `docs/BUILD_STUDIO.md`.
 
 Optional custom advisor data: `py -m planner.addon_export --game-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe" --build artifacts\\warlock.json --out artifacts\\CustomPresets.lua`. This produces Lua-escaped **read-only**, unverified build data, never an installed or auto-applied build. Manual tests with backups are required. See `docs/BUILD_STUDIO.md`.
+
+## Owner's new original Windows 0.137 update (Nov 1, 2026)
+
+Verified owner EXE SHA-256: `aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8` (147844608 bytes; version literal 0.137.0). Backup `AzerothSurvivors.old` has version literal 0.136.0 and a different SHA. The new English localization is CRLF-encoded and was privately indexed with 3334 entries and the same 27 talent tree sections / 345 short name candidates.
+
+**Built-in updater endpoints recovered directly from the EXE:**
+- `https://wow.aethus.pl/exe/latest.json`
+- `https://wow.aethus.pl/exe/data/patches.json`
+
+The independent [official update watcher](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/issues/11) was merged into `main` in PR #12 and **successfully contacted both real endpoints**, confirming the EXE manifest reported `0.137.0`. It checks four times a day, comments on changes, and never installs anything. The local Build Studio CLI now accepts the new EXE hash while preserving unknown-client refusal. Full metadata: `docs/WINDOWS_CLIENT_0137.md`.
+
+The old Windows game has not been launched for actual QA; static talent names do not prove legality. The entire original game and its MPQs remain private.
