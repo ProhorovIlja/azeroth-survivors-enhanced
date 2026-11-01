@@ -3,26 +3,30 @@ import unittest
 from tools.compare_game_versions import compare_inventories
 
 
-def example(sha, legacy=None, overlay=None):
+def example(sha, legacy=None, overlay=None, amulets=None):
     if legacy is None:
         legacy=["Windfury","Feral Spirit"]
     if overlay is None:
         overlay=[]
     return {"client_sha256":sha,"classes":{"shaman":{"Enhancement":legacy}},
-            "patch_overlay":{"shaman":{"Enhancement":overlay}}}
+            "patch_overlay":{"shaman":{"Enhancement":overlay}},
+            "gear_overlay":{"shaman":{"amulet_candidates":amulets or []}}}
 
 
 class CompareGameVersionTests(unittest.TestCase):
     def test_0137_overlay_changes_even_when_ordered_tree_unchanged(self):
-        old=example("a"*64,overlay=["Earthen Bulwark","Unleashed Weapons","Stormbound Echoes"])
-        new=example("b"*64,overlay=["Stormguard","Elemental Sunder","Heart of the Earthbreaker","Stormbound Echoes"])
+        old=example("a"*64,overlay=["Earthen Bulwark","Unleashed Weapons","Stormbound Echoes"],amulets=["Eye of the Tempest"])
+        new=example("b"*64,overlay=["Stormguard","Elemental Sunder","Stormbound Echoes"],amulets=["Eye of the Tempest","Heart of the Earthbreaker"])
         summary=compare_inventories(old,new,{"game.title":"AZS","A":"A"},
                                     {"game.title":"AZS","B":"B"})
         self.assertTrue(summary["older_ordered_tree_names_unchanged"])
-        self.assertEqual(["Elemental Sunder","Heart of the Earthbreaker","Stormguard"],
+        self.assertEqual(["Elemental Sunder","Stormguard"],
                          summary["shaman_appended_names_added"])
         self.assertEqual(["Earthen Bulwark","Unleashed Weapons"],
                          summary["shaman_appended_names_removed"])
+        self.assertEqual(["Heart of the Earthbreaker"],
+                         summary["shaman_amulet_names_added"])
+        self.assertNotIn("Heart of the Earthbreaker",summary["shaman_appended_names_added"])
         self.assertEqual(1,summary["added_dictionary_keys"])
         self.assertFalse(summary["gameplay_verified"])
         self.assertFalse(summary["binary_modified"])
