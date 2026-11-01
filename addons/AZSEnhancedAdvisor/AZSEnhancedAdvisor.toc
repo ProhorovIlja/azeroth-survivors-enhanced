@@ -1,0 +1,6 @@
+## Interface: 11200
+## Title: AZS Enhanced Advisor
+## Notes: Read-only editorial build suggestions; no game modification
+## SavedVariables: AZSE_DB
+Presets.lua
+Core.lua

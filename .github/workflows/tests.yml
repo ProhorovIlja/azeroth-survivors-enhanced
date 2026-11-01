@@ -1,0 +1,22 @@
+name: Build catalogue and diagnostics checks
+on:
+  push:
+    paths:
+      - 'planner/**'
+      - 'catalog/**'
+      - 'tools/**'
+      - 'tests/**'
+      - '.github/workflows/tests.yml'
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate catalogue
+        run: |
+          python -m planner.azs_planner validate
+          python -m unittest discover -s tests -v
