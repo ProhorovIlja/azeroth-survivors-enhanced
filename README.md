@@ -102,3 +102,18 @@ py -m tools.addon_package rollback --game-root "C:\\Games\\AzerothSurvivors" --y
 ```
 
 Install refuses a different EXE SHA unless an explicit --allow-unknown-client override is provided. Pre-existing addon directories require --replace-existing and are backed up. Rollback refuses to overwrite modified user files. See docs/SAFE_ADDON_INSTALLER.md for the full safety and interrupted-transaction procedure.
+
+## Build Studio alpha: exact-client drafts and share codes
+
+The first usable offline Build Studio is a Python CLI. It can create a blank build for the **exact uploaded original Windows EXE**, verify selected talent names against its 27 extracted talent-tree sections, and exchange portable checksummed `AZSE3:` draft codes.
+
+```powershell
+mkdir artifacts
+py -m planner.build_studio init --game-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe" --class warlock --style low_input_minions --out artifacts\\warlock.json
+py -m planner.build_studio validate --game-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe" --build artifacts\\warlock.json
+py -m planner.build_studio encode --game-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe" --build artifacts\\warlock.json
+```
+
+For import use `py -m planner.build_studio decode --code "AZSE3:..." --out artifacts\\imported.json` and revalidate the result. It does **not** auto-allocate talents, prove level/rank prerequisites, or certify build strength. Share codes are compressed plain data, **not encrypted**. Complete guide: `docs/BUILD_STUDIO.md`.
+
+Optional custom advisor data: `py -m planner.addon_export --game-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe" --build artifacts\\warlock.json --out artifacts\\CustomPresets.lua`. This produces Lua-escaped **read-only**, unverified build data, never an installed or auto-applied build. Manual tests with backups are required. See `docs/BUILD_STUDIO.md`.
