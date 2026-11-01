@@ -40,3 +40,8 @@ PR #10: `planner/build_studio.py` can initialize, validate and exchange client-h
 Source audit still current at 2026-11-01: ASBuilder v1.10.0; AZSMaxHit v1.3.2. OutThisLife/azeroth-survivors-re has separate independent Rust/Bevy PRs #17–#20; never present these as official Aethus patch source. No third-party code was copied.
 
 Next: inspect source and runtime risks of addon installer; run Build Studio against owner's EXE locally with saved results; verify talent edges/ranks and races from authoritative in-game evidence; implement visual editor when legality data is available; benchmark stationary Warlock; review/merge draft PRs sequentially only after compatibility QA.
+
+
+## 2026-11-01 hotfix: 0.137 appended Shaman balance overlay
+
+Private Windows EXE read-only binary comparison found old **ordered legacy tree names retained**, plus **appended Shaman Enhancement 0.137 labels** outside the prior 27-tree scanner. Backup 0.136 had 12 appended names, current 0.137 has 13. The delta includes new Stormguard / Elemental Sunder / Heart of the Earthbreaker, removed Earthen Bulwark / Unleashed Weapons. Therefore "same 345 short tree labels" does NOT prove same active talents. Updated exact SHA-gated extractor, Build Studio validator and safe private EXE comparator to warn on older-only names and show appended names as unverified. Source doc docs/ENHANCEMENT_PATCH_OVERLAY.md; 12 synthetic regression tests added. Upstream author ASBuilder v1.11.0 released 2026-11-01 directly confirms 0.137 Enhancement / Heart of Earthbreaker, and AZSMaxHit v1.3.3 addresses proc attribution. Still no in-game QA, no game binaries committed.
