@@ -127,12 +127,38 @@ def build_index(mapping):
     return trees
 
 
+def extract_patch_overlay(mapping, digest):
+    """Collect separately appended Shaman labels (not the old ordered tree).
+
+    Old English tree sections can remain embedded after game balance patches.
+    The appended enhancement names are *candidates*, not proof of active talents.
+    """
+    supported = {
+        "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
+        "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c",
+    }
+    if digest not in supported:
+        return {}
+    keys = list(mapping)
+    if "ability.stormstrike.name" not in mapping:
+        raise ValueError("Expected enhancement patch marker missing")
+    anchor = keys.index("ability.stormstrike.name")
+    names = [
+        key for key in keys[anchor + 1:]
+        if is_short_talent_label(key, mapping[key])
+    ]
+    if not 10 <= len(names) <= 20:
+        raise ValueError("Unexpected appended enhancement label count")
+    return {"shaman": {"Enhancement": names}}
+
+
 def extract(path):
     digest, start = find_anchor_and_hash(path)
     if digest not in KNOWN_SHAS:
         raise ValueError("Unknown executable SHA-256; refuse to reuse original-client tree boundary assumptions")
     mapping = decode_english_map(path, start)
     trees = build_index(mapping)
+    patch_overlay = extract_patch_overlay(mapping, digest)
     return {
         "schema_version": 1,
         "client_sha256": digest,
@@ -140,6 +166,8 @@ def extract(path):
         "source": "owner Windows EXE, embedded English localization names",
         "runtime_verified": False, "points_and_prerequisites_known": False,
         "classes": trees,
+        "patch_overlay": patch_overlay,
+        "overlay_is_runtime_verified": False,
         "counts_are_heuristic": True,
         "caution": "Name candidates only, not a verified ability graph, max-rank map or build",
     }
@@ -160,6 +188,9 @@ def main(argv=None):
     tree_count = sum(len(d) for d in data["classes"].values())
     print(f"Detected {len(data['classes'])} classes, {tree_count} tree sections, {n} short talent-name candidates")
     print("Exact point costs, prerequisites and runtime behavior NOT VERIFIED")
+    if data["patch_overlay"]:
+        print("IMPORTANT: newer client also has appended Enhancement patch labels outside the old trees")
+        print("Appended Shaman candidates:", ", ".join(data["patch_overlay"]["shaman"]["Enhancement"]))
     for cls, trees in data["classes"].items():
         print(cls + ": " + ", ".join(t + " (" + str(len(names)) + ")" for t, names in trees.items()))
     if args.out:
