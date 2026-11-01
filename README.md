@@ -43,3 +43,18 @@ Install addon by copying `addons/AZSEnhancedAdvisor/` to `benilla-config/AddOns/
 - `docs/PROJECT_STATE.md`, `docs/HANDOFF.md`: continuation notes.
 
 Game archives remain in the owner's private Google Drive and **never belong in public GitHub or a release**.
+
+## New upstream and client preflight tools
+
+The community-source registry (`catalog/upstreams.json`) records 30 checked GitHub projects, their categories, licensing warnings, collision risks and **untested** compatibility. It makes no claim to cover all forks or to certify third-party code.
+
+```powershell
+py -m tools.upstream_registry validate
+py -m tools.upstream_registry list --risk critical
+py -m tools.client_guard --game-root "C:\Games\AzerothSurvivors"
+py -m tools.client_guard --game-root "C:\Games\AzerothSurvivors" --all-mpq --out artifacts/client-report.json
+```
+
+Client guard only reads PE/MPQ headers and hashes. A known binary fingerprint is **not** a verified game version and never authorizes automatic patching. Its detailed JSON reports must remain private. See `docs/DISCOVERY_2026-11-01.md` and `docs/COMPATIBILITY_POLICY.md`.
+
+**Version warning:** public guides describe a Shaman Enhancement rework in browser v0.134.0 and a Demonology Warlock capstone rename in v0.129.0. These do not establish which features are in the owner's Windows EXE.
