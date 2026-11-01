@@ -58,3 +58,24 @@ py -m tools.client_guard --game-root "C:\Games\AzerothSurvivors" --all-mpq --out
 Client guard only reads PE/MPQ headers and hashes. A known binary fingerprint is **not** a verified game version and never authorizes automatic patching. Its detailed JSON reports must remain private. See `docs/DISCOVERY_2026-11-01.md` and `docs/COMPATIBILITY_POLICY.md`.
 
 **Version warning:** public guides describe a Shaman Enhancement rework in browser v0.134.0 and a Demonology Warlock capstone rename in v0.129.0. These do not establish which features are in the owner's Windows EXE.
+
+## Historical player examples (not patch-certified)
+
+See `catalog/community_examples.json` for seven **attributed historical** talent splits with observed patch when available, source URL, and explicit warnings for outdated capstones. They are **not** ranked or validated on the owner's EXE:
+
+```powershell
+py -m planner.community_examples validate
+py -m planner.community_examples list --class warlock
+```
+
+## GitHub upstream monitoring (pending merge)
+
+The read-only `tools.upstream_watch` can check curated repository releases, a sample of branches and open PRs, fork/parent metadata, plus new repository candidates. No automatic installation, copying, merging or source trust implied.
+
+```powershell
+py -m tools.upstream_watch --limit 10
+# Requires network and optionally GITHUB_TOKEN:
+py -m tools.upstream_watch --run --limit 30
+```
+
+The daily `upstream-watch.yml` workflow is configured but **does not run on a schedule until merged to main**. Its public metadata report is an expiring GitHub Actions artifact; web/Reddit/video research still requires independent review. See `docs/UPSTREAM_MONITORING.md`.
