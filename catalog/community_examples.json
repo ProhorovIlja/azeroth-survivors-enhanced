@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-01",
+  "notes": "Historical player examples and secondary attributions, not verified against user EXE and not proven best-in-slot. Talent splits are final allocations, never point-spending sequences.",
+  "examples": [
+    {
+      "id": "warrior-fury-holdherhand-2026-10",
+      "class": "warrior",
+      "name": "Whirlwind Fury / Arms developed-character example",
+      "author": "Holdherhand",
+      "talent_split": {
+        "arms": 11,
+        "fury": 40,
+        "protection": 0
+      },
+      "points_recorded": 51,
+      "observed_client_version": "0.102.0",
+      "evidence_type": "secondary_summary_of_player_recording",
+      "source_url": "https://azeroth-survivors.org/guides/builds/",
+      "primary_source_verified": false,
+      "known_obsolescence": "Old patch; do not assume current talent trees or damage balance",
+      "ranked_for_current_client": false
+    },
+    {
+      "id": "warlock-demonology-holdherhand-2026-10",
+      "class": "warlock",
+      "name": "Pit Lord + Searing Pain historical run",
+      "author": "Holdherhand",
+      "talent_split": {
+        "affliction": 5,
+        "demonology": 32,
+        "destruction": 14
+      },
+      "points_recorded": 51,
+      "observed_client_version": "0.114.2",
+      "evidence_type": "secondary_summary_of_player_recording",
+      "source_url": "https://azeroth-survivors.org/guides/warlock-demonology-build/",
+      "primary_source_verified": false,
+      "known_obsolescence": "Pact of the Annihilan (Pit Lord) replaced by Pact of the Nathrezim (Dread Lord) in reported browser v0.129+; not directly portable",
+      "ranked_for_current_client": false
+    },
+    {
+      "id": "shaman-magma-cadoky-2026-10",
+      "class": "shaman",
+      "name": "Magma Totem stand-still build",
+      "author": "Cadoky",
+      "talent_split": {
+        "elemental": 22,
+        "enhancement": 12,
+        "restoration": 17
+      },
+      "points_recorded": 51,
+      "observed_client_version": null,
+      "evidence_type": "secondary_summary_of_player_build",
+      "source_url": "https://azeroth-survivors.org/guides/shaman-magma-totem-build/",
+      "primary_source_verified": false,
+      "known_obsolescence": "Enhancement talent tree reworked in reported browser v0.134.0; verify the 12 Enhancement points and totem limits",
+      "ranked_for_current_client": false
+    },
+    {
+      "id": "rogue-subtlety-community-2026-10",
+      "class": "rogue",
+      "name": "Shadow Dance Backstab and Eviscerate",
+      "author": "Player example (as attributed by guide)",
+      "talent_split": {
+        "assassination": 5,
+        "combat": 15,
+        "subtlety": 31
+      },
+      "points_recorded": 51,
+      "observed_client_version": null,
+      "evidence_type": "secondary_summary_of_player_build",
+      "source_url": "https://azeroth-survivors.org/guides/builds/",
+      "primary_source_verified": false,
+      "known_obsolescence": "Patch and complete node-by-node allocation not verified",
+      "ranked_for_current_client": false
+    },
+    {
+      "id": "druid-balance-community-2026-10",
+      "class": "druid",
+      "name": "Starfire Balance / Restoration",
+      "author": "Player example (as attributed by guide)",
+      "talent_split": {
+        "balance": 33,
+        "feral_combat": 0,
+        "restoration": 18
+      },
+      "points_recorded": 51,
+      "observed_client_version": null,
+      "evidence_type": "secondary_summary_of_player_build",
+      "source_url": "https://azeroth-survivors.org/guides/builds/",
+      "primary_source_verified": false,
+      "known_obsolescence": "No game version stated; do not assume 51-point distribution is valid on owner executable",
+      "ranked_for_current_client": false
+    },
+    {
+      "id": "mage-arcane-community-2026-10",
+      "class": "mage",
+      "name": "Arcane / Frost example",
+      "author": "Original game recording (as attributed by guide)",
+      "talent_split": {
+        "arcane": 41,
+        "fire": 0,
+        "frost": 10
+      },
+      "points_recorded": 51,
+      "observed_client_version": null,
+      "evidence_type": "secondary_summary_of_player_recording",
+      "source_url": "https://azeroth-survivors.org/guides/builds/",
+      "primary_source_verified": false,
+      "known_obsolescence": "Version not known; compare changed capstones and items before use",
+      "ranked_for_current_client": false
+    },
+    {
+      "id": "priest-shadow-partial-community-2026-10",
+      "class": "priest",
+      "name": "Shadow / Discipline partial allocation",
+      "author": "Player examples (as attributed by guide)",
+      "talent_split": {
+        "discipline": 15,
+        "holy": 0,
+        "shadow": 31
+      },
+      "points_recorded": 46,
+      "observed_client_version": null,
+      "evidence_type": "secondary_summary_of_player_build",
+      "source_url": "https://azeroth-survivors.org/guides/builds/",
+      "primary_source_verified": false,
+      "known_obsolescence": "Only 46 points recorded; remaining 5 points unknown. Do NOT invent a 51-point build.",
+      "ranked_for_current_client": false
+    }
+  ]
+}
