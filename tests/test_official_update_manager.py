@@ -143,6 +143,25 @@ class TestUpdates(unittest.TestCase):
     def test_refuse_stage_inside_game(self):
         with self.assertRaises(UpdateError):stage(self.game,self.game/'stage',self.version,self.records,yes=True,opener=self.opener)
 
+    def test_interrupted_multi_file_apply_recovers_all_originals(self):
+        from unittest.mock import patch
+        import shutil
+        stage(self.game,self.stage_dir,self.version,self.records,yes=True,opener=self.opener)
+        original_copy = shutil.copy2
+        def fail_second_install(src,dst,*args,**kwargs):
+            if str(dst).endswith('patch-B.MPQ.azse-installing'):
+                raise OSError('simulated disk write failure halfway through')
+            return original_copy(src,dst,*args,**kwargs)
+        with patch('tools.official_update_manager.shutil.copy2',side_effect=fail_second_install):
+            with self.assertRaises(UpdateError):
+                apply(self.game,self.stage_dir,yes=True)
+        self.assertEqual(self.new_exe,(self.game/'AzerothSurvivors.exe').read_bytes())
+        self.assertFalse((self.game/'Data'/'patch-B.MPQ').exists())
+        result=rollback(self.game,self.stage_dir,yes=True)
+        self.assertEqual('rolled_back',result['status'])
+        self.assertEqual(self.original_exe,(self.game/'AzerothSurvivors.exe').read_bytes())
+        self.assertFalse((self.game/'Data'/'patch-B.MPQ').exists())
+
     def test_unknown_client_fails(self):
         (self.game/'AzerothSurvivors.exe').write_bytes(b'unknown local client')
         with self.assertRaises(UpdateError):plan(self.game,self.version,self.records)
