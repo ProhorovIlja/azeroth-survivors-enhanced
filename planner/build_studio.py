@@ -107,14 +107,31 @@ def validate_against_inventory(build, inventory, budget=51):
     if not isinstance(classes, dict) or build["class"] not in classes:
         raise BuildError("Class not found in this exact client")
     trees = classes[build["class"]]
+    patches = inventory.get("patch_overlay") or {}
+    overlay_trees = patches.get(build["class"], {}) if isinstance(patches, dict) else {}
+    overlay_selected, old_tree_only = [], []
     for talent in build["talents"]:
-        if talent["tree"] not in trees or talent["name"] not in trees[talent["tree"]]:
-            raise BuildError("Talent not observed in selected class/tree: " + talent["name"])
+        tree, name = talent["tree"], talent["name"]
+        if tree not in trees:
+            raise BuildError("Talent tree not observed in selected class: " + tree)
+        in_legacy = name in trees[tree]
+        in_overlay = name in overlay_trees.get(tree, [])
+        if not (in_legacy or in_overlay):
+            raise BuildError("Talent not observed in selected class/tree: " + name)
+        if in_overlay:
+            overlay_selected.append(name)
+        elif overlay_trees.get(tree):
+            old_tree_only.append(name)
     total = sum(item["points"] for item in build["talents"])
     if total > budget:
         raise BuildError("Points exceed assumed research budget; legality still unknown")
     return {
-        "status": "NAME_CHECK_ONLY",
+        "status": "NAME_CHECK_WITH_PATCH_WARNINGS" if old_tree_only else "NAME_CHECK_ONLY",
+        "appended_patch_candidates_selected": overlay_selected,
+        "older_dictionary_candidates_selected": old_tree_only,
+        "patch_overlay_runtime_verified": False,
+        "warning": ("Older embedded labels may be stale: check in-game before allocating points"
+                    if old_tree_only else "Names only; no talent rank/prerequisite certification"),
         "client_sha256": build["client_sha256"],
         "class": build["class"],
         "talents_observed": len(build["talents"]),
