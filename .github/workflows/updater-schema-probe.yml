@@ -22,3 +22,5 @@ jobs:
       - name: Discover public official manifest schema without following download links
         shell: bash
         run: python -m tools.official_manifest_probe
+      - name: Read first 32 bytes of 2 official compressed parts, no full binary download
+        run: python -c 'from tools.official_manifest_probe import sample_headers; raise SystemExit(sample_headers())'
