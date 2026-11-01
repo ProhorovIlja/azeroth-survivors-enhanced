@@ -1,0 +1,48 @@
+name: Azeroth Survivors release intelligence
+on:
+  pull_request:
+    paths:
+      - 'tools/release_intelligence.py'
+      - 'tests/test_release_intelligence.py'
+      - '.github/workflows/release-intelligence.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/release_intelligence.py'
+      - 'tests/test_release_intelligence.py'
+      - '.github/workflows/release-intelligence.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '11 4,10,16,22 * * *'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: azse-release-intelligence-v1
+  cancel-in-progress: false
+
+jobs:
+  classify-author-updates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Offline synthetic regression tests
+        run: python -m unittest discover -s tests -p 'test_release_intelligence.py' -v
+      - name: Fetch original author manifests and maintain the versioned research ledger
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python -m tools.release_intelligence --output-dir release-intelligence-output
+      - name: Archive metadata-only report for future source audits
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: aethus-release-intelligence
+          path: release-intelligence-output/
+          retention-days: 30

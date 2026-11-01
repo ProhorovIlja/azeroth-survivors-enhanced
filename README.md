@@ -1,1 +1,4 @@
 # azeroth-survivors-enhanced
+## Continuous upstream release intelligence
+
+A **separate unattended scheduled GitHub Actions workflow** monitors the actual game author's EXE/MPQ manifests four times per day, compares **file-level SHA-256s** rather than only JSON byte hashes, saves versioned metadata reports and creates actionable compatibility issues when an official game release changes. It never downloads or installs the original game. The persistent report ledger is [issue #20](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/issues/20); the legacy raw-manifest alert remains in [issue #11](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/issues/11). See `docs/RELEASE_INTELLIGENCE.md`. GitHub automatically detects changes, but does **not** run an autonomous ChatGPT coding session or merge untested game modifications.
