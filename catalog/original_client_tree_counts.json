@@ -58,6 +58,9 @@
     "english_locale_keys": 3334,
     "tree_sections": 27,
     "short_name_candidates": 345,
-    "verified_in_game": false
+    "verified_in_game": false,
+    "note": "345 old ordered labels plus an extra 13 short appended Enhancement candidate labels. Old ordered labels are not necessarily active.",
+    "appended_shaman_enhancement_candidates": 13,
+    "legacy_tree_runtime_verified": false
   }
 }
