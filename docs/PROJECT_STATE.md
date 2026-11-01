@@ -6,8 +6,7 @@ GitHub code changes on feature branch feat/bootstrap-and-original-inventory, wit
 Original game: https://wow.aethus.pl/ (Aethus); no original official source repository verified.
 Other repo ProhorovIlja/bloodborne_pc_windows_port is unrelated and MUST NOT be modified.
 
-Private Drive folder (owner-controlled): https://drive.google.com/drive/folders/1IQfYqj9ZoykcIKmKSGX1KNH_aMXqgptl
-Original game folder: https://drive.google.com/drive/folders/1toYwGMNSXphpBpBjyfi5qqVhsAXsfGuD
+Private Drive: connected user account, folder named Azeroth Survivors Enhanced; access URL and IDs are kept only in the owner's private Drive project state, not this public repository.
 
 ## Verified
 - GitHub repo exists; GitHub connector can push, branch, open pull requests.
