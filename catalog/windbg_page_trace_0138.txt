@@ -1,0 +1,10 @@
+$$ AZSE Windows 0.138.0 ORIGINAL OPTIONS PAGE TRACE (opt-in and untested in runtime)
+$$ Requires separate, fully backed-up offline SOLO Windows game copy.
+$$ Generated for exact SHA-256 eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e
+$$ NEVER run on another game build; debugger may pause/crash the game.
+$$ Do not attach while co-op / online / competing, and never share full logs blindly.
+$$ Hardware execution breakpoint at read-only page-state read. No DLL, no EXE patch.
+.logopen /t "C:\AZSE\options-page-trace.log"
+r $t0 = 0xff
+ba e 1 AzerothSurvivors+0x3f83b3 ".if (by(@r8+0x1da) != @$t0) { r $t0 = by(@r8+0x1da); .printf \"AZSE_PAGE=0x%02x\n\", @$t0; }; gc"
+g
