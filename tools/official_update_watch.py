@@ -155,7 +155,7 @@ def run(*, token, issue_no=ISSUE_NO, fetch=fetch_manifest, api=issue_api):
     merged = dict(previous)
     merged.update(fresh)
     changed = changes(previous, fresh)
-    if merged != previous:
+    if any(k not in previous or previous[k]["sha256"] != fresh[k]["sha256"] for k in fresh):
         api("PATCH", "/issues/" + str(issue_no), token, {"body": update_body(body, merged)})
     if changed:
         lines = ["## Official manifest change observed (UTC)",
