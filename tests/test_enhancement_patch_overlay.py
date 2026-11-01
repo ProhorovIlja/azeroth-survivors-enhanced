@@ -139,6 +139,38 @@ class EnhancementPatchOverlayTests(unittest.TestCase):
         self.assertEqual("NAME_CHECK_WITH_PATCH_WARNINGS", result["status"])
         self.assertEqual(["Summon Felguard"], result["older_dictionary_candidates_selected"])
 
+    def test_warlock_exclusive_capstones_rejected_for_0137(self):
+        inv = inventory(self.new_names)
+        draft = make_draft(inv, "warlock")
+        draft["talents"] = [
+            {"tree": "Demonology", "name": "Butcher", "points": 1},
+            {"tree": "Demonology", "name": "Pact of the Nathrezim", "points": 1},
+        ]
+        with self.assertRaisesRegex(BuildError, "Exclusive"):
+            validate_against_inventory(draft, inv)
+
+    def test_warlock_supremacy_gate_returns_swarm_warning(self):
+        inv = inventory(self.new_names)
+        draft = make_draft(inv, "warlock")
+        draft["talents"] = [
+            {"tree": "Demonology", "name": "Demonic Supremacy", "points": 1},
+            {"tree": "Demonology", "name": "Legion Gate", "points": 1},
+            {"tree": "Demonology", "name": "Demonic Familiar", "points": 1},
+        ]
+        result = validate_against_inventory(draft, inv)
+        self.assertEqual(2, len(result["mechanics_cautions"]))
+        self.assertFalse(result["legal_build_verified"])
+        self.assertFalse(result["ready_to_apply_automatically"])
+
+    def test_warlock_no_conflicts_for_single_capstone(self):
+        inv = inventory(self.new_names)
+        draft = make_draft(inv, "warlock")
+        draft["talents"] = [
+            {"tree": "Demonology", "name": "Butcher", "points": 1},
+        ]
+        result = validate_against_inventory(draft, inv)
+        self.assertEqual([], result["mechanics_cautions"])
+
     def test_no_patch_data_preserves_existing_unverified_behavior(self):
         inv = {"client_sha256": NEW,
                "classes": {"warlock": {"Demonology": ["Summon Imp"]}}}
