@@ -52,5 +52,17 @@
       "Feral Combat": 13,
       "Restoration": 13
     }
+  },
+  "new_client_0137": {
+    "sha256": "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
+    "english_locale_keys": 3334,
+    "tree_sections": 27,
+    "short_name_candidates": 345,
+    "verified_in_game": false,
+    "note": "345 retained older ordered names plus 11 Shaman Enhancement talent-name candidates and 2 amulet labels in a separate appended locale block. No active skill tree is validated.",
+    "appended_shaman_enhancement_candidates": 11,
+    "legacy_tree_runtime_verified": false,
+    "appended_shaman_amulet_candidates": 2,
+    "modern_warlock_demonology_name_candidates": 7
   }
 }

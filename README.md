@@ -117,3 +117,31 @@ py -m planner.build_studio encode --game-exe "C:\\Games\\AzerothSurvivors\\Azero
 For import use `py -m planner.build_studio decode --code "AZSE3:..." --out artifacts\\imported.json` and revalidate the result. It does **not** auto-allocate talents, prove level/rank prerequisites, or certify build strength. Share codes are compressed plain data, **not encrypted**. Complete guide: `docs/BUILD_STUDIO.md`.
 
 Optional custom advisor data: `py -m planner.addon_export --game-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe" --build artifacts\\warlock.json --out artifacts\\CustomPresets.lua`. This produces Lua-escaped **read-only**, unverified build data, never an installed or auto-applied build. Manual tests with backups are required. See `docs/BUILD_STUDIO.md`.
+
+## Owner's new original Windows 0.137 update (Nov 1, 2026)
+
+Verified owner EXE SHA-256: `aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8` (147844608 bytes; version literal 0.137.0). Backup `AzerothSurvivors.old` has version literal 0.136.0 and a different SHA. The new English localization is CRLF-encoded and was privately indexed with 3334 entries and the same 27 talent tree sections / 345 short name candidates.
+
+**Built-in updater endpoints recovered directly from the EXE:**
+- `https://wow.aethus.pl/exe/latest.json`
+- `https://wow.aethus.pl/exe/data/patches.json`
+
+The independent [official update watcher](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/issues/11) was merged into `main` in PR #12 and **successfully contacted both real endpoints**, confirming the EXE manifest reported `0.137.0`. It checks four times a day, comments on changes, and never installs anything. The local Build Studio CLI now accepts the new EXE hash while preserving unknown-client refusal. Full metadata: `docs/WINDOWS_CLIENT_0137.md`.
+
+The old Windows game has not been launched for actual QA; static talent names do not prove legality. The entire original game and its MPQs remain private.
+
+
+### Important correction for Windows 0.137 Shaman
+
+The 345-name original ordered trees are **only legacy embedded localization data**. The user's new 0.137 EXE also contains **13 appended Shaman Enhancement name candidates** outside those trees; the 0.136 backup has 12. Build Studio now detects these separately, warns when a Shaman build chooses only old embedded names, and allows exact-current-client appended candidates as *unverified research*, not legal talent allocations. Review `docs/ENHANCEMENT_PATCH_OVERLAY.md` before using Shaman presets.
+
+A reusable read-only comparison tool is available: `python -m tools.compare_game_versions --old-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.old" --new-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe"`. It does not run the game or copy original localization descriptions into this repository.
+
+### 0.137 classification correction (important)
+
+The **13 short entries** in the appended Shaman section include **11 talent-name candidates and 2 gear/amulet names**: `Eye of the Tempest` and `Heart of the Earthbreaker`. The backup 0.136 section contains 11 talent candidates and one amulet. Do **not** allocate talent points to jewelry. The newer Warlock Demonology names `Demonic Familiar`, `Legion Gate`, `Demonic Supremacy`, `Butcher` and `Pact of the Nathrezim` are also present in the current client; older `Summon Felguard` / `Demonic Pact` strings are historical and do not prove active talents. Our version-aware Build Studio now exposes both candidate layers separately and warns about legacy-only choices. No live talent graph has been verified.
+
+
+### Two 0.137 Warlock idle research routes (not tested rankings)
+
+`catalog/0137_warlock_afk_experiments.json` and `docs/WARLOCK_DEMONOLOGY_0137.md` outline **lesser-demon swarm** (`Demonic Familiar` + `Legion Gate`) and **permanent greater demons** (`Summon Infernal`, `Summon Doomguard`, `Demonic Supremacy`). Both are source-backed *hypotheses*, not complete 51-point builds. Current Windows 0.137 text states `Butcher` and `Pact of the Nathrezim` are exclusive capstones, and `Demonic Supremacy` prevents lesser-demon summons. The Build Studio validator now rejects both capstones selected together and warns when Supremacy conflicts with Legion Gate or Demonic Familiar. Real low-input DPS/uptime benchmarks and game-rank validation are still required.

@@ -40,3 +40,17 @@ PR #10: `planner/build_studio.py` can initialize, validate and exchange client-h
 Source audit still current at 2026-11-01: ASBuilder v1.10.0; AZSMaxHit v1.3.2. OutThisLife/azeroth-survivors-re has separate independent Rust/Bevy PRs #17–#20; never present these as official Aethus patch source. No third-party code was copied.
 
 Next: inspect source and runtime risks of addon installer; run Build Studio against owner's EXE locally with saved results; verify talent edges/ranks and races from authoritative in-game evidence; implement visual editor when legality data is available; benchmark stationary Warlock; review/merge draft PRs sequentially only after compatibility QA.
+
+
+## 2026-11-01 hotfix: 0.137 appended Shaman balance overlay
+
+Private Windows EXE read-only binary comparison found old **ordered legacy tree names retained**, plus **appended Shaman Enhancement 0.137 labels** outside the prior 27-tree scanner. Backup 0.136 had 12 appended names, current 0.137 has 13. The delta includes new Stormguard / Elemental Sunder / Heart of the Earthbreaker, removed Earthen Bulwark / Unleashed Weapons. Therefore "same 345 short tree labels" does NOT prove same active talents. Updated exact SHA-gated extractor, Build Studio validator and safe private EXE comparator to warn on older-only names and show appended names as unverified. Source doc docs/ENHANCEMENT_PATCH_OVERLAY.md; 12 synthetic regression tests added. Upstream author ASBuilder v1.11.0 released 2026-11-01 directly confirms 0.137 Enhancement / Heart of Earthbreaker, and AZSMaxHit v1.3.3 addresses proc attribution. Still no in-game QA, no game binaries committed.
+
+## Update classification correction, Nov 1 (new PR #13 revision)
+
+The 0.137 appended Shaman locale group is **13 total labels, of which 11 are talent candidates and 2 are amulets** (Eye of the Tempest, Heart of the Earthbreaker). The old 0.136 group is 11+1. Talent candidate delta: +Stormguard, +Elemental Sunder, -Earthen Bulwark, -Unleashed Weapons; amulet delta: +Heart of the Earthbreaker. A second, modern Demonology Warlock name list is embedded alongside older legacy text: Demonic Familiar / Legion Gate / Summon Infernal / Summon Doomguard / Demonic Supremacy / Pact of the Nathrezim / Butcher. The Build Studio overlay now exposes both as *name-only* research, warns on older-only labels and refuses amulets as talents. Do not claim legal build/actual gameplay. GHA synthetic tests rerun; real locale dictionaries compared privately. The read-only official JSON monitor is independently active on main.
+
+
+## 2026-11-01 original 0.137 Warlock idle research / type correction
+
+Private owner's 0.136 and 0.137 EXEs directly re-parsed with SHA verification; 3325 vs 3334 English localization keys, 11 Enhancement talent-name candidates in both, 1 vs 2 Shaman amulet labels (Eye of the Tempest present, Heart of the Earthbreaker added). Seven newer Warlock Demonology names are present alongside retained historical names. v0.137 class recommendations must NOT use `Summon Felguard` / `Demonic Pact` as if they were verified current nodes. Current binary tooltip marks `Butcher` and `Pact of the Nathrezim` mutually exclusive and `Demonic Supremacy` suppressing lesser demon summons. Build Studio guards both capstones and warns on swarm conflicts. New 0137 Warlock idle research JSON/docs and three synthetic tests added. Still no runtime smoke or measured BiS.

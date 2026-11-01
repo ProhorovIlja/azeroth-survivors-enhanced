@@ -10,8 +10,9 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-KNOWN_SHA = "2c2f3926e1f8f8092809f5de0624ac8f2197bb341a2870d408ce0250f13f094a"
+KNOWN_SHAS = {"2c2f3926e1f8f8092809f5de0624ac8f2197bb341a2870d408ce0250f13f094a", "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8", "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c"}
 ENGLISH_ANCHOR = b'{\n  "game.title": "Azeroth Survivors"'
+ENGLISH_ANCHORS = ((ENGLISH_ANCHOR, 0), (b'English{\r\n  "game.title": "Azeroth Survivors"', len(b"English")))
 CHUNK = 1024 * 1024
 MAX_JSON = 512 * 1024
 MAX_FILE = 1024 * 1024 * 1024
@@ -59,16 +60,19 @@ def find_anchor_and_hash(path):
     start = None
     offset = 0
     tail = b""
+    overlap = max(len(anchor) for anchor, _ in ENGLISH_ANCHORS) - 1
     with file.open("rb") as source:
         for block in iter(lambda: source.read(CHUNK), b""):
             sha.update(block)
             sample = tail + block
             if start is None:
-                pos = sample.find(ENGLISH_ANCHOR)
-                if pos >= 0:
-                    start = offset - len(tail) + pos
+                for anchor, prefix_bytes in ENGLISH_ANCHORS:
+                    pos = sample.find(anchor)
+                    if pos >= 0:
+                        start = offset - len(tail) + pos + prefix_bytes
+                        break
             offset += len(block)
-            tail = sample[-(len(ENGLISH_ANCHOR) - 1):]
+            tail = sample[-overlap:]
     return sha.hexdigest(), start
 
 
@@ -123,12 +127,75 @@ def build_index(mapping):
     return trees
 
 
+# Derived from the owner's exact 0.136/0.137 English dictionaries, with
+# independent ASBuilder release evidence that named rings/amulets are gear.
+# Localization name alone never proves actual talent-tree availability.
+SHAMAN_GEAR_LABELS = frozenset(("Eye of the Tempest", "Heart of the Earthbreaker"))
+MODERN_DEMONOLOGY_CANDIDATES = (
+    "Demonic Familiar", "Legion Gate", "Summon Infernal", "Summon Doomguard",
+    "Demonic Supremacy", "Pact of the Nathrezim", "Butcher",
+)
+
+
+def extract_patch_overlay(mapping, digest):
+    """Return name-only *talent candidates*, excluding known gear labels.
+
+    The ordered 27-tree block is retained legacy text in recent binaries.
+    This newer Shaman section and the separate Warlock label set must not be
+    interpreted as verified current gameplay or talent prerequisites.
+    """
+    supported = {
+        "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
+        "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c",
+    }
+    if digest not in supported:
+        return {}
+    keys = list(mapping)
+    if "ability.stormstrike.name" not in mapping:
+        raise ValueError("Expected enhancement patch marker missing")
+    anchor = keys.index("ability.stormstrike.name")
+    shaman_all = [
+        key for key in keys[anchor + 1:]
+        if is_short_talent_label(key, mapping[key])
+    ]
+    if not 11 <= len(shaman_all) <= 14:
+        raise ValueError("Unexpected appended Enhancement labels")
+    shaman_talents = [n for n in shaman_all if n not in SHAMAN_GEAR_LABELS]
+    if len(shaman_talents) != 11:
+        raise ValueError("Unexpected Enhancement talent-candidate count")
+    warlock_candidates = [
+        n for n in MODERN_DEMONOLOGY_CANDIDATES
+        if mapping.get(n) == n
+    ]
+    if len(warlock_candidates) != len(MODERN_DEMONOLOGY_CANDIDATES):
+        raise ValueError("Expected modern Demonology candidates missing")
+    return {
+        "shaman": {"Enhancement": shaman_talents},
+        "warlock": {"Demonology": warlock_candidates},
+    }
+
+
+def extract_gear_overlay(mapping, digest):
+    """Known jewelry labels; they are explicitly NOT talents."""
+    if digest not in {
+        "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
+        "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c",
+    }:
+        return {}
+    return {"shaman": {"amulet_candidates": [
+        n for n in ("Eye of the Tempest", "Heart of the Earthbreaker")
+        if mapping.get(n) == n
+    ]}}
+
+
 def extract(path):
     digest, start = find_anchor_and_hash(path)
-    if digest != KNOWN_SHA:
+    if digest not in KNOWN_SHAS:
         raise ValueError("Unknown executable SHA-256; refuse to reuse original-client tree boundary assumptions")
     mapping = decode_english_map(path, start)
     trees = build_index(mapping)
+    patch_overlay = extract_patch_overlay(mapping, digest)
+    gear_overlay = extract_gear_overlay(mapping, digest)
     return {
         "schema_version": 1,
         "client_sha256": digest,
@@ -136,6 +203,9 @@ def extract(path):
         "source": "owner Windows EXE, embedded English localization names",
         "runtime_verified": False, "points_and_prerequisites_known": False,
         "classes": trees,
+        "patch_overlay": patch_overlay,
+        "gear_overlay": gear_overlay,
+        "overlay_is_runtime_verified": False,
         "counts_are_heuristic": True,
         "caution": "Name candidates only, not a verified ability graph, max-rank map or build",
     }
@@ -156,6 +226,11 @@ def main(argv=None):
     tree_count = sum(len(d) for d in data["classes"].values())
     print(f"Detected {len(data['classes'])} classes, {tree_count} tree sections, {n} short talent-name candidates")
     print("Exact point costs, prerequisites and runtime behavior NOT VERIFIED")
+    if data["patch_overlay"]:
+        print("IMPORTANT: retained ordered trees contain historical labels; patch candidates require live verification")
+        print("Enhancement candidate names:", ", ".join(data["patch_overlay"]["shaman"]["Enhancement"]))
+        print("Newer Demonology candidate names:", ", ".join(data["patch_overlay"]["warlock"]["Demonology"]))
+        print("Jewelry, NOT talents:", ", ".join(data["gear_overlay"]["shaman"]["amulet_candidates"]))
     for cls, trees in data["classes"].items():
         print(cls + ": " + ", ".join(t + " (" + str(len(names)) + ")" for t, names in trees.items()))
     if args.out:

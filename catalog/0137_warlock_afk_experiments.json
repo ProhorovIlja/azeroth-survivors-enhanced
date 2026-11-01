@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "source_exe_sha256": "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
+  "game_version_literal": "0.137.0",
+  "class": "warlock",
+  "spec": "Demonology",
+  "evidence_level": "embedded_locale_plus_release_crosscheck_not_runtime",
+  "automatic_allocation": false,
+  "ranks_known": false,
+  "prerequisite_graph_known": false,
+  "performance_measured": false,
+  "notes": "Candidate-only selection. Exclusions and interactions derive from current original EXE English descriptions; no in-game run, legality test or DPS numbers.",
+  "build_experiments": [
+    {
+      "id": "0137_warlock_lessers_swarm",
+      "name": "Lesser demon stream (stationary research)",
+      "style": "low_input_minions",
+      "candidates": [
+        "Demonic Familiar",
+        "Legion Gate"
+      ],
+      "avoid_strategy_conflicts": [
+        "Demonic Supremacy"
+      ],
+      "capstone_choices": [
+        "Butcher",
+        "Pact of the Nathrezim"
+      ],
+      "capstones_exclusive": true,
+      "legal_51_point_build": false,
+      "dps_measured": false,
+      "hypothesis": "Frequent temporary lesser demons and permanent Imp could improve area clearing when standing still. Requires live verification of spawn timing, number caps, card availability and boss damage."
+    },
+    {
+      "id": "0137_warlock_permanent_greaters",
+      "name": "Permanent greater demons (stationary research)",
+      "style": "low_input_minions",
+      "candidates": [
+        "Summon Infernal",
+        "Summon Doomguard",
+        "Demonic Supremacy"
+      ],
+      "avoid_strategy_conflicts": [
+        "Legion Gate",
+        "Demonic Familiar"
+      ],
+      "capstone_choices": [
+        "Butcher",
+        "Pact of the Nathrezim"
+      ],
+      "capstones_exclusive": true,
+      "legal_51_point_build": false,
+      "dps_measured": false,
+      "hypothesis": "Permanent major demons may reduce re-summon downtime, but Supremacy disables lesser demons. Bench sustained damage, minion uptime, survivability and Boss DPS."
+    }
+  ]
+}
