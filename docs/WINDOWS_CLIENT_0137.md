@@ -26,3 +26,10 @@ The new EXE's English localization uses `English{\r\n` (CRLF) where the prior or
 The name-only extractor now allowlists the exact new and backup SHA-256s alongside the previous owner EXE; other files still fail closed. The safe addon installer and read-only client inspector recognize the same exact fingerprints. Recognizing a checksum does not prove in-game API support. Run only on an isolated game copy and keep an EXE, MPQ, saves and AddOns backup.
 
 This PR stacks on the existing Build Studio PR #10. The independent official update monitor is already on `main`. Don't merge the game tooling stack without reviewing its PR dependencies and testing actual in-game addon compatibility.
+
+
+## Corrected extraction model: 0.137 appends a second Shaman name block
+
+The original 27 talent-tree sections (345 candidate labels) are **retained older text**, not a certified active tree. A separate appended 0.137 Enhancement block has **13** short names and includes Stormguard, Elemental Sunder, Heart of the Earthbreaker, Rockbiter Initiation and Stormbound Echoes. The 0.136 backup appended block had **12**, including the since-removed Earthen Bulwark and Unleashed Weapons.
+
+The app now reports this second layer separately as `patch_overlay`; Build Studio flags legacy-only names as possible stale content and never marks any build as legal or runtime verified. To compare the two downloaded owner EXEs privately, see `tools.compare_game_versions` and `docs/ENHANCEMENT_PATCH_OVERLAY.md`. ASBuilder v1.11.0 release notes corroborate 0.137 Shaman changes; not a direct in-game test.
