@@ -27,7 +27,7 @@ A subsequent real GitHub Actions HTTP Range probe received `206 Partial Content`
 
 ## Verified Update Manager CLI
 
-The separate source-only Python tool `tools/official_update_manager.py` supports `check`, `stage`, `apply`, `rollback`, using **only the author's HTTPS sources**. It uses no third-party trainer or binary, and does not modify saves, `patch.MPQ`, `benilla-config`, or addons. Its offline synthetic tests cover GZIP chunk assembly, bad URLs, checksum mismatches, backups, explicit consent, fail-closed SHA gating, rollback and game-file preservation.
+The separate source-only Python tool `tools/official_update_manager.py` supports `check`, `stage`, `apply`, `rollback`, using **only the author's HTTPS sources**. It uses no third-party trainer or binary, and does not modify saves, `patch.MPQ`, `benilla-config`, or addons. Its offline synthetic tests (including recovery after an interrupted multi-file install) cover GZIP chunk assembly, bad URLs, checksum mismatches, backups, explicit consent, fail-closed SHA gating, rollback and game-file preservation.
 
 **Prerequisites:** Python 3.10+; game fully closed for `apply`/`rollback`; sufficient free space for compressed downloads and complete-file backups. Open PowerShell at the repository root. For a portable game installed under `C:\Games\AzerothSurvivors`:
 
