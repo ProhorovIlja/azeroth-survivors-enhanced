@@ -42,6 +42,14 @@ def compare_inventories(old_inventory, new_inventory, old_locale, new_locale):
                     .get("shaman", {}).get("Enhancement", []))
     new_patch = set(new_inventory.get("patch_overlay", {})
                     .get("shaman", {}).get("Enhancement", []))
+    old_amulets = set(old_inventory.get("gear_overlay", {})
+                      .get("shaman", {}).get("amulet_candidates", []))
+    new_amulets = set(new_inventory.get("gear_overlay", {})
+                      .get("shaman", {}).get("amulet_candidates", []))
+    old_demons = set(old_inventory.get("patch_overlay", {})
+                     .get("warlock", {}).get("Demonology", []))
+    new_demons = set(new_inventory.get("patch_overlay", {})
+                     .get("warlock", {}).get("Demonology", []))
     new_total = sum(len(names) for trees in new_trees.values() for names in trees.values())
     old_total = sum(len(names) for trees in old_trees.values() for names in trees.values())
     return {
@@ -60,6 +68,12 @@ def compare_inventories(old_inventory, new_inventory, old_locale, new_locale):
         "new_shaman_appended_name_count": len(new_patch),
         "shaman_appended_names_added": sorted(new_patch - old_patch),
         "shaman_appended_names_removed": sorted(old_patch - new_patch),
+        "shaman_amulet_names_added": sorted(new_amulets - old_amulets),
+        "shaman_amulet_names_removed": sorted(old_amulets - new_amulets),
+        "old_shaman_amulet_count": len(old_amulets),
+        "new_shaman_amulet_count": len(new_amulets),
+        "modern_warlock_candidates_added": sorted(new_demons - old_demons),
+        "modern_warlock_candidates_removed": sorted(old_demons - new_demons),
         "warning": "Text-layer delta only; old embedded names may be stale. This does NOT verify active talent trees, ranks, combat mechanics, client safety or FPS.",
         "gameplay_verified": False, "binary_modified": False,
     }
