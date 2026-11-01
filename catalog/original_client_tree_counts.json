@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "source_sha256": "2c2f3926e1f8f8092809f5de0624ac8f2197bb341a2870d408ce0250f13f094a",
+  "source": "read-only original Windows exe embedded English locale; short string candidate heuristic",
+  "game_version": null,
+  "runtime_verified": false,
+  "max_ranks_and_prerequisites_verified": false,
+  "description": "Only per-tree counts, not full game data. Repeated header strings require explicit boundary anchors. 345 name candidates across 27 tree sections; not a proven complete playable talent graph.",
+  "classes": {
+    "warrior": {
+      "Arms": 13,
+      "Fury": 13,
+      "Protection": 14
+    },
+    "paladin": {
+      "Holy": 13,
+      "Protection": 14,
+      "Retribution": 12
+    },
+    "hunter": {
+      "Beast Mastery": 13,
+      "Marksmanship": 13,
+      "Survival": 12
+    },
+    "rogue": {
+      "Assassination": 13,
+      "Combat": 10,
+      "Subtlety": 13
+    },
+    "priest": {
+      "Discipline": 13,
+      "Holy": 13,
+      "Shadow": 13
+    },
+    "shaman": {
+      "Elemental": 13,
+      "Enhancement": 10,
+      "Restoration": 13
+    },
+    "mage": {
+      "Arcane": 13,
+      "Fire": 13,
+      "Frost": 13
+    },
+    "warlock": {
+      "Affliction": 13,
+      "Demonology": 13,
+      "Destruction": 13
+    },
+    "druid": {
+      "Balance": 13,
+      "Feral Combat": 13,
+      "Restoration": 13
+    }
+  }
+}
