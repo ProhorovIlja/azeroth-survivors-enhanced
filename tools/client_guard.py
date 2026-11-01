@@ -10,6 +10,7 @@ import struct
 from pathlib import Path
 
 OWNER_EXE_SHA256 = "2c2f3926e1f8f8092809f5de0624ac8f2197bb341a2870d408ce0250f13f094a"
+KNOWN_OWNER_EXE_SHAS = {OWNER_EXE_SHA256, "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8", "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c"}
 TOKENS = (b"AZS_GetPhase", b"AZS_GetMeter", b"benilla-config", b"wenilla-rogue")
 MAX_EXE_BYTES = 1024 * 1024 * 1024
 
@@ -63,7 +64,7 @@ def inspect_exe(path):
         "sha256": digest,
         "format": "PE32+" if magic == 0x20B else ("PE32" if magic == 0x10B else "unknown"),
         "machine": f"0x{machine:04x}",
-        "matched_expected_owner_snapshot": digest == OWNER_EXE_SHA256,
+        "matched_expected_owner_snapshot": digest in KNOWN_OWNER_EXE_SHAS,
         "exact_game_version": None,
         "api_strings_present": has_tokens(path),
         "runtime_api_verified": False,
