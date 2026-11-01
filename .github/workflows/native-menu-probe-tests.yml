@@ -9,6 +9,8 @@ on:
       - 'tests/test_native_options_dispatch.py'
       - 'tests/test_native_options_state_model.py'
       - 'tests/test_native_options_descriptors.py'
+      - 'tests/test_native_options_actions.py'
+      - 'catalog/options_footer_actions_0138.json'
       - 'catalog/options_descriptors_0138.json'
       - 'catalog/options_state_model_0138.json'
       - 'catalog/windbg_page_trace_0138.txt'
