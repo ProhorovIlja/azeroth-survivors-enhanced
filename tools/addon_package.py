@@ -12,6 +12,7 @@ import sys
 
 ADDON = "AZSEnhancedAdvisor"
 OWNER_SHA = "2c2f3926e1f8f8092809f5de0624ac8f2197bb341a2870d408ce0250f13f094a"
+KNOWN_OWNER_SHAS = {OWNER_SHA, "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8", "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c"}
 SOURCE = Path(__file__).resolve().parents[1] / "addons" / ADDON
 STATE = ".azse-enhanced"
 MAX_BYTES = 10 * 1024 * 1024
@@ -109,7 +110,7 @@ def plan(game, source=SOURCE):
     return {
         "mode": "read_only_plan",
         "client_sha256": current,
-        "known_owner_client": current == OWNER_SHA,
+        "known_owner_client": current in KNOWN_OWNER_SHAS,
         "relative_destination": "benilla-config/AddOns/" + ADDON,
         "source_file_count": len(files),
         "existing_target": target.exists(),
@@ -126,7 +127,7 @@ def install(game, source=SOURCE, *, yes=False, replace_existing=False, allow_unk
     target, state = paths(root)
     files = manifest(source, strict=True)
     client_hash = sha256(root / "AzerothSurvivors.exe")
-    if client_hash != OWNER_SHA and not allow_unknown_client:
+    if client_hash not in KNOWN_OWNER_SHAS and not allow_unknown_client:
         raise SafetyError("Unknown game EXE SHA-256, installation refused")
     if state.exists():
         raise SafetyError("Installer state already exists; inspect/rollback before another install")
