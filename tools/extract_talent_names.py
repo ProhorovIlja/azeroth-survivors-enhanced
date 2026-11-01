@@ -10,8 +10,9 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-KNOWN_SHA = "2c2f3926e1f8f8092809f5de0624ac8f2197bb341a2870d408ce0250f13f094a"
+KNOWN_SHAS = {"2c2f3926e1f8f8092809f5de0624ac8f2197bb341a2870d408ce0250f13f094a", "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8", "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c"}
 ENGLISH_ANCHOR = b'{\n  "game.title": "Azeroth Survivors"'
+ENGLISH_ANCHORS = ((ENGLISH_ANCHOR, 0), (b'English{\r\n  "game.title": "Azeroth Survivors"', len(b"English")))
 CHUNK = 1024 * 1024
 MAX_JSON = 512 * 1024
 MAX_FILE = 1024 * 1024 * 1024
@@ -59,16 +60,19 @@ def find_anchor_and_hash(path):
     start = None
     offset = 0
     tail = b""
+    overlap = max(len(anchor) for anchor, _ in ENGLISH_ANCHORS) - 1
     with file.open("rb") as source:
         for block in iter(lambda: source.read(CHUNK), b""):
             sha.update(block)
             sample = tail + block
             if start is None:
-                pos = sample.find(ENGLISH_ANCHOR)
-                if pos >= 0:
-                    start = offset - len(tail) + pos
+                for anchor, prefix_bytes in ENGLISH_ANCHORS:
+                    pos = sample.find(anchor)
+                    if pos >= 0:
+                        start = offset - len(tail) + pos + prefix_bytes
+                        break
             offset += len(block)
-            tail = sample[-(len(ENGLISH_ANCHOR) - 1):]
+            tail = sample[-overlap:]
     return sha.hexdigest(), start
 
 
@@ -125,7 +129,7 @@ def build_index(mapping):
 
 def extract(path):
     digest, start = find_anchor_and_hash(path)
-    if digest != KNOWN_SHA:
+    if digest not in KNOWN_SHAS:
         raise ValueError("Unknown executable SHA-256; refuse to reuse original-client tree boundary assumptions")
     mapping = decode_english_map(path, start)
     trees = build_index(mapping)
