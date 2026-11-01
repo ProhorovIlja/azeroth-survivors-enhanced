@@ -52,5 +52,12 @@
       "Feral Combat": 13,
       "Restoration": 13
     }
+  },
+  "new_client_0137": {
+    "sha256": "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
+    "english_locale_keys": 3334,
+    "tree_sections": 27,
+    "short_name_candidates": 345,
+    "verified_in_game": false
   }
 }
