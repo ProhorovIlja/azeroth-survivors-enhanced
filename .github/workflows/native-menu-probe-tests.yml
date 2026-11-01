@@ -1,0 +1,25 @@
+name: Native original Options static audit
+on:
+  pull_request:
+    paths:
+      - 'tools/native_menu_probe.py'
+      - 'tests/test_native_menu_probe.py'
+      - 'tests/test_native_options_xrefs.py'
+      - 'catalog/options_code_graph_0136_0137.json'
+      - '.github/workflows/native-menu-probe-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test PE32+ parsing and safe read-only guards with synthetic binaries
+        run: python -m unittest discover -s tests -p 'test_native*.py' -v

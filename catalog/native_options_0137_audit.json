@@ -1,0 +1,71 @@
+{
+  "audit_kind": "native_options_static_inventory",
+  "exe_sha256": "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
+  "known_owner_0137_client": true,
+  "native_menu_framework": "Rust / Bevy ECS with bevy_ui (symbol strings, not public source)",
+  "menu_framework_anchor_verified": true,
+  "section_names": [
+    ".text",
+    ".rdata",
+    ".data",
+    ".pdata",
+    ".rsrc",
+    ".reloc"
+  ],
+  "options_component_type_candidates": [
+    "Act",
+    "Fill",
+    "Footer",
+    "OptionsCanvas",
+    "OptionsRoot",
+    "PageList",
+    "Readout",
+    "TipText",
+    "Track"
+  ],
+  "string_evidence": {
+    "menu.main_menu": {
+      "occurrences": 15,
+      "first_file_offset": 104044836
+    },
+    "options.saves": {
+      "occurrences": 15,
+      "first_file_offset": 103796845
+    },
+    "options.import_save": {
+      "occurrences": 14,
+      "first_file_offset": 122159080
+    },
+    "options.export_save": {
+      "occurrences": 15,
+      "first_file_offset": 104061408
+    },
+    "options.open_saves_folder": {
+      "occurrences": 15,
+      "first_file_offset": 104061427
+    },
+    "wenilla_rogue_app::screens::options::OptionsCanvas": {
+      "occurrences": 1,
+      "first_file_offset": 103888968
+    },
+    "bevy_ui::ui_node::Node": {
+      "occurrences": 195,
+      "first_file_offset": 103862693
+    },
+    "AvSetMmThreadCharacteristicsW": {
+      "occurrences": 2,
+      "first_file_offset": 104430294
+    }
+  },
+  "native_cheat_menu_present": false,
+  "native_cheat_actions_verified": [],
+  "hook_addresses_verified": false,
+  "gameplay_cheats_verified": false,
+  "can_install_native_menu": false,
+  "game_files_modified": false,
+  "next_research": [
+    "Identify Bevy OptionsCanvas system registration and construction path",
+    "Locate verified 0.137 UI event insertion point with full original-byte verification",
+    "Implement explicit sandbox/rollback and Windows runtime smoke test"
+  ]
+}
