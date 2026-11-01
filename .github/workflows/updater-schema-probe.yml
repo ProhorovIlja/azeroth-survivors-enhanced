@@ -1,9 +1,11 @@
-name: Official Aethus updater schema probe
+name: Official Aethus updater schema and safe staging tests
 on:
   pull_request:
     paths:
       - 'tools/official_manifest_probe.py'
+      - 'tools/official_update_manager.py'
       - 'tests/test_official_manifest_probe.py'
+      - 'tests/test_official_update_manager.py'
       - '.github/workflows/updater-schema-probe.yml'
   workflow_dispatch:
 permissions:
@@ -11,7 +13,7 @@ permissions:
 jobs:
   schema:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,8 +21,31 @@ jobs:
           python-version: '3.12'
       - name: Synthetic JSON schema probe tests
         run: python -m unittest discover -s tests -p test_official_manifest_probe.py -v
-      - name: Discover public official manifest schema without following download links
-        shell: bash
+      - name: Synthetic download and rollback tests
+        run: python -m unittest discover -s tests -p test_official_update_manager.py -v
+      - name: Discover public official manifest schema, no binary downloads
         run: python -m tools.official_manifest_probe
-      - name: Read first 32 bytes of 2 official compressed parts, no full binary download
+      - name: Verify first-byte GZIP signatures of two official parts
         run: python -c 'from tools.official_manifest_probe import sample_headers; raise SystemExit(sample_headers())'
+      - name: Verify small public patch-B gzip and final whole-file SHA256 in temporary memory only
+        run: |
+          python - <<'PY'
+          import io
+          from tools.official_update_manager import fetch_records,fetch_part
+          import hashlib
+          import urllib.request
+          from tools.official_manifest_probe import NoRedirect
+          version,items=fetch_records()
+          obj=next(x for x in items if x['name']=='patch-B.MPQ')
+          if obj['size']>1_000_000 or obj['compressed_bytes']>1_000_000:
+              raise ValueError('Refuse unexpectedly large smoke-test patch')
+          out=io.BytesIO()
+          opener=urllib.request.build_opener(NoRedirect())
+          # URL is already origin-whitelisted by validate_entry.
+          for part in obj['parts']:
+              fetch_part(opener,part['url'],out,part['size'],obj['size']-out.tell())
+          final=out.getvalue()
+          if len(final)!=obj['size'] or hashlib.sha256(final).hexdigest()!=obj['sha256']:
+              raise ValueError('Real official GZIP restoration failed')
+          print('Official tiny MPQ restored and verified:',version,obj['name'],len(final),obj['sha256'])
+          PY

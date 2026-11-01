@@ -1,1 +1,6 @@
 # azeroth-survivors-enhanced
+## Original Aethus Windows game updater (optional CLI)
+
+The original EXE embeds two creator-controlled update manifests: `https://wow.aethus.pl/exe/latest.json` (EXE) and `https://wow.aethus.pl/exe/data/patches.json` (MPQs). Verified directly via GitHub Actions on Nov 1, 2026: latest Windows EXE is **0.138.0**, official size 147,995,648 bytes and SHA256 matching the owner's private Drive EXE. Author hosts **GZIP compressed parts**, with a whole-file SHA256. The base `patch.MPQ` is **not** in the incremental manifest.
+
+Run `py -m tools.official_update_manager check --game-root "C:\\Games\\AzerothSurvivors"` for a **read-only full-hash comparison** with current official files. Optional `stage --stage-dir <new-outside-folder> --yes` downloads only changed parts, decompresses each, and verifies final SHA256 before you can explicitly `apply --yes` with the game closed and a checksum-verified backup. `rollback --yes` restores original copies. `apply` is developer preview, tested on synthetic folders, NOT yet runtime-tested on the real Windows game. It does not modify saves, addons or `patch.MPQ`. Full guide `docs/UPDATER_STATUS.md`. No auto-install by schedule. Original native Cheats menu under research in draft PR #18, separate from updater.
