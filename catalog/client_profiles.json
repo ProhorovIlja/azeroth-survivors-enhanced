@@ -28,6 +28,29 @@
       ],
       "information_type": "read_only_exact_exe_utf8_localization_labels",
       "disclaimer": "Exact installed version and runtime mechanics unknown; strings never authorize client patching or automatic talent allocation"
+    },
+    {
+      "id": "owner-windows-exe-0137",
+      "sha256": "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
+      "size_bytes": 147844608,
+      "exact_version": null,
+      "embedded_version_literal": "0.137.0",
+      "verified_in_game": false,
+      "client_family_observation": "legacy-style Druid/Warlock/Shaman English talent name sections still present",
+      "english_locale_keys": 3334,
+      "talent_name_candidates": 345,
+      "information_type": "read_only_exact_binary_strings",
+      "disclaimer": "Observed binary literal and official updater version match, but no runtime game test."
+    },
+    {
+      "id": "owner-windows-old-0136",
+      "sha256": "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c",
+      "size_bytes": 147811840,
+      "exact_version": null,
+      "embedded_version_literal": "0.136.0",
+      "verified_in_game": false,
+      "information_type": "read_only_exact_binary_strings",
+      "disclaimer": "Old backup EXE only; compatibility untested."
     }
   ]
 }
