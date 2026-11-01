@@ -46,3 +46,11 @@ py -m tools.compare_game_versions --old-exe "C:\\Games\\AzerothSurvivors\\Azerot
 This tool requires both EXE hashes to be on the explicit reviewed allowlist. It reports dictionary-key counts, changed retained values, differences in retained ordered tree name candidates, and **separately** appended Shaman Enhancement name additions/removals, without exporting full proprietary descriptions. It refuses to overwrite an existing report, and does not execute or modify either binary.
 
 The official GitHub watcher in `main` can discover remote updates before users download them, but the *private local version comparator* intentionally cannot run against the owner's Drive EXE on a public GitHub runner. Only compare local copies when the owner updates Drive/installation. Observed text differences are not damage or balance measurements.
+
+## Corrected taxonomy (2026-11-01)
+
+The append-only section is *not exclusively talents*. Its original 12 short labels in 0.136 consisted of **11 unverified talent candidates plus one amulet** (`Eye of the Tempest`). The 13 in 0.137 consist of **11 talent candidates plus two amulets** (`Eye of the Tempest`, `Heart of the Earthbreaker`). Amulets are exported only in `gear_overlay`, **never** in `patch_overlay.shaman.Enhancement`. <https://github.com/cadoky/ASBuilder/releases/tag/v1.11.0> explicitly calls Heart of the Earthbreaker a legendary amulet.
+
+The *talent candidate* delta 0.136 → 0.137 is **added** `Stormguard`, `Elemental Sunder`; **removed** `Earthen Bulwark`, `Unleashed Weapons`. The *gear* delta is **added** `Heart of the Earthbreaker`. The older 27-tree dictionary is an archive of localization names, not a current node graph.
+
+A similar legacy/current collision exists for Warlock Demonology. Newer labels `Demonic Familiar`, `Legion Gate`, `Summon Infernal`, `Summon Doomguard`, `Demonic Supremacy`, `Pact of the Nathrezim`, and `Butcher` appear in the user EXE and are exposed as a separate, **unverified candidate-only** layer. Choosing an old-only Demonology name such as `Summon Felguard` now triggers an explicit stale-text warning. Neither label list establishes skill prerequisites, ranks or gameplay presence.
