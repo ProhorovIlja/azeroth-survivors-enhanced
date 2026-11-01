@@ -1,0 +1,44 @@
+{
+  "alternate_done_label_path_rva": "0x3c30eb",
+  "audit_kind": "read_only_native_options_localized_footer_actions",
+  "defaults_hidden_for_saves_page": true,
+  "exe_sha256": "eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e",
+  "game_modified": false,
+  "interpretation": "Shared localized action widget builder candidate; actual handler, Bevy entity ownership and new-tab insertion remain unknown",
+  "native_cheats_page_installed": false,
+  "native_cheats_verified": false,
+  "observed_call_site_count": 8,
+  "observed_helper_call_sites": [
+    "0x102670",
+    "0x1026a5",
+    "0x3f213b",
+    "0x3f258f",
+    "0x3f25c7",
+    "0x3f2871",
+    "0x3f8b4c",
+    "0x3f8b88"
+  ],
+  "options_footer_action_items": [
+    {
+      "action_imm_rva": "0x3f8b29",
+      "action_tag_low_id": 16,
+      "branch_note": "not_selected_saves_page",
+      "key_load_rva": "0x3f8b15",
+      "public_localization_key": "options.defaults",
+      "widget_helper_call_rva": "0x3f8b4c"
+    },
+    {
+      "action_imm_rva": "0x3f8b65",
+      "action_tag_low_id": 17,
+      "branch_note": "always_on_this_path",
+      "key_load_rva": "0x3f8b51",
+      "public_localization_key": "options.done",
+      "widget_helper_call_rva": "0x3f8b88"
+    }
+  ],
+  "runtime_event_abi_verified": false,
+  "saves_section_selector": 11,
+  "schema": 1,
+  "shared_widget_helper_rva": "0x107fa0",
+  "version": "0.138.0"
+}

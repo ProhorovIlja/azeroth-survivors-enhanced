@@ -25,7 +25,8 @@ except ImportError:
 
 KNOWN_EXES = {
     "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c": "0.136.0-backup",
-    "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8": "0.137.0-current",
+    "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8": "0.137.0-prior",
+    "eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e": "0.138.0-current",
 }
 MAX_SIZE = 300 * 1024 * 1024
 # Only public-facing UI localization *keys*, not proprietary English prose.

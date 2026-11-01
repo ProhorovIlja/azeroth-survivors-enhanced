@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "source": "read-only freshly fetched owner Drive MPQs; 2026-11-01",
+  "client_version_literal": "0.138.0",
+  "checks": {
+    "patch-8.MPQ": {
+      "bytes": 4155417,
+      "sha256": "ae3aaa29cadb7aeba8255f5b4a8305c7cbecfe8f0d3ed9646522113d16c3e12e"
+    },
+    "patch-9.MPQ": {
+      "bytes": 5739608,
+      "sha256": "ffff8ea890bdaf91a1680543ac60106db92132bc2210105279610fa73661a524"
+    },
+    "patch-A.MPQ": {
+      "bytes": 1453122,
+      "sha256": "350cde8cd0f76e5246a663eb3811f5a7b1a9c75e4e699190208c9299177b8d90"
+    },
+    "patch-B.MPQ": {
+      "bytes": 2935,
+      "sha256": "e9d074b012078efc1c1c8c729bf94d28b1d213d5fcb721dc4370a142f98834bd"
+    }
+  },
+  "match_previous_sampled_hashes": true,
+  "all_11_archives_verified": false,
+  "game_assets_redistributed": false
+}

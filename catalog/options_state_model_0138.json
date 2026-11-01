@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "exe_sha256": "eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e",
+  "embedded_version": "0.138.0",
+  "evidence": "reviewed_instruction_bytes_jump_table_and_public_ui_locale_keys",
+  "page_selector_byte_offset": "0x1da",
+  "selection_read_rva": "0x3f83b3",
+  "hint_jump_table_rva": "0x635c970",
+  "observed_selector_hints": [
+    {
+      "selection_value": 1,
+      "hint_key": "options.hint.gamepad",
+      "local_handler_rva": "0x3f879b"
+    },
+    {
+      "selection_value": 2,
+      "hint_key": "options.hint",
+      "local_handler_rva": "0x3f87d3"
+    },
+    {
+      "selection_value": 3,
+      "hint_key": "options.hint",
+      "local_handler_rva": "0x3f87d3"
+    },
+    {
+      "selection_value": 4,
+      "hint_key": "options.hint",
+      "local_handler_rva": "0x3f87d3"
+    },
+    {
+      "selection_value": 5,
+      "hint_key": "options.hint",
+      "local_handler_rva": "0x3f87d3"
+    },
+    {
+      "selection_value": 6,
+      "hint_key": "options.hint.keybindings",
+      "local_handler_rva": "0x3f87b7"
+    },
+    {
+      "selection_value": 7,
+      "hint_key": "options.hint",
+      "local_handler_rva": "0x3f87d3"
+    },
+    {
+      "selection_value": 8,
+      "hint_key": "options.hint",
+      "local_handler_rva": "0x3f87d3"
+    },
+    {
+      "selection_value": 9,
+      "hint_key": "options.hint",
+      "local_handler_rva": "0x3f87d3"
+    },
+    {
+      "selection_value": 10,
+      "hint_key": "options.hint.addons",
+      "local_handler_rva": "0x3f87a9"
+    },
+    {
+      "selection_value": 11,
+      "hint_key": "options.hint.saves",
+      "local_handler_rva": "0x3f87c5"
+    }
+  ],
+  "record_loop": {
+    "record_stride_bytes": 152,
+    "loop_byte_bound": 16416,
+    "maximum_iterated_records": 108,
+    "selection_id_field_offset_in_record": "0x91",
+    "active_selection_comparison_rva": "0x3f8443",
+    "addons_selection_literal": "0x0a",
+    "record_identity_and_mutability_verified": false
+  },
+  "game_running_during_audit": false,
+  "bevy_ecs_internal_type_verified": false,
+  "runtime_page_handler_hook_verified": false,
+  "new_native_cheats_page_installed": false,
+  "gameplay_cheat_effects_verified": false,
+  "warning": "Only 1/6/10/11 have independently mapped UI hint keys; others share generic fallback. This is NOT evidence of a safe page insertion ABI."
+}

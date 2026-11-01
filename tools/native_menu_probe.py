@@ -13,6 +13,7 @@ import struct
 import sys
 
 OWNER_EXE_SHA256 = "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8"
+KNOWN_OWNER_EXE_SHAS = {OWNER_EXE_SHA256: "0.137.0", "eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e": "0.138.0"}
 MAX_EXE_BYTES = 300 * 1024 * 1024
 LABELS = (
     b"menu.main_menu",
@@ -67,7 +68,7 @@ def _locate(offset, sections):
 
 
 def collect_static_evidence(data, sha, strict=True):
-    if strict and sha != OWNER_EXE_SHA256:
+    if strict and sha not in KNOWN_OWNER_EXE_SHAS:
         raise ProbeError("Unreviewed game EXE SHA-256; refusing to infer menu layout")
     sections = read_pe_sections(data)
     rdata = next((s for s in sections if s["name"] == ".rdata"), None)
@@ -84,13 +85,16 @@ def collect_static_evidence(data, sha, strict=True):
                         "first_file_offset": (rdata["raw_offset"] + first) if first >= 0 else None}
     types = sorted({m.group(1).decode("ascii").split("wenilla_rogue_app", 1)[0]
                     for m in OPTION_TYPE.finditer(region)})
-    verified = bool(sha == OWNER_EXE_SHA256 and
+    verified = bool(sha in KNOWN_OWNER_EXE_SHAS and
                     labels["wenilla_rogue_app::screens::options::OptionsCanvas"]["occurrences"] == 1 and
                     labels["options.saves"]["occurrences"] >= 1)
     return {
         "audit_kind": "native_options_static_inventory",
         "exe_sha256": sha,
         "known_owner_0137_client": sha == OWNER_EXE_SHA256,
+        "known_owner_0138_client": sha == "eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e",
+        "known_owner_client": sha in KNOWN_OWNER_EXE_SHAS,
+        "observed_version_label": KNOWN_OWNER_EXE_SHAS.get(sha),
         "native_menu_framework": "Rust / Bevy ECS with bevy_ui (symbol strings, not public source)",
         "menu_framework_anchor_verified": verified,
         "section_names": [s["name"] for s in sections],

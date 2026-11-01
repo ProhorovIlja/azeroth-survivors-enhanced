@@ -1,0 +1,14 @@
+{
+  "old_source": "0.137.0 English dictionary from prior private user EXE",
+  "new_source_sha256": "eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e",
+  "new_version_literal": "0.138.0",
+  "old_keys": 3334,
+  "new_keys": 3334,
+  "added_keys_count": 0,
+  "removed_keys_count": 0,
+  "changed_common_values_count": 0,
+  "added_keys": [],
+  "removed_keys": [],
+  "changed_common_keys": [],
+  "note": "only keys and counts, no proprietary localization content; not in-game verified"
+}

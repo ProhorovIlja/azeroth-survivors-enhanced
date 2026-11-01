@@ -5,6 +5,19 @@ on:
       - 'tools/native_menu_probe.py'
       - 'tests/test_native_menu_probe.py'
       - 'tests/test_native_options_xrefs.py'
+      - 'tests/test_windows_0138_options.py'
+      - 'tests/test_native_options_dispatch.py'
+      - 'tests/test_native_options_state_model.py'
+      - 'tests/test_native_options_descriptors.py'
+      - 'tests/test_native_options_actions.py'
+      - 'catalog/options_footer_actions_0138.json'
+      - 'catalog/options_descriptors_0138.json'
+      - 'catalog/options_state_model_0138.json'
+      - 'catalog/windbg_page_trace_0138.txt'
+      - 'catalog/options_selector_0138.json'
+      - 'catalog/mpq_spotcheck_0138.json'
+      - 'catalog/options_code_graph_0138.json'
+      - 'catalog/locale_delta_0137_0138.json'
       - 'catalog/options_code_graph_0136_0137.json'
       - '.github/workflows/native-menu-probe-tests.yml'
   workflow_dispatch:
@@ -23,3 +36,5 @@ jobs:
           python-version: '3.12'
       - name: Test PE32+ parsing and safe read-only guards with synthetic binaries
         run: python -m unittest discover -s tests -p 'test_native*.py' -v
+      - name: Validate reviewed 0.138 profile and metadata
+        run: python -m unittest discover -s tests -p 'test_windows_0138_options.py' -v
