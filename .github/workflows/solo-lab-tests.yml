@@ -1,0 +1,35 @@
+name: Solo Cheat Lab source-only tests
+on:
+  pull_request:
+    paths:
+      - 'tools/solo_lab.py'
+      - 'tools/addon_audit.py'
+      - 'tests/test_solo_lab.py'
+      - 'tests/test_addon_audit.py'
+      - '.github/workflows/solo-lab-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/solo_lab.py'
+      - 'tools/addon_audit.py'
+      - 'tests/test_solo_lab.py'
+      - 'tests/test_addon_audit.py'
+      - '.github/workflows/solo-lab-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify safe save redirect and read-only addon audit
+        run: python -m unittest discover -s tests -p 'test_solo_lab.py' -v
+      - name: Verify addon audit synthetic tests
+        run: python -m unittest discover -s tests -p 'test_addon_audit.py' -v
