@@ -4,6 +4,8 @@ on:
     paths:
       - 'tools/native_menu_probe.py'
       - 'tests/test_native_menu_probe.py'
+      - 'tests/test_native_options_xrefs.py'
+      - 'catalog/options_code_graph_0136_0137.json'
       - '.github/workflows/native-menu-probe-tests.yml'
   workflow_dispatch:
 
@@ -20,4 +22,4 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test PE32+ parsing and safe read-only guards with synthetic binaries
-        run: python -m unittest discover -s tests -p 'test_native_menu_probe.py' -v
+        run: python -m unittest discover -s tests -p 'test_native*.py' -v

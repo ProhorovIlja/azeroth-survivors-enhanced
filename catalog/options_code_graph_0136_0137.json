@@ -1,0 +1,453 @@
+{
+  "schema_version": 1,
+  "description": "Original game native Options UI metadata only; no machine code, hooks, mods or assets",
+  "versions": {
+    "0136": {
+      "exe_sha256": "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c",
+      "observed_binary_label": "0.136.0-backup",
+      "direct_key_xref_count": 54,
+      "unique_function_clusters": 16,
+      "candidate_ui_entrypoints": {
+        "saves_page_content": "0x12ed20",
+        "options_page_controls": "0x3f5d60",
+        "addons_page_content": "0x130410"
+      },
+      "direct_call_candidates": [
+        {
+          "function": "options_page_controls",
+          "call_site_rva": "0x14fc25",
+          "caller_begin_rva": "0x14f460",
+          "called_begin_rva": "0x3f5d60",
+          "evidence_level": "candidate_e8_rel32_bounded_by_pdata"
+        },
+        {
+          "function": "saves_page_content",
+          "call_site_rva": "0x3f6d63",
+          "caller_begin_rva": "0x3f5d60",
+          "called_begin_rva": "0x12ed20",
+          "evidence_level": "candidate_e8_rel32_bounded_by_pdata"
+        },
+        {
+          "function": "addons_page_content",
+          "call_site_rva": "0x3f6dc1",
+          "caller_begin_rva": "0x3f5d60",
+          "called_begin_rva": "0x130410",
+          "evidence_level": "candidate_e8_rel32_bounded_by_pdata"
+        }
+      ],
+      "function_clusters": [
+        {
+          "start_rva": "0x12ed20",
+          "end_rva": "0x130155",
+          "direct_ui_key_refs": [
+            "options.backups_about",
+            "options.export_save",
+            "options.exports_go_to",
+            "options.no_save_files",
+            "options.open_saves_folder",
+            "options.save_files",
+            "options.saves_about"
+          ],
+          "reference_count": 7,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3f5d60",
+          "end_rva": "0x3f7498",
+          "direct_ui_key_refs": [
+            "options.defaults",
+            "options.done",
+            "options.hint",
+            "options.hint.addons",
+            "options.hint.gamepad",
+            "options.hint.keybindings",
+            "options.hint.saves"
+          ],
+          "reference_count": 7,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x130410",
+          "end_rva": "0x130f33",
+          "direct_ui_key_refs": [
+            "options.addon_missing",
+            "options.addon_on_demand",
+            "options.addon_out_of_date",
+            "options.no_addons"
+          ],
+          "reference_count": 6,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x1468d0",
+          "end_rva": "0x146f7b",
+          "direct_ui_key_refs": [
+            "options.hint",
+            "options.hint.addons",
+            "options.hint.gamepad",
+            "options.hint.keybindings",
+            "options.hint.saves"
+          ],
+          "reference_count": 5,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x182730",
+          "end_rva": "0x1830db",
+          "direct_ui_key_refs": [
+            "menu.back",
+            "menu.character_select",
+            "menu.end_run",
+            "menu.quit",
+            "menu.resume"
+          ],
+          "reference_count": 5,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x146f80",
+          "end_rva": "0x149b0c",
+          "direct_ui_key_refs": [
+            "options.export_failed",
+            "options.exported",
+            "options.imported",
+            "options.no_export_folder"
+          ],
+          "reference_count": 4,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3f2210",
+          "end_rva": "0x3f33bc",
+          "direct_ui_key_refs": [
+            "options.not_bound",
+            "options.press_a_key"
+          ],
+          "reference_count": 4,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x37a400",
+          "end_rva": "0x37b60e",
+          "direct_ui_key_refs": [
+            "menu.escape_back",
+            "menu.escape_resume",
+            "menu.paused"
+          ],
+          "reference_count": 3,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3f0a40",
+          "end_rva": "0x3f0e85",
+          "direct_ui_key_refs": [
+            "options.cancel",
+            "options.replace",
+            "options.replace_confirm"
+          ],
+          "reference_count": 3,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x184320",
+          "end_rva": "0x1848bb",
+          "direct_ui_key_refs": [
+            "menu.confirm"
+          ],
+          "reference_count": 2,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x375040",
+          "end_rva": "0x37765e",
+          "direct_ui_key_refs": [
+            "menu.character_select",
+            "menu.main_menu"
+          ],
+          "reference_count": 2,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3f0ed0",
+          "end_rva": "0x3f1455",
+          "direct_ui_key_refs": [
+            "options.addons_folder_note",
+            "options.open_addons_folder"
+          ],
+          "reference_count": 2,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x1316c0",
+          "end_rva": "0x13214b",
+          "direct_ui_key_refs": [
+            "options.no_bindings"
+          ],
+          "reference_count": 1,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x14d530",
+          "end_rva": "0x14eb4e",
+          "direct_ui_key_refs": [
+            "options.cannot_read"
+          ],
+          "reference_count": 1,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3c19b0",
+          "end_rva": "0x3c276a",
+          "direct_ui_key_refs": [
+            "options.done"
+          ],
+          "reference_count": 1,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3f0610",
+          "end_rva": "0x3f09f9",
+          "direct_ui_key_refs": [
+            "options.import"
+          ],
+          "reference_count": 1,
+          "menu_insertion_point_verified": false
+        }
+      ],
+      "native_cheat_menu_implemented": false,
+      "cheats_verified": false
+    },
+    "0137": {
+      "exe_sha256": "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
+      "observed_binary_label": "0.137.0-current",
+      "direct_key_xref_count": 54,
+      "unique_function_clusters": 16,
+      "candidate_ui_entrypoints": {
+        "saves_page_content": "0x12ecb0",
+        "options_page_controls": "0x3f6a40",
+        "addons_page_content": "0x1303a0"
+      },
+      "direct_call_candidates": [
+        {
+          "function": "options_page_controls",
+          "call_site_rva": "0x14fbb5",
+          "caller_begin_rva": "0x14f3f0",
+          "called_begin_rva": "0x3f6a40",
+          "evidence_level": "candidate_e8_rel32_bounded_by_pdata"
+        },
+        {
+          "function": "saves_page_content",
+          "call_site_rva": "0x3f7a43",
+          "caller_begin_rva": "0x3f6a40",
+          "called_begin_rva": "0x12ecb0",
+          "evidence_level": "candidate_e8_rel32_bounded_by_pdata"
+        },
+        {
+          "function": "addons_page_content",
+          "call_site_rva": "0x3f7aa1",
+          "caller_begin_rva": "0x3f6a40",
+          "called_begin_rva": "0x1303a0",
+          "evidence_level": "candidate_e8_rel32_bounded_by_pdata"
+        }
+      ],
+      "function_clusters": [
+        {
+          "start_rva": "0x12ecb0",
+          "end_rva": "0x1300e5",
+          "direct_ui_key_refs": [
+            "options.backups_about",
+            "options.export_save",
+            "options.exports_go_to",
+            "options.no_save_files",
+            "options.open_saves_folder",
+            "options.save_files",
+            "options.saves_about"
+          ],
+          "reference_count": 7,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3f6a40",
+          "end_rva": "0x3f8178",
+          "direct_ui_key_refs": [
+            "options.defaults",
+            "options.done",
+            "options.hint",
+            "options.hint.addons",
+            "options.hint.gamepad",
+            "options.hint.keybindings",
+            "options.hint.saves"
+          ],
+          "reference_count": 7,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x1303a0",
+          "end_rva": "0x130ec3",
+          "direct_ui_key_refs": [
+            "options.addon_missing",
+            "options.addon_on_demand",
+            "options.addon_out_of_date",
+            "options.no_addons"
+          ],
+          "reference_count": 6,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x146860",
+          "end_rva": "0x146f0b",
+          "direct_ui_key_refs": [
+            "options.hint",
+            "options.hint.addons",
+            "options.hint.gamepad",
+            "options.hint.keybindings",
+            "options.hint.saves"
+          ],
+          "reference_count": 5,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x1826b0",
+          "end_rva": "0x18305b",
+          "direct_ui_key_refs": [
+            "menu.back",
+            "menu.character_select",
+            "menu.end_run",
+            "menu.quit",
+            "menu.resume"
+          ],
+          "reference_count": 5,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x146f10",
+          "end_rva": "0x149a9c",
+          "direct_ui_key_refs": [
+            "options.export_failed",
+            "options.exported",
+            "options.imported",
+            "options.no_export_folder"
+          ],
+          "reference_count": 4,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3f2ef0",
+          "end_rva": "0x3f409c",
+          "direct_ui_key_refs": [
+            "options.not_bound",
+            "options.press_a_key"
+          ],
+          "reference_count": 4,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x37a3b0",
+          "end_rva": "0x37b5be",
+          "direct_ui_key_refs": [
+            "menu.escape_back",
+            "menu.escape_resume",
+            "menu.paused"
+          ],
+          "reference_count": 3,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3f1720",
+          "end_rva": "0x3f1b65",
+          "direct_ui_key_refs": [
+            "options.cancel",
+            "options.replace",
+            "options.replace_confirm"
+          ],
+          "reference_count": 3,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x1842a0",
+          "end_rva": "0x18483b",
+          "direct_ui_key_refs": [
+            "menu.confirm"
+          ],
+          "reference_count": 2,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x374ff0",
+          "end_rva": "0x37760e",
+          "direct_ui_key_refs": [
+            "menu.character_select",
+            "menu.main_menu"
+          ],
+          "reference_count": 2,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3f1bb0",
+          "end_rva": "0x3f2135",
+          "direct_ui_key_refs": [
+            "options.addons_folder_note",
+            "options.open_addons_folder"
+          ],
+          "reference_count": 2,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x131650",
+          "end_rva": "0x1320db",
+          "direct_ui_key_refs": [
+            "options.no_bindings"
+          ],
+          "reference_count": 1,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x14d4c0",
+          "end_rva": "0x14eade",
+          "direct_ui_key_refs": [
+            "options.cannot_read"
+          ],
+          "reference_count": 1,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3c1960",
+          "end_rva": "0x3c271a",
+          "direct_ui_key_refs": [
+            "options.done"
+          ],
+          "reference_count": 1,
+          "menu_insertion_point_verified": false
+        },
+        {
+          "start_rva": "0x3f12f0",
+          "end_rva": "0x3f16d9",
+          "direct_ui_key_refs": [
+            "options.import"
+          ],
+          "reference_count": 1,
+          "menu_insertion_point_verified": false
+        }
+      ],
+      "native_cheat_menu_implemented": false,
+      "cheats_verified": false
+    }
+  },
+  "disassembly_verified_call_edges_0137": [
+    {
+      "call_site_rva": "0x14fbb5",
+      "target": "0x3f6a40",
+      "candidate_role": "parent_to_options"
+    },
+    {
+      "call_site_rva": "0x3f7a43",
+      "target": "0x12ecb0",
+      "candidate_role": "options_to_saves"
+    },
+    {
+      "call_site_rva": "0x3f7aa1",
+      "target": "0x1303a0",
+      "candidate_role": "options_to_addons"
+    }
+  ]
+}
