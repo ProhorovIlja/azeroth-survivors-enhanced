@@ -115,3 +115,5 @@ py -m planner.build_studio encode --game-exe "C:\\Games\\AzerothSurvivors\\Azero
 ```
 
 For import use `py -m planner.build_studio decode --code "AZSE3:..." --out artifacts\\imported.json` and revalidate the result. It does **not** auto-allocate talents, prove level/rank prerequisites, or certify build strength. Share codes are compressed plain data, **not encrypted**. Complete guide: `docs/BUILD_STUDIO.md`.
+
+Optional custom advisor data: `py -m planner.addon_export --game-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe" --build artifacts\\warlock.json --out artifacts\\CustomPresets.lua`. This produces Lua-escaped **read-only**, unverified build data, never an installed or auto-applied build. Manual tests with backups are required. See `docs/BUILD_STUDIO.md`.
