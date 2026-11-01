@@ -1,0 +1,34 @@
+name: Official Azeroth Survivors update monitor
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/official_update_watch.py'
+      - '.github/workflows/official-update-watch.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '23 3,9,15,21 * * *'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: official-game-manifest-monitor
+  cancel-in-progress: false
+
+jobs:
+  read-only-update-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate watcher with synthetic data
+        run: python -m unittest discover -s tests -p test_official_update_watch.py -v
+      - name: Read official JSON and post only change alerts to issue 11
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python -m tools.official_update_watch
