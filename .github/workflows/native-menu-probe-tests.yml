@@ -8,6 +8,8 @@ on:
       - 'tests/test_windows_0138_options.py'
       - 'tests/test_native_options_dispatch.py'
       - 'tests/test_native_options_state_model.py'
+      - 'tests/test_native_options_descriptors.py'
+      - 'catalog/options_descriptors_0138.json'
       - 'catalog/options_state_model_0138.json'
       - 'catalog/windbg_page_trace_0138.txt'
       - 'catalog/options_selector_0138.json'

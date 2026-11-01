@@ -1,0 +1,54 @@
+{
+  "content_strings_exported": false,
+  "dependency_flag_counts": {
+    "0": 86,
+    "1": 22
+  },
+  "description": "Tooltip/help configuration records used by Options; NOT a native tab/page constructor registry",
+  "exe_sha256": "eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e",
+  "native_cheat_page_installed": false,
+  "observed_page_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    7,
+    8,
+    9,
+    10
+  ],
+  "page_id_counts": {
+    "0": 18,
+    "1": 5,
+    "10": 1,
+    "2": 21,
+    "3": 2,
+    "4": 19,
+    "5": 6,
+    "7": 7,
+    "8": 17,
+    "9": 12
+  },
+  "record_count": 108,
+  "record_kinds": {
+    "inline_help_prose": 36,
+    "localization_key": 69,
+    "separator": 3
+  },
+  "record_stride_bytes": 152,
+  "runtime_abi_confirmed": false,
+  "schema": 1,
+  "shared_descriptor_consumer_rva": "0x105810",
+  "special_handled_ids_without_descriptor_rows": [
+    6,
+    11
+  ],
+  "table_rva": "0x6316970",
+  "verified_descriptor_consumer_calls": [
+    "0x3f8464",
+    "0x3f84a4"
+  ],
+  "version": "0.138.0"
+}
