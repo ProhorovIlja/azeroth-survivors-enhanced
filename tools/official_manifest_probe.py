@@ -60,12 +60,36 @@ def shape(obj,depth=0):
     return obj if isinstance(obj,(int,float,bool)) else type(obj).__name__
 
 
+def details(kind, obj):
+    """Summary of all named patch files and relative part paths, no binary GET."""
+    if kind == 'exe':
+        values = [dict(name='AzerothSurvivors.exe', size=obj.get('size'), sha256=obj.get('sha256'), parts=obj.get('parts', []))] if isinstance(obj,dict) else []
+    else:
+        values = obj.get('patches', []) if isinstance(obj,dict) else []
+    out=[]
+    for value in values[:30]:
+        if not isinstance(value,dict):continue
+        parts=value.get('parts')
+        if not isinstance(parts,list):continue
+        listed=[]
+        for part in parts[:24]:
+            if not isinstance(part,dict):continue
+            listed.append({'url':str(part.get('url',''))[:110], 'size':part.get('size'), 'sha256':part.get('sha256')})
+        out.append({'name':value.get('name','AzerothSurvivors.exe') if kind=='patches' else 'AzerothSurvivors.exe',
+                    'size':value.get('size'), 'sha256':value.get('sha256'), 'parts':listed})
+    return out
+
+
 def main():
     results,errors={},{}
+    records={}
     for name in URLS:
-        try:results[name]=shape(retrieve(name))
+        try:
+            obj=retrieve(name)
+            results[name]=shape(obj)
+            records[name]=details(name,obj)
         except ProbeError as exc:errors[name]=str(exc)
-    print(json.dumps({'manifests':results,'errors':errors},indent=2,ensure_ascii=False))
+    print(json.dumps({'manifests':results,'records':records,'errors':errors},indent=2,ensure_ascii=False))
     return 0 if results else 2
 
 if __name__=='__main__':
