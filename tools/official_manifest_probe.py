@@ -94,3 +94,36 @@ def main():
 
 if __name__=='__main__':
     raise SystemExit(main())
+
+# Function deliberately not called from main; CI invokes this in the read-only
+# "part headers" probe after the manifest shape is independently inspected.
+def sample_headers():
+    """Only read the first 32 bytes of two strictly confined official parts."""
+    import re
+    from urllib.parse import urljoin, urlsplit
+    result={}
+    opener=urllib.request.build_opener(NoRedirect())
+    for kind in URLS:
+        data=retrieve(kind,opener=opener)
+        entries=[data] if kind=='exe' else data.get('patches', [])
+        if not entries:continue
+        part=entries[0]['parts'][0]
+        relative=part['url']
+        if not isinstance(relative,str) or not re.fullmatch(r'[A-Za-z0-9._/-]{1,200}',relative) or '..' in relative.split('/') or relative.startswith('/'):
+            raise ProbeError('Unsafe official part path')
+        url=urljoin(URLS[kind],relative)
+        p=urlsplit(url)
+        if p.scheme!='https' or p.hostname!='wow.aethus.pl' or not p.path.startswith('/exe/'):
+            raise ProbeError('Part outside author domain')
+        req=urllib.request.Request(url,headers={'Range':'bytes=0-31','User-Agent':'AZSE-Header-Only-Check/1.0'},method='GET')
+        try:
+            with opener.open(req,timeout=15) as response:
+                head=response.read(32)
+                result[kind]={'relative':relative,'status':response.status,
+                    'content_type':response.headers.get('Content-Type'),
+                    'encoding':response.headers.get('Content-Encoding'),
+                    'hex_first_32_bytes':head.hex()}
+        except (OSError,urllib.error.URLError,TimeoutError) as e:
+            result[kind]={'error':type(e).__name__}
+    print(json.dumps(result,indent=2))
+    return 0 if result else 2
