@@ -6,7 +6,7 @@ import unittest
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-ADDON = ROOT / "AZSEControlCenter"
+ADDON = ROOT / "addons" / "AZSEControlCenter" if (ROOT / "addons" / "AZSEControlCenter").is_dir() else ROOT / "AZSEControlCenter"
 
 
 class PackageTests(unittest.TestCase):
