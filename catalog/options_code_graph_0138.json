@@ -1,0 +1,709 @@
+{
+  "schema_version": 1,
+  "exe_sha256": "eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e",
+  "observed_binary_label": "0.138.0-current",
+  "audit_type": "read_only_native_options_direct_code_references",
+  "unwind_function_count": 362461,
+  "direct_key_xref_count": 54,
+  "unique_function_clusters": 16,
+  "function_clusters": [
+    {
+      "start_rva": "0x1021e0",
+      "end_rva": "0x103615",
+      "direct_ui_key_refs": [
+        "options.backups_about",
+        "options.export_save",
+        "options.exports_go_to",
+        "options.no_save_files",
+        "options.open_saves_folder",
+        "options.save_files",
+        "options.saves_about"
+      ],
+      "reference_count": 7,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x3f74c0",
+      "end_rva": "0x3f8bf8",
+      "direct_ui_key_refs": [
+        "options.defaults",
+        "options.done",
+        "options.hint",
+        "options.hint.addons",
+        "options.hint.gamepad",
+        "options.hint.keybindings",
+        "options.hint.saves"
+      ],
+      "reference_count": 7,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x1038d0",
+      "end_rva": "0x1043f3",
+      "direct_ui_key_refs": [
+        "options.addon_missing",
+        "options.addon_on_demand",
+        "options.addon_out_of_date",
+        "options.no_addons"
+      ],
+      "reference_count": 6,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x119e10",
+      "end_rva": "0x11a4bb",
+      "direct_ui_key_refs": [
+        "options.hint",
+        "options.hint.addons",
+        "options.hint.gamepad",
+        "options.hint.keybindings",
+        "options.hint.saves"
+      ],
+      "reference_count": 5,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x155f70",
+      "end_rva": "0x15691b",
+      "direct_ui_key_refs": [
+        "menu.back",
+        "menu.character_select",
+        "menu.end_run",
+        "menu.quit",
+        "menu.resume"
+      ],
+      "reference_count": 5,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x11a4c0",
+      "end_rva": "0x11d04c",
+      "direct_ui_key_refs": [
+        "options.export_failed",
+        "options.exported",
+        "options.imported",
+        "options.no_export_folder"
+      ],
+      "reference_count": 4,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x3f3970",
+      "end_rva": "0x3f4b1c",
+      "direct_ui_key_refs": [
+        "options.not_bound",
+        "options.press_a_key"
+      ],
+      "reference_count": 4,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x37ae30",
+      "end_rva": "0x37c03e",
+      "direct_ui_key_refs": [
+        "menu.escape_back",
+        "menu.escape_resume",
+        "menu.paused"
+      ],
+      "reference_count": 3,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x3f21a0",
+      "end_rva": "0x3f25e5",
+      "direct_ui_key_refs": [
+        "options.cancel",
+        "options.replace",
+        "options.replace_confirm"
+      ],
+      "reference_count": 3,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x157b60",
+      "end_rva": "0x1580fb",
+      "direct_ui_key_refs": [
+        "menu.confirm"
+      ],
+      "reference_count": 2,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x375a70",
+      "end_rva": "0x37808e",
+      "direct_ui_key_refs": [
+        "menu.character_select",
+        "menu.main_menu"
+      ],
+      "reference_count": 2,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x3f2630",
+      "end_rva": "0x3f2bb5",
+      "direct_ui_key_refs": [
+        "options.addons_folder_note",
+        "options.open_addons_folder"
+      ],
+      "reference_count": 2,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x104b80",
+      "end_rva": "0x10560b",
+      "direct_ui_key_refs": [
+        "options.no_bindings"
+      ],
+      "reference_count": 1,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x120a70",
+      "end_rva": "0x12208e",
+      "direct_ui_key_refs": [
+        "options.cannot_read"
+      ],
+      "reference_count": 1,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x3c23e0",
+      "end_rva": "0x3c319a",
+      "direct_ui_key_refs": [
+        "options.done"
+      ],
+      "reference_count": 1,
+      "menu_insertion_point_verified": false
+    },
+    {
+      "start_rva": "0x3f1d70",
+      "end_rva": "0x3f2159",
+      "direct_ui_key_refs": [
+        "options.import"
+      ],
+      "reference_count": 1,
+      "menu_insertion_point_verified": false
+    }
+  ],
+  "direct_references": [
+    {
+      "key": "options.saves_about",
+      "reference_rva": "0x102260",
+      "target_rva": "0x6313fed",
+      "function_start_rva": "0x1021e0",
+      "function_end_rva": "0x103615",
+      "function_bytes": 5173,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.export_save",
+      "reference_rva": "0x102639",
+      "target_rva": "0x635a5a0",
+      "function_start_rva": "0x1021e0",
+      "function_end_rva": "0x103615",
+      "function_bytes": 5173,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.open_saves_folder",
+      "reference_rva": "0x102675",
+      "target_rva": "0x635a5b3",
+      "function_start_rva": "0x1021e0",
+      "function_end_rva": "0x103615",
+      "function_bytes": 5173,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.save_files",
+      "reference_rva": "0x102c13",
+      "target_rva": "0x6314000",
+      "function_start_rva": "0x1021e0",
+      "function_end_rva": "0x103615",
+      "function_bytes": 5173,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.exports_go_to",
+      "reference_rva": "0x102e33",
+      "target_rva": "0x6314016",
+      "function_start_rva": "0x1021e0",
+      "function_end_rva": "0x103615",
+      "function_bytes": 5173,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.backups_about",
+      "reference_rva": "0x102fa4",
+      "target_rva": "0x631402b",
+      "function_start_rva": "0x1021e0",
+      "function_end_rva": "0x103615",
+      "function_bytes": 5173,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.no_save_files",
+      "reference_rva": "0x1033a9",
+      "target_rva": "0x6314040",
+      "function_start_rva": "0x1021e0",
+      "function_end_rva": "0x103615",
+      "function_bytes": 5173,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.addon_out_of_date",
+      "reference_rva": "0x103c60",
+      "target_rva": "0x631407d",
+      "function_start_rva": "0x1038d0",
+      "function_end_rva": "0x1043f3",
+      "function_bytes": 2851,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.addon_on_demand",
+      "reference_rva": "0x103c67",
+      "target_rva": "0x6314066",
+      "function_start_rva": "0x1038d0",
+      "function_end_rva": "0x1043f3",
+      "function_bytes": 2851,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.addon_missing",
+      "reference_rva": "0x103d09",
+      "target_rva": "0x631409c",
+      "function_start_rva": "0x1038d0",
+      "function_end_rva": "0x1043f3",
+      "function_bytes": 2851,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.addon_out_of_date",
+      "reference_rva": "0x1040c1",
+      "target_rva": "0x631407d",
+      "function_start_rva": "0x1038d0",
+      "function_end_rva": "0x1043f3",
+      "function_bytes": 2851,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.addon_on_demand",
+      "reference_rva": "0x1040c8",
+      "target_rva": "0x6314066",
+      "function_start_rva": "0x1038d0",
+      "function_end_rva": "0x1043f3",
+      "function_bytes": 2851,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.no_addons",
+      "reference_rva": "0x1041f3",
+      "target_rva": "0x6314055",
+      "function_start_rva": "0x1038d0",
+      "function_end_rva": "0x1043f3",
+      "function_bytes": 2851,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.no_bindings",
+      "reference_rva": "0x105470",
+      "target_rva": "0x6314178",
+      "function_start_rva": "0x104b80",
+      "function_end_rva": "0x10560b",
+      "function_bytes": 2699,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.hint.gamepad",
+      "reference_rva": "0x11a339",
+      "target_rva": "0x631a9d8",
+      "function_start_rva": "0x119e10",
+      "function_end_rva": "0x11a4bb",
+      "function_bytes": 1707,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.hint.addons",
+      "reference_rva": "0x11a3d5",
+      "target_rva": "0x631aa04",
+      "function_start_rva": "0x119e10",
+      "function_end_rva": "0x11a4bb",
+      "function_bytes": 1707,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.hint.keybindings",
+      "reference_rva": "0x11a3e3",
+      "target_rva": "0x631a9ec",
+      "function_start_rva": "0x119e10",
+      "function_end_rva": "0x11a4bb",
+      "function_bytes": 1707,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.hint.saves",
+      "reference_rva": "0x11a3f1",
+      "target_rva": "0x631aa17",
+      "function_start_rva": "0x119e10",
+      "function_end_rva": "0x11a4bb",
+      "function_bytes": 1707,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.hint",
+      "reference_rva": "0x11a3ff",
+      "target_rva": "0x631aa29",
+      "function_start_rva": "0x119e10",
+      "function_end_rva": "0x11a4bb",
+      "function_bytes": 1707,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.no_export_folder",
+      "reference_rva": "0x11bae2",
+      "target_rva": "0x631ac39",
+      "function_start_rva": "0x11a4c0",
+      "function_end_rva": "0x11d04c",
+      "function_bytes": 11148,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.export_failed",
+      "reference_rva": "0x11bc64",
+      "target_rva": "0x631ac24",
+      "function_start_rva": "0x11a4c0",
+      "function_end_rva": "0x11d04c",
+      "function_bytes": 11148,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.exported",
+      "reference_rva": "0x11be5c",
+      "target_rva": "0x631ac14",
+      "function_start_rva": "0x11a4c0",
+      "function_end_rva": "0x11d04c",
+      "function_bytes": 11148,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.imported",
+      "reference_rva": "0x11c19a",
+      "target_rva": "0x631ab14",
+      "function_start_rva": "0x11a4c0",
+      "function_end_rva": "0x11d04c",
+      "function_bytes": 11148,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.cannot_read",
+      "reference_rva": "0x121e0f",
+      "target_rva": "0x631abe8",
+      "function_start_rva": "0x120a70",
+      "function_end_rva": "0x12208e",
+      "function_bytes": 5662,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.resume",
+      "reference_rva": "0x15618d",
+      "target_rva": "0x631df01",
+      "function_start_rva": "0x155f70",
+      "function_end_rva": "0x15691b",
+      "function_bytes": 2475,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.back",
+      "reference_rva": "0x1561a1",
+      "target_rva": "0x631def8",
+      "function_start_rva": "0x155f70",
+      "function_end_rva": "0x15691b",
+      "function_bytes": 2475,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.end_run",
+      "reference_rva": "0x156289",
+      "target_rva": "0x631df2f",
+      "function_start_rva": "0x155f70",
+      "function_end_rva": "0x15691b",
+      "function_bytes": 2475,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.character_select",
+      "reference_rva": "0x156520",
+      "target_rva": "0x631df1a",
+      "function_start_rva": "0x155f70",
+      "function_end_rva": "0x15691b",
+      "function_bytes": 2475,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.quit",
+      "reference_rva": "0x156586",
+      "target_rva": "0x631df3b",
+      "function_start_rva": "0x155f70",
+      "function_end_rva": "0x15691b",
+      "function_bytes": 2475,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.confirm",
+      "reference_rva": "0x157bfc",
+      "target_rva": "0x631dfc1",
+      "function_start_rva": "0x157b60",
+      "function_end_rva": "0x1580fb",
+      "function_bytes": 1435,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.confirm",
+      "reference_rva": "0x15807f",
+      "target_rva": "0x631dfc1",
+      "function_start_rva": "0x157b60",
+      "function_end_rva": "0x1580fb",
+      "function_bytes": 1435,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.main_menu",
+      "reference_rva": "0x37799e",
+      "target_rva": "0x63564e4",
+      "function_start_rva": "0x375a70",
+      "function_end_rva": "0x37808e",
+      "function_bytes": 9758,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.character_select",
+      "reference_rva": "0x3779b2",
+      "target_rva": "0x63564cf",
+      "function_start_rva": "0x375a70",
+      "function_end_rva": "0x37808e",
+      "function_bytes": 9758,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.paused",
+      "reference_rva": "0x37b3cf",
+      "target_rva": "0x63567de",
+      "function_start_rva": "0x37ae30",
+      "function_end_rva": "0x37c03e",
+      "function_bytes": 4622,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.escape_resume",
+      "reference_rva": "0x37b5ac",
+      "target_rva": "0x63567f9",
+      "function_start_rva": "0x37ae30",
+      "function_end_rva": "0x37c03e",
+      "function_bytes": 4622,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "menu.escape_back",
+      "reference_rva": "0x37b5c7",
+      "target_rva": "0x63567e9",
+      "function_start_rva": "0x37ae30",
+      "function_end_rva": "0x37c03e",
+      "function_bytes": 4622,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.done",
+      "reference_rva": "0x3c30eb",
+      "target_rva": "0x6357304",
+      "function_start_rva": "0x3c23e0",
+      "function_end_rva": "0x3c319a",
+      "function_bytes": 3514,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.import",
+      "reference_rva": "0x3f20ef",
+      "target_rva": "0x635a5cc",
+      "function_start_rva": "0x3f1d70",
+      "function_end_rva": "0x3f2159",
+      "function_bytes": 1001,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.replace_confirm",
+      "reference_rva": "0x3f23cc",
+      "target_rva": "0x635a5da",
+      "function_start_rva": "0x3f21a0",
+      "function_end_rva": "0x3f25e5",
+      "function_bytes": 1093,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.replace",
+      "reference_rva": "0x3f2555",
+      "target_rva": "0x635a5f1",
+      "function_start_rva": "0x3f21a0",
+      "function_end_rva": "0x3f25e5",
+      "function_bytes": 1093,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.cancel",
+      "reference_rva": "0x3f2594",
+      "target_rva": "0x635a600",
+      "function_start_rva": "0x3f21a0",
+      "function_end_rva": "0x3f25e5",
+      "function_bytes": 1093,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.addons_folder_note",
+      "reference_rva": "0x3f27b3",
+      "target_rva": "0x635a612",
+      "function_start_rva": "0x3f2630",
+      "function_end_rva": "0x3f2bb5",
+      "function_bytes": 1413,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.open_addons_folder",
+      "reference_rva": "0x3f27df",
+      "target_rva": "0x635a62c",
+      "function_start_rva": "0x3f2630",
+      "function_end_rva": "0x3f2bb5",
+      "function_bytes": 1413,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.press_a_key",
+      "reference_rva": "0x3f3dbf",
+      "target_rva": "0x635a657",
+      "function_start_rva": "0x3f3970",
+      "function_end_rva": "0x3f4b1c",
+      "function_bytes": 4524,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.not_bound",
+      "reference_rva": "0x3f3dff",
+      "target_rva": "0x635a646",
+      "function_start_rva": "0x3f3970",
+      "function_end_rva": "0x3f4b1c",
+      "function_bytes": 4524,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.not_bound",
+      "reference_rva": "0x3f3e43",
+      "target_rva": "0x635a646",
+      "function_start_rva": "0x3f3970",
+      "function_end_rva": "0x3f4b1c",
+      "function_bytes": 4524,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.press_a_key",
+      "reference_rva": "0x3f499d",
+      "target_rva": "0x635a657",
+      "function_start_rva": "0x3f3970",
+      "function_end_rva": "0x3f4b1c",
+      "function_bytes": 4524,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.hint.gamepad",
+      "reference_rva": "0x3f879b",
+      "target_rva": "0x631a9d8",
+      "function_start_rva": "0x3f74c0",
+      "function_end_rva": "0x3f8bf8",
+      "function_bytes": 5944,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.hint.addons",
+      "reference_rva": "0x3f87a9",
+      "target_rva": "0x631aa04",
+      "function_start_rva": "0x3f74c0",
+      "function_end_rva": "0x3f8bf8",
+      "function_bytes": 5944,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.hint.keybindings",
+      "reference_rva": "0x3f87b7",
+      "target_rva": "0x631a9ec",
+      "function_start_rva": "0x3f74c0",
+      "function_end_rva": "0x3f8bf8",
+      "function_bytes": 5944,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.hint.saves",
+      "reference_rva": "0x3f87c5",
+      "target_rva": "0x631aa17",
+      "function_start_rva": "0x3f74c0",
+      "function_end_rva": "0x3f8bf8",
+      "function_bytes": 5944,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.hint",
+      "reference_rva": "0x3f87d3",
+      "target_rva": "0x631aa29",
+      "function_start_rva": "0x3f74c0",
+      "function_end_rva": "0x3f8bf8",
+      "function_bytes": 5944,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.defaults",
+      "reference_rva": "0x3f8b15",
+      "target_rva": "0x63572f4",
+      "function_start_rva": "0x3f74c0",
+      "function_end_rva": "0x3f8bf8",
+      "function_bytes": 5944,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    },
+    {
+      "key": "options.done",
+      "reference_rva": "0x3f8b51",
+      "target_rva": "0x6357304",
+      "function_start_rva": "0x3f74c0",
+      "function_end_rva": "0x3f8bf8",
+      "function_bytes": 5944,
+      "evidence_level": "candidate_direct_rip_relative_lea_with_pdata_bound"
+    }
+  ],
+  "candidate_ui_entrypoints": {
+    "saves_page_content": "0x1021e0",
+    "options_page_controls": "0x3f74c0",
+    "addons_page_content": "0x1038d0"
+  },
+  "direct_call_candidates": [
+    {
+      "function": "options_page_controls",
+      "call_site_rva": "0x123165",
+      "caller_begin_rva": "0x1229a0",
+      "called_begin_rva": "0x3f74c0",
+      "evidence_level": "candidate_e8_rel32_bounded_by_pdata"
+    },
+    {
+      "function": "saves_page_content",
+      "call_site_rva": "0x3f84c3",
+      "caller_begin_rva": "0x3f74c0",
+      "called_begin_rva": "0x1021e0",
+      "evidence_level": "candidate_e8_rel32_bounded_by_pdata"
+    },
+    {
+      "function": "addons_page_content",
+      "call_site_rva": "0x3f8521",
+      "caller_begin_rva": "0x3f74c0",
+      "called_begin_rva": "0x1038d0",
+      "evidence_level": "candidate_e8_rel32_bounded_by_pdata"
+    }
+  ],
+  "disassembler_or_hook_verification": false,
+  "original_options_page_modified": false,
+  "native_cheat_menu_implemented": false,
+  "cheats_verified": false,
+  "caveat": "Candidates only: LEA pattern can match mid-instruction bytes; .pdata gives function bounds, not semantic event roles."
+}

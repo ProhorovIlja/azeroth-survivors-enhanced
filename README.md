@@ -20,3 +20,9 @@ py -m tools.native_options_xrefs --game-exe "C:\\Games\\AzerothSurvivors\\Azerot
 ```
 
 See `docs/OPTIONS_CODE_GRAPH_0137.md`. The original native Cheats page, God Mode and in-run edits are **not yet implemented**; a candidate function is not a safe hook until the Bevy ECS page lifecycle and Windows runtime have been verified.
+
+### Reviewed original Windows 0.138.0 binary
+
+The user's new Windows EXE (147,995,648 bytes, SHA-256 `eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e`) contains the embedded version literal **0.138.0**. The native Options reference graph moved to central `0x3F74C0`, Saves `0x1021E0` and AddOns `0x1038D0`. All three direct call instructions were independently checked. The English text dictionary matches the prior 0.137.0 (3,334 keys, zero key or value changes). GitHub's last official manifest snapshot still reported 0.137.0, pending a later remote recheck. Strict SHA allowlisting protects against applying 0.137 offsets to 0.138. Details: `docs/WINDOWS_0138_NATIVE_OPTIONS.md`.
+
+**Native original-game Cheats page and in-run gameplay cheats are not implemented yet.** This is source-only analysis, not a native trainer or DLL.
