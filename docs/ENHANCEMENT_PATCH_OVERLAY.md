@@ -34,3 +34,15 @@ No third-party source, original EXE or proprietary game localization description
 
 ## Next
 Test extracted patch overlays against a clean Windows runtime; build official verified talent-rank/prerequisite graph; measure new Enhancement and stationary Warlock in repeatable runs. Never auto-allocate talents from locale strings.
+
+## Comparing the user's next Windows update safely
+
+With two *privately stored* user-owned EXE snapshots, the new `tools.compare_game_versions` detects localization changes without launching the game:
+
+```powershell
+py -m tools.compare_game_versions --old-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.old" --new-exe "C:\\Games\\AzerothSurvivors\\AzerothSurvivors.exe" --out artifacts\\update-diff.json
+```
+
+This tool requires both EXE hashes to be on the explicit reviewed allowlist. It reports dictionary-key counts, changed retained values, differences in retained ordered tree name candidates, and **separately** appended Shaman Enhancement name additions/removals, without exporting full proprietary descriptions. It refuses to overwrite an existing report, and does not execute or modify either binary.
+
+The official GitHub watcher in `main` can discover remote updates before users download them, but the *private local version comparator* intentionally cannot run against the owner's Drive EXE on a public GitHub runner. Only compare local copies when the owner updates Drive/installation. Observed text differences are not damage or balance measurements.
