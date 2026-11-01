@@ -122,6 +122,22 @@ def validate_against_inventory(build, inventory, budget=51):
             overlay_selected.append(name)
         elif overlay_trees.get(tree):
             old_tree_only.append(name)
+    warnings = []
+    # A small, exact-version-specific source-backed rule: the current
+    # owner's 0.136/0.137 English tooltip marks these capstones exclusive.
+    # This is not a general prerequisite/rank graph.
+    if (build["class"] == "warlock" and
+            build["client_sha256"] in {
+                "aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8",
+                "eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c",
+            }):
+        selected = {x["name"] for x in build["talents"] if x["tree"] == "Demonology"}
+        if {"Butcher", "Pact of the Nathrezim"} <= selected:
+            raise BuildError("Exclusive current Demonology capstones: Butcher vs Pact of the Nathrezim")
+        if "Demonic Supremacy" in selected and "Legion Gate" in selected:
+            warnings.append("Demonic Supremacy prevents lesser-demon summoning; Legion Gate swarm synergy is suppressed")
+        if "Demonic Supremacy" in selected and "Demonic Familiar" in selected:
+            warnings.append("Demonic Supremacy removes lesser demons; permanent Imp synergy requires a live check")
     total = sum(item["points"] for item in build["talents"])
     if total > budget:
         raise BuildError("Points exceed assumed research budget; legality still unknown")
@@ -130,6 +146,7 @@ def validate_against_inventory(build, inventory, budget=51):
         "appended_patch_candidates_selected": overlay_selected,
         "older_dictionary_candidates_selected": old_tree_only,
         "patch_overlay_runtime_verified": False,
+        "mechanics_cautions": warnings,
         "warning": ("Older embedded labels may be stale: check in-game before allocating points"
                     if old_tree_only else "Names only; no talent rank/prerequisite certification"),
         "client_sha256": build["client_sha256"],
