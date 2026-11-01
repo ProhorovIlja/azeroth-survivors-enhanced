@@ -4,8 +4,10 @@ on:
     paths:
       - 'tools/solo_lab.py'
       - 'tools/addon_audit.py'
+      - 'tools/solo_lab_gui.py'
       - 'tests/test_solo_lab.py'
       - 'tests/test_addon_audit.py'
+      - 'tests/test_solo_lab_gui.py'
       - '.github/workflows/solo-lab-tests.yml'
   push:
     branches: [main]
@@ -31,5 +33,7 @@ jobs:
           python-version: '3.12'
       - name: Verify safe save redirect and read-only addon audit
         run: python -m unittest discover -s tests -p 'test_solo_lab.py' -v
+      - name: Verify GUI configuration without opening a desktop
+        run: python -m unittest discover -s tests -p 'test_solo_lab_gui.py' -v
       - name: Verify addon audit synthetic tests
         run: python -m unittest discover -s tests -p 'test_addon_audit.py' -v

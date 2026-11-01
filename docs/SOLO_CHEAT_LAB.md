@@ -57,3 +57,8 @@ Only your own game files should be edited. No original EXE/MPQ, unlock keys, per
 - Read-only Python synthetic tests do **not** establish that 0.137.0 applies a sealed edited save correctly after a full run.
 - No actual trainer, invulnerability, gold injection, speed modification or save decryption is performed by Solo Lab itself.
 - The original game is updated frequently. Re-check EXE SHA and saved progress after each update.
+
+
+## Optional graphical control panel
+
+On Windows with Tkinter installed, run `py -m tools.solo_lab_gui` from this repository root. This opens a local, dark-themed Russian-language GUI for selecting the game EXE, save path and new sandbox directory, checking client SHA, creating the sandbox, launching explicitly, making snapshots, restoring only sandbox saves and auditing existing addon .toc files. The buttons for creation, launch and restore require explicit confirmation. External editor links open the verified project page, **not** downloaded installers. The GUI does not itself provide memory hooks, God Mode or save editing and has not been smoke-tested on an actual Windows display.
