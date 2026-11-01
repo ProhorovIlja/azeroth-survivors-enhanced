@@ -11,8 +11,8 @@ Private Drive: connected user account, folder named Azeroth Survivors Enhanced; 
 ## Verified
 - GitHub repo exists; GitHub connector can push, branch, open pull requests.
 - Drive contains AzerothSurvivors.exe plus seven patch*.MPQ archives in Data/.
-- Metadata inventory only; executable version/hash and MPQ contents NOT verified yet.
-- Starter catalogue: 11 **unverified editorial** build hypotheses covering nine classes.
+- Original EXE SHA-256 is 2c2f3926e1f8f8092809f5de0624ac8f2197bb341a2870d408ce0250f13f094a, PE32+ x86-64. Sample patch-6.MPQ structurally inspected; all other MPQs uninspected.\n- Binary English labels confirm older Demonology / Enhancement branches (Demonic Pact, Summon Felguard, Windfury, Feral Spirit). Modern browser labels Legion Gate / Nathrezim / Rockbiter / Stormbound Echoes were not found as literal names. Exact Windows game version remains unverified.
+- Starter catalogue: 11 **unverified editorial** build hypotheses covering nine classes; misleading browser 0.135.1 baseline tag removed. Original Windows client and browser builds differ.
 - Offline Python unit tests pass; in-game addon not yet tested against supplied Windows executable.
 
 ## Next work

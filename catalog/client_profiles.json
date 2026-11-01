@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-01",
+  "profiles": [
+    {
+      "id": "owner-windows-exe-2026-11-01",
+      "sha256": "2c2f3926e1f8f8092809f5de0624ac8f2197bb341a2870d408ce0250f13f094a",
+      "size_bytes": 139691008,
+      "exact_version": null,
+      "verified_in_game": false,
+      "client_family_observation": "legacy_demonology_and_enhancement_labels",
+      "warlock_demonology_labels_present": [
+        "Demonic Pact",
+        "Summon Imp",
+        "Summon Felguard"
+      ],
+      "shaman_enhancement_labels_present": [
+        "Windfury",
+        "Feral Spirit"
+      ],
+      "newer_browser_labels_not_observed": [
+        "Legion Gate",
+        "Pact of the Nathrezim",
+        "Demonic Supremacy",
+        "Rockbiter Weapon",
+        "Stormstrike",
+        "Stormbound Echoes"
+      ],
+      "information_type": "read_only_exact_exe_utf8_localization_labels",
+      "disclaimer": "Exact installed version and runtime mechanics unknown; strings never authorize client patching or automatic talent allocation"
+    }
+  ]
+}

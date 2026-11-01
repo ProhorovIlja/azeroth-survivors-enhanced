@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "target_client_sha256": "2c2f3926e1f8f8092809f5de0624ac8f2197bb341a2870d408ce0250f13f094a",
+  "class_routes": [
+    {
+      "id": "legacy-warlock-imp-felguard-research",
+      "class": "warlock",
+      "tree": "Demonology",
+      "style": "low_input_minions",
+      "talent_names_observed": [
+        "Summon Imp",
+        "Demonic Pact",
+        "Summon Felguard"
+      ],
+      "numbered_spend_sequence": null,
+      "legal_51_point_build": false,
+      "performance_measured": false,
+      "game_version_verified": false,
+      "notes": "Original executable English labels indicate Imp, additional Imp summons and a Felguard capstone. Do not substitute newer Legion Gate / Nathrezim setup or assume talent prerequisites."
+    },
+    {
+      "id": "legacy-shaman-windfury-wolves-research",
+      "class": "shaman",
+      "tree": "Enhancement",
+      "style": "companions",
+      "talent_names_observed": [
+        "Windfury",
+        "Feral Spirit"
+      ],
+      "numbered_spend_sequence": null,
+      "legal_51_point_build": false,
+      "performance_measured": false,
+      "game_version_verified": false,
+      "notes": "Original EXE English labels include Windfury and Feral Spirit capstone; newer Rockbiter/Stormbound routes are not compatible based on observed labels."
+    }
+  ],
+  "status": "research_candidates_only"
+}
