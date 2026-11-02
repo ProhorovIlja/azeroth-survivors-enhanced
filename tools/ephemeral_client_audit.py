@@ -151,6 +151,8 @@ def static_report(game, identity):
     from tools.native_0139_footer_probe import probe_file
     observed = graph["candidate_ui_entrypoints"]
     footer = probe_file(game, identity["sha256"], observed.get("options_page_controls", ""))
+    from tools.native_0139_action_xrefs import analyze_action_flow
+    action_xrefs = analyze_action_flow(game, identity["sha256"])
     return {
         "version": VERSION, "sha256": identity["sha256"], "bytes": identity["size"],
         "baseline": "0.138.0", "reviewed_static_ui_role_candidates": observed,
@@ -163,6 +165,7 @@ def static_report(game, identity):
         "direct_call_candidates": graph["direct_call_candidates"][:30],
         "direct_calls_disassembler_crosscheck": verified_calls,
         "footer_action_probe": footer,
+        "native_action_id_xrefs": action_xrefs,
         "static_evidence_only": True, "disassembler_confirmed": bool(verified_calls["checked"]) and all(c["call_instruction_confirmed"] for c in verified_calls["checked"]),
         "native_cheats_menu_implemented": False, "live_game_verified": False,
         "original_binary_modified": False,
