@@ -72,3 +72,23 @@ Original exact-SHA 0.139.0 GitHub Actions test, including synthetic tests: https
 **Interpretation:** This is a metadata-only **button creation** map. Even if a tag and a helper call are close in code, their semantic dataflow or the identity of the eventual click-event handler has not been established. The IDs **must not** be called cheat switches or unused IDs; none is a confirmed menu-extension slot. In particular, action ID 8 is an unassociated tagged instruction within a helper-calling function, not a verified pair.
 
 **Next frontier:** identify the consumer of these actions in the native ECS event/update path, separate the actual Options tab navigation system from the reused localized action widget helper, and test any eventual native menu extension on a disposable copy of Windows 0.139 before enabling changes. No original EXE/MPQ, code bytes, save data, DLL proxy, or gameplay cheat was modified or released.
+
+
+## New exact-original 0.139 Saves selector conditional confirmed (2026-11-02)
+
+A separate read-only probe, `tools/native_0139_saves_branch.py`, bounded its scan to the small original code region preceding the independently authenticated `options.defaults` label load in original Windows 0.139. Its exact-client synthetic regression tests and SHA-pinned original EXE CI succeeded: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41409473700 .
+
+The original code contains a disassembler-confirmed **byte comparison against Saves state 11** followed by a disassembler-confirmed **conditional jump to the existing Done button**, skipping Defaults:
+
+| Observed structure | RVA / value |
+| --- | --- |
+| Original compare instruction | `0x3F738C` |
+| Compared byte field displacement | **`+0x1DA`** |
+| Compared Saves page value | **`0x0B` (11)** |
+| Conditional JE instruction | `0x3F7393` |
+| Original branch target / `options.done` text load | **`0x3F73D1`** |
+| Effect supported by static branch | On Saves, skip Defaults, continue to Done |
+
+This confirms one exact original **page-state read** continues to use the `+0x1DA` field in 0.139 despite the engine update. It does **not** identify who owns this state object, who writes the field on navigation, the full set of page IDs or how to register another Bevy page. **Do not write to that byte or reuse 0.138 RVA values**; a field read is not an injection ABI.
+
+Next static/runtime task: identify actual writers to that state field and the UI tab-click consumers, then verify event ownership/lifetime on an isolated Windows copy. A genuine Cheats & Enhancements tab and real solo-only God Mode/XP/Gold/Damage toggles remain unimplemented.
