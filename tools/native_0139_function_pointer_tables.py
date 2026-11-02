@@ -178,6 +178,10 @@ def audit_function_pointer_tables(game, sha):
                       for s in sections for row in s["pointer_slots"]}
         code = raw[text["raw_offset"]:text["raw_offset"] + text["raw_bytes"]]
         xrefs = raw_rip_load_candidates(code, text["rva"], slot_roles, functions)
+        # Rust may take a direct pointer to a function with RIP LEA without
+        # emitting a static VA slot in .rdata: evaluate that separately.
+        direct_code_function_xrefs = raw_rip_load_candidates(
+            code, text["rva"], {rva: role for role, rva in FUNCTIONS.items()}, functions)
     confirmed = 0
     failures = []
     if not xrefs["truncated"]:
@@ -206,6 +210,33 @@ def audit_function_pointer_tables(game, sha):
                 for row in rows:
                     row["instruction_confirmed"] = int(row["code_site_rva"], 16) in proven
                     confirmed += int(row["instruction_confirmed"])
+    direct_code_confirmed = 0
+    if not direct_code_function_xrefs["truncated"]:
+        by_owner = {}
+        for row in direct_code_function_xrefs["records"]:
+            by_owner.setdefault(int(row["code_owner_rva"], 16), []).append(row)
+        if len(by_owner) > MAX_FUNCTION_OWNERS:
+            failures.append("too_many_direct_function_address_owners")
+        else:
+            starts = [start for start, _ in functions]
+            for owner, rows in sorted(by_owner.items()):
+                ix = bisect_right(starts, owner) - 1
+                begin, end = functions[ix]
+                if end - begin > MAX_FUNCTION_BYTES:
+                    failures.append(hex(owner))
+                    continue
+                p = subprocess.run(
+                    [disassembler, "-d", "--no-show-raw-insn",
+                     f"--start-address=0x{imagebase+begin:x}",
+                     f"--stop-address=0x{imagebase+end:x}", str(path)],
+                    capture_output=True, text=True, check=False, timeout=30)
+                if p.returncode != 0:
+                    failures.append(hex(owner))
+                    continue
+                verified = parse_disassembled_rip_loads(p.stdout, imagebase, begin, end)
+                for row in rows:
+                    row["instruction_confirmed"] = int(row["code_site_rva"], 16) in verified
+                    direct_code_confirmed += int(row["instruction_confirmed"])
     return {
         "status": "original_options_function_pointer_inventory",
         "original_sha256": EXPECTED_SHA,
@@ -215,6 +246,8 @@ def audit_function_pointer_tables(game, sha):
         "neighbor_function_entry_pointer_shapes": neighbors[:64],
         "neighbor_records_truncated": len(neighbors) > 64,
         "code_references_to_exact_pointer_slots": xrefs,
+        "direct_code_rip_loads_of_UI_function_entrypoints": direct_code_function_xrefs,
+        "confirmed_direct_function_address_load_count": direct_code_confirmed,
         "confirmed_code_reference_instruction_count": confirmed,
         "disassembly_failures": failures,
         "indirect_bevy_system_callback_verified": False,
