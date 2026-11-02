@@ -198,3 +198,24 @@ Instead of only adding further read-only Python scanners, we created **`native/w
 The first Windows/MSVC build was rejected due to a duplicated `WIN32_LEAN_AND_MEAN` macro under `/WX`. We fixed the duplicate; the subsequent genuine **Windows Server 2022 / Visual Studio 2022 x64 Release** build and synthetic wrong-client fail-closed CTest succeeded: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41421364850 . The job explicitly does not distribute the compiled DLL, execute the game, or patch an EXE. Original 0.139 file positive verification inside Windows is not yet runtime-tested; only negatives are exercised on synthetic files.
 
 **Not a working mod:** this bootstrap must not be installed or renamed to `avrt.dll`. Current primary blockers remain identifying original Options Bevy ECS button click event consumer, selected-tab writer, a reversible exact-version-safe integration seam, and actual offline Windows game runtime tests. The original EXE/save data remains untouched; draft PR #23 must stay open. See `native/windows/README.md` and `docs/NATIVE_WINDOWS_0139_INTEGRATION_RESEARCH.md` for scope and acceptance gates.
+
+
+## 2026-11-02: Native Windows bootstrap positively validated on genuine original v0.139 EXE
+
+Previous MSVC Windows x64 CI proved that the clean-room native DLL compiled and rejected synthetic wrong-sized files, but did **not** prove the hash implementation could accept the real original EXE. That gap is now closed in [successful Windows CI](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41424601214) and strengthened in [subsequent successful Windows CI](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41424929306).
+
+The Windows CI temporarily reconstructs the developer's official original 0.139.0 Windows EXE in the GitHub-hosted runner temporary directory using the existing author-manifest validator and whole GZIP-stream SHA gate (`tools/native_0139_windows_positive_fixture.py`). The original EXE is never executed and is removed in a PowerShell `finally` block; GitHub Actions publishes **no original game files or compiled native DLL**.
+
+With MSVC x64 Release `/W4 /WX`, the native DLL's read-only **Win32 BCrypt SHA-256 whole-file** checker passed all of the following on Windows:
+
+| Actual Windows-native regression | Outcome |
+| --- | --- |
+| Correct, authentic official v0.139.0 original EXE of 150,595,584 bytes, full pinned SHA | **ACCEPT (1)** |
+| Separate temporary copy of that original, **exactly same size but one byte changed** | **REJECT (0)** |
+| Synthetic files, null/empty/nonexistent paths | **REJECT (0)** |
+| An unrelated Windows CTest host process, even while an authentic EXE exists separately on disk | **REJECT (0)** |
+| Hook and native Cheats menu status | **Both remain 0; no hook/menu installed** |
+
+New export `AZSE_VerifyCurrentProcessOriginal()` verifies **the current process's own main executable**, not an arbitrary genuine executable path. This is an additional future native safety gate, **not permission** to inject or hook. The independent compiled DLL is deliberately not installed or loaded into the game process. The temporary changed-byte copy and authentic official original are both deleted after tests; no game client or save modified.
+
+**Still not achieved:** an original in-game Options Cheats & Enhancements page, event delivery, real offline God Mode/XP/Gold/Damage cheats, in-game hot-path safety or actual Windows game runtime. The user asked for the original game's native Options menu, not a Lua addon or separate GUI; this preflight work alone is not a feature release. Do not mark DRAFT PR #23 complete until those runtime gates pass.
