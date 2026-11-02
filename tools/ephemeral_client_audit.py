@@ -173,6 +173,8 @@ def static_report(game, identity):
     options_pointer_graph = audit_options_reflection_pointer_graph(game, identity["sha256"], options_type_xrefs)
     from tools.native_0139_function_pointer_tables import audit_function_pointer_tables
     ui_function_pointer_tables = audit_function_pointer_tables(game, identity["sha256"])
+    from tools.native_0139_options_pointer_cluster import audit_options_six_pointer_cluster
+    options_six_pointer_cluster = audit_options_six_pointer_cluster(game, identity["sha256"], ui_function_pointer_tables)
     from tools.native_0139_page_register_flow import correlate_page_6_with_saves_builder
     page_6_saves_skip = correlate_page_6_with_saves_builder(page_register_flow, verified_calls)
     return {
@@ -198,6 +200,7 @@ def static_report(game, identity):
         "original_bevy_options_type_xrefs": options_type_xrefs,
         "original_options_reflection_pointer_graph": options_pointer_graph,
         "original_options_function_pointer_tables": ui_function_pointer_tables,
+        "original_options_six_pointer_cluster": options_six_pointer_cluster,
         "native_page_6_saves_builder_skip_crosscheck": page_6_saves_skip,
         "static_evidence_only": True, "disassembler_confirmed": bool(verified_calls["checked"]) and all(c["call_instruction_confirmed"] for c in verified_calls["checked"]),
         "native_cheats_menu_implemented": False, "live_game_verified": False,
