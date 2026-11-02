@@ -148,6 +148,7 @@ def static_report(game, identity):
     with open(game, "rb") as src, mmap.mmap(src.fileno(), 0, access=mmap.ACCESS_READ) as mm:
         graph = map_binary(mm, identity["sha256"], require_known=False)
         types = collect_static_evidence(mm, identity["sha256"], strict=False)
+    verified_calls = verify_direct_calls_with_disassembler(game, graph)
     observed = graph["candidate_ui_entrypoints"]
     return {
         "version": VERSION, "sha256": identity["sha256"], "bytes": identity["size"],
@@ -159,6 +160,7 @@ def static_report(game, identity):
         "bounded_function_clusters": graph["unique_function_clusters"],
         "unwind_function_count": graph["unwind_function_count"],
         "direct_call_candidates": graph["direct_call_candidates"][:30],
+        "direct_calls_disassembler_crosscheck": verified_calls,
         "static_evidence_only": True, "disassembler_confirmed": False,
         "native_cheats_menu_implemented": False, "live_game_verified": False,
         "original_binary_modified": False,
