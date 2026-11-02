@@ -58,6 +58,31 @@ class NativeOriginalOwnerCallGraphTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             m.profile_owner("",self.BASE,1,2,b"",0,cap=0)
 
+    def test_follow_only_confirmed_exact_original_table_owner_callers(self):
+        original = {
+            "truncated":False,
+            "edges":[
+                {"target_function_rva":"0x1e3bc0",
+                 "caller_function_rva":"0x2cd550",
+                 "instruction_confirmed":True},
+                {"target_function_rva":"0x1e3bc0",
+                 "caller_function_rva":"0x4a5b60",
+                 "instruction_confirmed":False},
+                {"target_function_rva":"0x1e3bc1",
+                 "caller_function_rva":"0x1f1110",
+                 "instruction_confirmed":True},
+            ]
+        }
+        self.assertEqual([0x2cd550],m.verified_direct_caller_owners(original))
+        original["truncated"]=True
+        self.assertEqual([],m.verified_direct_caller_owners(original))
+
+    def test_reject_too_many_unreviewed_indirect_parent_hypotheses(self):
+        edges={"edges":[{"target_function_rva":"0x1e3bc0",
+                          "caller_function_rva":hex(x),
+                          "instruction_confirmed":True} for x in range(10)]}
+        self.assertEqual([],m.verified_direct_caller_owners(edges,limit=8))
+
     def test_sha_rejected_before_open(self):
         x=m.audit_table_owner_call_graph("/missing.exe","0"*64,{})
         self.assertEqual("unexpected_original_client",x["reason"])
