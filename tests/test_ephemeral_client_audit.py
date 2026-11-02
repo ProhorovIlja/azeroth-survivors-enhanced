@@ -44,6 +44,21 @@ class Tests(unittest.TestCase):
                 r=a.download_verified(parts,target,Client(dict(zip((u for u,_ in parts),c))))
                 self.assertEqual(r["sha256"],hashlib.sha256(raw).hexdigest())
                 self.assertEqual(target.read_bytes(),raw)
+    def test_one_gzip_stream_split_in_middle_of_compressed_bytes(self):
+        """Actual author's multi-part EXE splits the compressed stream."""
+        original=b"MZ"+b"STILL ONE COMPRESSED GZIP STREAM"*30
+        gz=gzip.compress(original)
+        cut=max(10,len(gz)//2)
+        pieces=[gz[:cut],gz[cut:]]
+        urls=[a.ORIGIN+f"0.139.0/part-{i:03d}.bin" for i in range(2)]
+        parts=list(zip(urls,map(len,pieces)))
+        with patch.object(a,"SIZE",len(original)),patch.object(a,"SHA",hashlib.sha256(original).hexdigest()):
+            with tempfile.TemporaryDirectory() as folder:
+                dest=Path(folder)/"original.exe"
+                result=a.download_verified(parts,dest,Client(dict(zip(urls,pieces))))
+                self.assertEqual(len(original),result["size"])
+                self.assertEqual(original,dest.read_bytes())
+
     def test_corrupt_part_unlinks_private_file(self):
         raw=b"MZ"+b"X"*20
         gz=gzip.compress(raw)
