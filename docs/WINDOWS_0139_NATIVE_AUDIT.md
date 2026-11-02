@@ -219,3 +219,25 @@ With MSVC x64 Release `/W4 /WX`, the native DLL's read-only **Win32 BCrypt SHA-2
 New export `AZSE_VerifyCurrentProcessOriginal()` verifies **the current process's own main executable**, not an arbitrary genuine executable path. This is an additional future native safety gate, **not permission** to inject or hook. The independent compiled DLL is deliberately not installed or loaded into the game process. The temporary changed-byte copy and authentic official original are both deleted after tests; no game client or save modified.
 
 **Still not achieved:** an original in-game Options Cheats & Enhancements page, event delivery, real offline God Mode/XP/Gold/Damage cheats, in-game hot-path safety or actual Windows game runtime. The user asked for the original game's native Options menu, not a Lua addon or separate GUI; this preflight work alone is not a feature release. Do not mark DRAFT PR #23 complete until those runtime gates pass.
+
+
+## 2026-11-02: Exact original 0.139 six-function Options callback pointer cluster
+
+A read-only SHA-pinned probe `tools/native_0139_function_pointer_tables.py` scanned actual 64-bit virtual-address pointers in the original Windows executable's `.rdata`/`.data` to the eight original Options-related function entrypoints already identified by PE unwind and call graph. Full original EXE SHA identity checked, no game original bytes exported, successful [CI run](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41439827358).
+
+**Positive discovery:** three original .rdata pointers to previously confirmed Options render/caller chain functions occur within one adjacent cluster. Neighboring PE unwind function-entry pointers extend the cluster to six consecutive pointers, independently reread and validated from the exact original EXE in a dedicated [successfully tested probe](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41440327948):
+
+| .rdata slot RVA | Pointed-to real original function RVA | Current evidence |
+| --- | --- | --- |
+| `0x652DBE8` | `0x20E0C0` | Known call-chain ancestor of Options |
+| `0x652DBF0` | `0x2C1AD0` | Known call-chain ancestor of Options |
+| `0x652DBF8` | `0x2C1710` | Known call-chain ancestor of Options |
+| `0x652DC00` | `0x20E410` | Newly identified 55-byte function |
+| `0x652DC08` | `0x20E450` | Newly identified 55-byte function |
+| `0x652DC10` | `0x20E4A0` | Newly identified 283-byte function |
+
+The last three code entries are disassembled from independent PE `.pdata` function starts by `tools/native_0139_options_pointer_cluster.py`, which requires all six exact slot values to match before doing any analysis. Their bounded original instruction profiles show **no direct numeric selector `+0x1DA` access** and **zero direct E8 callsites targeting the new three function entries across the original scanned code**. The two 55-byte wrappers branch to `0x5BD2760`/`0x5BD2A80` and each calls `0x64CE330`; the 283-byte function has two direct calls. Those are *code-level relationships only*, not proof of event consumers, drop functions or Bevy ECS registration.
+
+A separate direct code-pattern scan found **zero RIP-relative `mov/lea` references to any of the eight named function *entrypoints***. This is narrower than whole-program dataflow and cannot disprove all indirect Rust function addresses or other forms of linking.
+
+The cluster's semantics are unknown, but it is an actual original-client, highly specific structure and more useful than searching generic low action IDs 16/17 or string markers. `tools/native_0139_options_pointer_table_owners.py` now searches nearby code/data references to the six-function table itself, includes regression tests, and is wired to the SHA-pinned original-client audit. The existence of this table **does not validate an insertion hook** or prove a page-change event. No EXE or game save was modified, and there is still no live native Cheats tab.
