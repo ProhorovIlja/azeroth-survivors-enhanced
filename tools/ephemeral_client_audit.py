@@ -161,6 +161,8 @@ def static_report(game, identity):
     selector_callers = audit_byte_writer_callers(game, identity["sha256"], selector_xrefs)
     from tools.native_0139_options_event_ancestry import analyze_options_event_ancestry
     event_ancestry = analyze_options_event_ancestry(game, identity["sha256"])
+    from tools.native_0139_parent_event_profile import probe_parent_profiles
+    parent_event_profiles = probe_parent_profiles(game, identity["sha256"], event_ancestry)
     return {
         "version": VERSION, "sha256": identity["sha256"], "bytes": identity["size"],
         "baseline": "0.138.0", "reviewed_static_ui_role_candidates": observed,
@@ -178,6 +180,7 @@ def static_report(game, identity):
         "selector_field_access_xrefs": selector_xrefs,
         "selector_byte_writer_callers": selector_callers,
         "native_options_event_ancestry": event_ancestry,
+        "native_options_parent_event_profiles": parent_event_profiles,
         "static_evidence_only": True, "disassembler_confirmed": bool(verified_calls["checked"]) and all(c["call_instruction_confirmed"] for c in verified_calls["checked"]),
         "native_cheats_menu_implemented": False, "live_game_verified": False,
         "original_binary_modified": False,
