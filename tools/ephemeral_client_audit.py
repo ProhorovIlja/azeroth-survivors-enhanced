@@ -155,6 +155,8 @@ def static_report(game, identity):
     action_xrefs = analyze_action_flow(game, identity["sha256"])
     from tools.native_0139_saves_branch import probe_saves_branch
     saves_branch = probe_saves_branch(game, identity["sha256"], footer)
+    from tools.native_0139_selector_xrefs import analyze_selector_xrefs
+    selector_xrefs = analyze_selector_xrefs(game, identity["sha256"])
     return {
         "version": VERSION, "sha256": identity["sha256"], "bytes": identity["size"],
         "baseline": "0.138.0", "reviewed_static_ui_role_candidates": observed,
@@ -169,6 +171,7 @@ def static_report(game, identity):
         "footer_action_probe": footer,
         "native_action_id_xrefs": action_xrefs,
         "saves_footer_selector_probe": saves_branch,
+        "selector_field_access_xrefs": selector_xrefs,
         "static_evidence_only": True, "disassembler_confirmed": bool(verified_calls["checked"]) and all(c["call_instruction_confirmed"] for c in verified_calls["checked"]),
         "native_cheats_menu_implemented": False, "live_game_verified": False,
         "original_binary_modified": False,
