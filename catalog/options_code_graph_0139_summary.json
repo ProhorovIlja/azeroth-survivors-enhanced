@@ -397,8 +397,15 @@
     "native_menu_present": false,
     "actual_gameplay_cheats_present": false,
     "build_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/workflows/native-bootstrap-windows.yml",
-    "win64_build_and_test_status": "pending_confirmation",
+    "win64_build_and_test_status": "success: Windows Server 2022 MSVC x64 Release with warnings-as-errors, CTest synthetic wrong-client fail-closed",
     "production_release_status": "NOT_FOR_RELEASE",
-    "danger_notice": "Do not copy DLL into game folder, inject it, rename as avrt.dll or advertise working native menu; there is no loader or hook ABI."
+    "danger_notice": "Do not copy DLL into game folder, inject it, rename as avrt.dll or advertise working native menu; there is no loader or hook ABI.",
+    "successful_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41421364850",
+    "negative_synthetic_client_tests_passed": true,
+    "exact_official_0139_positive_verification_tested_on_windows": false,
+    "game_process_loaded_and_tested": false,
+    "native_options_tab_runtime_tested": false,
+    "original_executable_modified": false,
+    "release_candidate": false
   }
 }
