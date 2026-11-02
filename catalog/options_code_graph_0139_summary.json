@@ -41,5 +41,29 @@
     }
   ],
   "disassembler_tool_available": true,
-  "safe_hook_known": false
+  "safe_hook_known": false,
+  "native_footer_0139": {
+    "source_run": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41406510827",
+    "options_central_rva": "0x3f5d40",
+    "shared_action_widget_helper_rva": "0x1e5530",
+    "original_defaults": {
+      "key": "options.defaults",
+      "action_tag_low_id": 16,
+      "key_load_rva": "0x3f7395",
+      "tag_rva": "0x3f73a9",
+      "direct_call_site_rva": "0x3f73cc"
+    },
+    "original_done": {
+      "key": "options.done",
+      "action_tag_low_id": 17,
+      "key_load_rva": "0x3f73d1",
+      "tag_rva": "0x3f73e5",
+      "direct_call_site_rva": "0x3f7408"
+    },
+    "both_direct_calls_disassembler_confirmed": true,
+    "click_event_consumer_found": false,
+    "safe_new_tab_hook_verified": false,
+    "native_cheat_behavior_verified": false,
+    "original_binary_unchanged": true
+  }
 }
