@@ -161,44 +161,59 @@ def plan(root, version, records, *, allow_unknown_client=False):
             'base_patch_mpq_untouched':True}
 
 
-def fetch_part(opener, url, stream, compressed_size, budget):
-    """Stream one single gzip member into output while enforcing expansion cap."""
-    request=urllib.request.Request(url,method='GET',headers={
-        'Accept-Encoding':'identity','User-Agent':'AZSE-Verified-Update-Manager/1.0'})
-    decoder=zlib.decompressobj(16+zlib.MAX_WBITS)
-    read_bytes=0
-    expanded=0
-    try:
-        with opener.open(request,timeout=30) as response:
-            if response.status!=200:raise UpdateError('Compressed part HTTP status '+str(response.status))
-            while True:
-                block=response.read(min(1024*1024, compressed_size-read_bytes+1))
-                if not block:break
-                read_bytes+=len(block)
-                if read_bytes>compressed_size:raise UpdateError('Compressed part exceeded stated size')
-                data=block
-                while data:
-                    room=budget-expanded
-                    if room<0:raise UpdateError('Decompressed file exceeds manifest size')
-                    # Bound per-iteration output even when the manifest says 3GB.
-                    out=decoder.decompress(data,min(1024*1024,room+1))
-                    if len(out)>room:
-                        raise UpdateError('Decompressed file exceeds manifest size')
-                    stream.write(out)
-                    expanded+=len(out)
-                    data=decoder.unconsumed_tail
-                    if decoder.eof:
-                        if data or decoder.unused_data:
-                            raise UpdateError('Unexpected gzip bytes after a completed member')
+def fetch_parts(opener, parts, stream, max_output):
+    """Restore either a gzip stream split across parts or separate members.
+
+    Official 20-MiB EXE chunks can be *fragments of one gzip stream*.
+    They must be decoded in strict order, without assuming gzip EOF at each
+    HTTP part boundary. Per-part byte counts and total output are bounded.
+    """
+    decoder = None
+    expanded = 0
+    for index, part in enumerate(parts):
+        url, compressed_size = part['url'], part['size']
+        if decoder is None or decoder.eof:
+            decoder = zlib.decompressobj(16 + zlib.MAX_WBITS)
+        request = urllib.request.Request(url, method='GET', headers={
+            'Accept-Encoding': 'identity',
+            'User-Agent': 'AZSE-Verified-Update-Manager/1.1'})
+        received = 0
+        try:
+            with opener.open(request, timeout=30) as response:
+                if response.status != 200:
+                    raise UpdateError('Official compressed part HTTP status ' + str(response.status))
+                while True:
+                    block = response.read(min(1024*1024, compressed_size-received+1))
+                    if not block:
                         break
-            tail=decoder.flush()
-            if expanded+len(tail)>budget:raise UpdateError('Decompressed file exceeds manifest size')
-            stream.write(tail)
-            expanded+=len(tail)
-    except (OSError,TimeoutError,urllib.error.URLError,zlib.error) as exc:
-        raise UpdateError('Gzip part download/decode error: '+type(exc).__name__) from None
-    if read_bytes!=compressed_size or not decoder.eof or decoder.unused_data:
-        raise UpdateError('Compressed part incomplete or has trailing data')
+                    received += len(block)
+                    if received > compressed_size:
+                        raise UpdateError('Compressed part larger than declared')
+                    data = block
+                    while data:
+                        room = max_output - expanded
+                        if room < 0:
+                            raise UpdateError('Expanded file exceeded manifest size')
+                        decoded = decoder.decompress(data, min(1024*1024, room+1))
+                        if len(decoded) > room:
+                            raise UpdateError('Expanded file exceeded manifest size')
+                        stream.write(decoded)
+                        expanded += len(decoded)
+                        data = decoder.unconsumed_tail
+                        if decoder.eof:
+                            if data or decoder.unused_data:
+                                raise UpdateError('Unexpected trailing GZIP member bytes')
+                            break
+        except (OSError, TimeoutError, urllib.error.URLError, zlib.error) as exc:
+            raise UpdateError('Official part download/decode failed: ' + type(exc).__name__) from None
+        if received != compressed_size:
+            raise UpdateError('Compressed part ' + str(index) + ' incomplete')
+    if decoder is None or not decoder.eof:
+        raise UpdateError('GZIP stream has no completed trailer after final part')
+    tail = decoder.flush()
+    if expanded + len(tail) > max_output:
+        raise UpdateError('Decompressed trailer exceeded limit')
+    stream.write(tail)
     return expanded
 
 
@@ -219,12 +234,9 @@ def stage(root, staging, version, records, *, yes=False, allow_unknown_client=Fa
             relative=Path('AzerothSurvivors.exe') if rec['name']=='AzerothSurvivors.exe' else Path('Data')/rec['name']
             file=dest/'payload'/relative
             file.parent.mkdir(parents=True,exist_ok=True)
-            remaining=rec['size']
             with file.open('xb') as writer:
-                for part in rec['parts']:
-                    count=fetch_part(opener,part['url'],writer,part['size'],remaining)
-                    remaining-=count
-            if remaining!=0 or file.stat().st_size!=rec['size'] or digest(file)!=rec['sha256']:
+                expanded=fetch_parts(opener,rec['parts'],writer,rec['size'])
+            if expanded!=rec['size'] or file.stat().st_size!=rec['size'] or digest(file)!=rec['sha256']:
                 raise UpdateError('Finished-file SHA256/size verification failed: '+rec['name'])
         receipt={'schema':SCHEMA,'game_root':str(root),'version':version,
                  'status':'ready','changes':[],
