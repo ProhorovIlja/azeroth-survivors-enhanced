@@ -100,5 +100,16 @@ int AZSE_VerifyOriginalExecutable(const wchar_t* path) noexcept {
   return actual == expected ? 1 : 0;
 }
 
+int AZSE_VerifyCurrentProcessOriginal() noexcept {
+  // Keep the original-client file check distinct from permission to install a
+  // hook. An unrelated host/test program can never be authenticated by passing
+  // a separate genuine EXE path to AZSE_VerifyOriginalExecutable().
+  std::array<wchar_t, 32768> path{};
+  const DWORD length = GetModuleFileNameW(
+      nullptr, path.data(), static_cast<DWORD>(path.size()));
+  if (!length || length >= static_cast<DWORD>(path.size())) return 0;
+  return AZSE_VerifyOriginalExecutable(path.data());
+}
+
 int AZSE_NativeHookInstalled() noexcept { return 0; }
 int AZSE_NativeCheatsTabInstalled() noexcept { return 0; }
