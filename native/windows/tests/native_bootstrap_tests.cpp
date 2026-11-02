@@ -21,6 +21,8 @@ int main() {
                 "official SHA must remain exact");
   good &= check(AZSE_OriginalClientSize() == 150595584ULL,
                 "official client size must remain exact");
+  good &= check(AZSE_VerifyCurrentProcessOriginal() == 0,
+                "a test host is NOT the original game even with a valid EXE path");
   good &= check(AZSE_NativeHookInstalled() == 0,
                 "the test-only bootstrap MUST NOT install a hook");
   good &= check(AZSE_NativeCheatsTabInstalled() == 0,
@@ -81,6 +83,24 @@ int main() {
         (static_cast<unsigned long long>(original_attrs.nFileSizeHigh) << 32) +
             original_attrs.nFileSizeLow == AZSE_OriginalClientSize(),
         "positive verifier must preserve original client length");
+  }
+  std::array<wchar_t, 32768> mutated_path{};
+  const DWORD mutated_len = GetEnvironmentVariableW(
+      L"AZSE_EXPECT_MUTATED_0139_PATH", mutated_path.data(),
+      static_cast<DWORD>(mutated_path.size()));
+  good &= check(mutated_len < mutated_path.size(),
+                "modified-client path must not be truncated");
+  if (mutated_len > 0 && mutated_len < mutated_path.size()) {
+    WIN32_FILE_ATTRIBUTE_DATA modified_attrs{};
+    good &= check(GetFileAttributesExW(mutated_path.data(),
+                                        GetFileExInfoStandard, &modified_attrs) != 0,
+                  "modified original-length fixture exists");
+    good &= check(
+        (static_cast<unsigned long long>(modified_attrs.nFileSizeHigh) << 32) +
+            modified_attrs.nFileSizeLow == AZSE_OriginalClientSize(),
+        "modified fixture must have exact original size to isolate SHA check");
+    good &= check(AZSE_VerifyOriginalExecutable(mutated_path.data()) == 0,
+                  "one-byte-changed original-sized EXE MUST fail SHA authorization");
   }
   return good ? 0 : 1;
 }
