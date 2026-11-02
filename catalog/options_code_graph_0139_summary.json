@@ -334,5 +334,33 @@
     "gameplay_cheats_implemented": false,
     "exact_original_exe_modified": false,
     "interpretation": "Original 0.139 renderer reads page state and contains a same-GPR compare/JE for value 6; branch skips a separately verified native Saves content builder call. Does not identify owner of the field, a tab click handler, a safe hook, or tab registration."
+  },
+  "original_bevy_options_type_xrefs_0139": {
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41418182997",
+    "official_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "exact_native_type_marker_counts": {
+      "Act": 4,
+      "Fill": 1,
+      "Footer": 1,
+      "OptionsCanvas": 1,
+      "OptionsRoot": 1,
+      "PageList": 1,
+      "Readout": 1,
+      "TipText": 1,
+      "Track": 1
+    },
+    "direct_lea_instruction_xref_count": 1,
+    "direct_lea_xref": {
+      "owner_function_rva": "0x33630",
+      "instruction_rva": "0x33768",
+      "marker": "TipText",
+      "verified_from_function_start": true
+    },
+    "confirmed_direct_lea_xrefs_to_OptionsCanvas": 0,
+    "corrected_false_positive": "Greedy type names joined adjacent Rust strings (TipTextwenilla_rogue_app); fixed by a known-type allowlist and identifier suffix check, covered by regression tests.",
+    "no_direct_OptionsCanvas_reference_does_not_disprove_indirect_reflection_registration": true,
+    "ecs_event_registration_confirmed": false,
+    "native_tab_click_dispatcher_found": false,
+    "original_exe_modified": false
   }
 }
