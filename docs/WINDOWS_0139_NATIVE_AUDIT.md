@@ -119,3 +119,30 @@ A separate new read-only cross-reference probe (`tools/native_0139_selector_call
 Both the complete selector read/write probe (`tools/native_0139_selector_xrefs.py`) and caller graph run against the exact verified original 0.139 EXE, with synthetic regression tests: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41411047535 . Only derived RVA, value and classification metadata is archived, never any original client bytes. Details and flags are in `catalog/options_code_graph_0139_summary.json`. All work remains reversible research and PR #23 remains DRAFT.
 
 **Do not treat the 13 `movb` sites or 10 caller edges as safe hooks.** We have not proven any byte store belongs to the same *runtime object instance* that central Options reads at `+0x1DA`; nor have we identified the handler that changes tabs on clicks. The next defensible investigation is the **OptionsCanvas/Bevy ECS update and interaction system**, particularly whether selected-page changes are performed through a dynamic dispatch, distinct state component, or copied memory. A working native Cheats & Enhancements tab, actual God Mode/Gold/XP/Damage toggles, and Windows runtime tests remain outstanding.
+
+
+## Verified original 0.139 Options ancestry and parent-function profile (2026-11-02)
+
+A new exact-SHA, read-only native Windows 0.139 analyzer `tools/native_0139_options_event_ancestry.py` traced the original central Options renderer through genuine x64 `E8` instructions, confirming each direct call site with GNU objdump on the SHA-authenticated original binary. This is a **static call graph, not proof of a UI click-event consumer**.
+
+| Actual direct-call site RVA | Source function RVA | Destination function RVA |
+| --- | --- | --- |
+| `0x2005A5` | **`0x1FFDE0`** | **`0x3F5D40`** (previously verified central Options renderer) |
+| `0x20E324` | **`0x20E0C0`** | `0x1FFDE0` |
+| `0x2C19B2` | **`0x2C1710`** | `0x1FFDE0` |
+| `0x2C1AE7` | **`0x2C1AD0`** | `0x2C1710` |
+
+The two previously reviewed `options.defaults` and `options.done` creation tag loads at `0x3F73A9` (ID 16) and `0x3F73E5` (ID 17) were reconfirmed. The **global original-client scan** also found **152 actual `movabs` instructions** whose immediate values encode the same high-bit-plus-16/17 shapes, across **93 distinct PE functions** (86 instances with low ID 16, 66 with low ID 17). **150/152 are outside the original Options footer creation function.** These numeric values are therefore **not unique signatures of an Options click handler**. Never identify a consumer or claim a safe hook based solely on those tag bits. All findings were disassembled from their containing function's actual PE unwind start, with zero reported function disassembly failures. Verified read-only native original-client run: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41414687708 .
+
+A second read-only analyzer, `tools/native_0139_parent_event_profile.py`, examines the four actual parent Options functions for instruction-shape evidence only, not bytes or code:
+
+| Function RVA | x64 function length | Direct calls | Indirect calls | Indirect jumps | Instructions accessing `+0x1DA` |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `0x1FFDE0` | 2,174 bytes | 12 | 0 | 0 | **1 read** at `0x20024A` |
+| `0x20E0C0` | 804 bytes | 5 | 0 | 0 | 0 |
+| `0x2C1710` | 950 bytes | 5 | 0 | 0 | 0 |
+| `0x2C1AD0` | 134 bytes | 3 | 0 | 0 | 0 |
+
+The parent function `0x1FFDE0` also contains a **`cmp` of immediate value 15 at RVA `0x200529`**. We have NOT traced this comparison to the `+0x1DA` read or proved it is a native tab ID, despite appearing in the same function; avoid speculative assignments. The four parents contain no `call *...` or computed `jmp *...` in the disassembled instruction profiles, so this **particular four-function chain** does not directly reveal an indirect Bevy ECS event dispatcher. Event handling could still be in a separate game system, including dynamically registered function pointers outside these render paths.
+
+Exact original-client SHA pin, synthetic regression tests, metadata-only artifact and successful 0.139 CI: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41415142806 . Full derived address-only evidence persists in `catalog/options_code_graph_0139_summary.json`. Original EXE, MPQs, machine-code bytes and game saves were not uploaded, patched or executed. No native Cheats & Enhancements tab or actual gameplay cheat currently exists. Next step is to locate **Bevy ECS OptionsCanvas interaction/event systems**, tie a real click to a selected-page state mutation in a disposable Windows test, and only then design a reversible, exact-client native menu integration.
