@@ -1,7 +1,11 @@
 #pragma once
 
 #ifdef _WIN32
+#ifdef AZSE_BUILDING_DLL
 #define AZSE_EXPORT extern "C" __declspec(dllexport)
+#else
+#define AZSE_EXPORT extern "C" __declspec(dllimport)
+#endif
 #else
 #define AZSE_EXPORT extern "C"
 #endif
