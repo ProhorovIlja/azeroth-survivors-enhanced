@@ -146,3 +146,25 @@ A second read-only analyzer, `tools/native_0139_parent_event_profile.py`, examin
 The parent function `0x1FFDE0` also contains a **`cmp` of immediate value 15 at RVA `0x200529`**. We have NOT traced this comparison to the `+0x1DA` read or proved it is a native tab ID, despite appearing in the same function; avoid speculative assignments. The four parents contain no `call *...` or computed `jmp *...` in the disassembled instruction profiles, so this **particular four-function chain** does not directly reveal an indirect Bevy ECS event dispatcher. Event handling could still be in a separate game system, including dynamically registered function pointers outside these render paths.
 
 Exact original-client SHA pin, synthetic regression tests, metadata-only artifact and successful 0.139 CI: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41415142806 . Full derived address-only evidence persists in `catalog/options_code_graph_0139_summary.json`. Original EXE, MPQs, machine-code bytes and game saves were not uploaded, patched or executed. No native Cheats & Enhancements tab or actual gameplay cheat currently exists. Next step is to locate **Bevy ECS OptionsCanvas interaction/event systems**, tie a real click to a selected-page state mutation in a disposable Windows test, and only then design a reversible, exact-client native menu integration.
+
+
+## Original 0.139 page-state register flow and Saves content skip (2026-11-02)
+
+A new exact-SHA-pinned read-only disassembler tool, `tools/native_0139_page_branch_map.py`, enumerates numeric `+0x1DA` memory field accesses and actual **immediately adjacent** conditional branches from the original Windows client's `.pdata`-bounded Options renderer `0x3F5D40` and parent `0x1FFDE0`. Verified on official client in [successful CI](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41416651189):
+
+- Central Options renderer has 5 numeric `+0x1DA` accesses: `movzbl` at `0x3F662B`, `0x3F6C33`, `0x3F6FFC`; a `cmp` at `0x3F6CC3`; and a direct `cmpb $11` at `0x3F738C`. The latter's `je` at `0x3F7393` branches to Done `0x3F73D1` on Saves, independently confirmed.
+- The parent renderer `0x1FFDE0` has one numeric `+0x1DA` `movzbl` at `0x20024A`. Direct memory-immediate comparisons do not capture all page-state tests because registers carry the loaded values.
+
+A second tool, `tools/native_0139_page_register_flow.py`, tracks GPR aliases from a specific `movzbl` field load through only one bounded straight-line instruction region, stopping on control-flow change or register mutation. It deliberately avoids claims about cross-block SSA/PHI, ECS object identity or copied values. Its genuine original-client [regression-tested CI](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41417139607) found one important sequence:
+
+| Real original 0.139 instruction role | RVA |
+| --- | ---: |
+| Load original page-state byte from `+0x1DA` into GPR | **`0x3F6C33`** |
+| Compare the same GPR against value **6** | **`0x3F6C3B`** |
+| Immediately following **`je`** | **`0x3F6C3E`** |
+| Conditional jump target | **`0x3F6D4A`** |
+| Existing separately confirmed native **Saves** content-builder call that the branch skips | **`0x3F6D43`** (calls `0x1DF770`) |
+
+Third-party-proof, exact-original disassembler crosscheck of the compare/jump plus previously verified Saves call was added to `tools.native_0139_page_register_flow.correlate_page_6_with_saves_builder`, with mutation/failure synthetic tests. The [successful exact-original-client CI](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41417815702) reports **`structurally_verified_skip: true`**. This is a *genuine control-flow branch of the renderer* testing value 6 and skipping the built-in Saves content builder along that branch. **It does not prove the human-readable tab name assigned to numeric 6, which entity owns the page field, how the tab is clicked, where its value is written or a hook ABI.**
+
+For source-only third-party native research, license boundaries, AVRT DLL proxy collisions and a no-Lua native acceptance checklist, see `docs/NATIVE_WINDOWS_0139_INTEGRATION_RESEARCH.md`. A public co-op mod has a named `UI_COMMAND` hook on **older, differently hashed** game builds, but its published `LICENSE` explicitly grants no reuse rights; no code or hook table has been imported. No actual native Cheats & Enhancements page, actual God Mode/XP/Gold/Damage toggles or tested live Windows injection currently exists. Continue exact-SHA auditing and identify the actual Bevy ECS Options interaction/update system before writing game memory.
