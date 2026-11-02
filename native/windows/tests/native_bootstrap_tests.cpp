@@ -1,6 +1,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#include <array>
 #include <cstring>
 #include <iostream>
 #include "azse_native_bootstrap.h"
@@ -59,5 +60,27 @@ int main() {
   good &= check(attrs.nFileSizeLow == sizeof(fixture) && attrs.nFileSizeHigh == 0,
                 "verification MUST preserve file size");
   DeleteFileW(file);
+
+  // Optional positive whole-file identity test, executed only in the
+  // quarantined Windows CI workflow with a genuine pinned original EXE.
+  // The binary is never executed or patched. The workflow deletes it after.
+  std::array<wchar_t, 32768> original_path{};
+  const DWORD original_len = GetEnvironmentVariableW(
+      L"AZSE_EXPECT_ORIGINAL_0139_PATH", original_path.data(),
+      static_cast<DWORD>(original_path.size()));
+  good &= check(original_len < original_path.size(),
+                "positive test path must not be truncated");
+  if (original_len > 0 && original_len < original_path.size()) {
+    good &= check(AZSE_VerifyOriginalExecutable(original_path.data()) == 1,
+                  "genuine original 0.139 must be accepted by native BCrypt SHA gate");
+    WIN32_FILE_ATTRIBUTE_DATA original_attrs{};
+    good &= check(GetFileAttributesExW(original_path.data(),
+                                        GetFileExInfoStandard, &original_attrs) != 0,
+                  "positive verifier must never remove the original fixture");
+    good &= check(
+        (static_cast<unsigned long long>(original_attrs.nFileSizeHigh) << 32) +
+            original_attrs.nFileSizeLow == AZSE_OriginalClientSize(),
+        "positive verifier must preserve original client length");
+  }
   return good ? 0 : 1;
 }
