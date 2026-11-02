@@ -27,6 +27,12 @@ class NativeActionXrefTests(unittest.TestCase):
         self.assertEqual(3, result["total_candidate_count"])
         self.assertEqual(hex(FUNC_B[0]), result["records"][2]["owner_begin_rva"])
 
+    def test_scope_to_helper_callers_ignores_unrelated_global_action_tags(self):
+        code = fixture()
+        result = x.scan_action_tag_moves(code, BASE, FUNCS, allowed_owners={FUNC_A[0]})
+        self.assertEqual([16, 17], result["ids_seen"])
+        self.assertEqual(2, result["total_candidate_count"])
+
     def test_detects_widget_calls_only_in_functions(self):
         result = x.scan_helper_calls(fixture(), BASE, FUNCS)
         self.assertEqual(3, result["total_candidate_count"])
