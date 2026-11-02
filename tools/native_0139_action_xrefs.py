@@ -123,7 +123,14 @@ def analyze_action_flow(game, expected_sha):
     footer_tags_found = {(x["action_low_id_candidate"], int(x["site_rva"], 16))
                          for x in tags["records"]}
     if not set(EXPECTED_FOOTER_CALLS) <= footer_calls_found or not set(EXPECTED_TAG_MOVES) <= footer_tags_found:
-        return {"status": "unconfirmed", "reason": "baseline_footer_no_longer_found"}
+        return {"status": "unconfirmed", "reason": "baseline_footer_no_longer_found",
+                "footer_call_matches": sorted(hex(x) for x in set(EXPECTED_FOOTER_CALLS) & footer_calls_found),
+                "footer_tag_matches": sorted([{"action_low_id": idx, "site_rva": hex(addr)}
+                                              for idx, addr in set(EXPECTED_TAG_MOVES) & footer_tags_found],
+                                             key=lambda x: x["action_low_id"]),
+                "helper_call_candidate_total": calls["total_candidate_count"],
+                "tag_move_candidate_total": tags["total_candidate_count"],
+                "tag_ids_observed": tags["ids_seen"]}
     disasm = shutil.which("llvm-objdump") or shutil.which("objdump")
     confirmed = 0
     if disasm and not calls["truncated"] and len(calls["records"]) <= 48:
