@@ -1,6 +1,8 @@
 """No game assets: synthetic x64 byte shapes for action-ID / widget inventory."""
 import struct
 import unittest
+from unittest.mock import patch
+from types import SimpleNamespace
 
 from tools import native_0139_action_xrefs as x
 
@@ -71,6 +73,14 @@ class NativeActionXrefTests(unittest.TestCase):
         self.assertTrue(calls["truncated"])
         self.assertEqual(1, len(tags["records"]))
         self.assertEqual(1, len(calls["records"]))
+
+    def test_disassembler_confirms_actual_tag_movabs_not_arbitrary_bytes(self):
+        row = {"site_rva": "0x1020", "action_low_id_candidate": 16}
+        output = "  140001020: 48 b9 10 00 00 00 00 00 00 80  movabs $0x8000000000000010,%rcx\\n"
+        with patch.object(x.subprocess, "run", return_value=SimpleNamespace(returncode=0, stdout=output)):
+            self.assertTrue(x._tag_move_disassembled("objdump", 0x140000000, row, "fake.exe"))
+        with patch.object(x.subprocess, "run", return_value=SimpleNamespace(returncode=0, stdout=output.replace("movabs", "nop   "))):
+            self.assertFalse(x._tag_move_disassembled("objdump", 0x140000000, row, "fake.exe"))
 
     def test_unknown_sha_rejected_before_opening_game(self):
         self.assertEqual("wrong_client_identity",
