@@ -24,9 +24,9 @@ from tools.native_0139_footer_probe import EXPECTED_SHA
 
 FIELD_DISPLACEMENT = 0x1DA
 BASELINE_READER_RVA = 0x3F738C
-MAX_FUNCTIONS = 192
+MAX_FUNCTIONS = 640
 MAX_FUNCTION_BYTES = 65536
-MAX_RECORDS = 160
+MAX_RECORDS = 320
 DISP_BYTES = struct.pack("<I", FIELD_DISPLACEMENT)
 INST = re.compile(r"^\s*([0-9a-f]+):\s*([A-Za-z][A-Za-z0-9_.]*)\s*(.*)$", re.I)
 MEM = re.compile(r"(?<![0-9a-f])0x1da\([^)]*\)", re.I)
