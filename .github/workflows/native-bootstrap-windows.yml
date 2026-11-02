@@ -1,0 +1,36 @@
+name: Native Windows x64 bootstrap compile and fail-closed tests
+
+on:
+  pull_request:
+    paths:
+      - 'native/windows/**'
+      - '.github/workflows/native-bootstrap-windows.yml'
+  push:
+    branches: ['feat/windows-0139-ephemeral-native-audit']
+    paths:
+      - 'native/windows/**'
+      - '.github/workflows/native-bootstrap-windows.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-native-bootstrap:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure clean-room native x64 DLL (not an EXE patch or AVRT proxy)
+        run: cmake -S native/windows -B build/native/windows -G "Visual Studio 17 2022" -A x64
+      - name: Build with MSVC warnings-as-errors
+        run: cmake --build build/native/windows --config Release --parallel 2
+      - name: Test exact official-client SHA gate and reject synthetic binaries
+        run: ctest --test-dir build/native/windows -C Release --output-on-failure
+      - name: Confirm no original game file or DLL artifact is distributed
+        shell: pwsh
+        run: |
+          if (-not (Test-Path build/native/windows/Release/azse_native_bootstrap.dll)) {
+            throw 'Native x64 DLL did not build'
+          }
+          Write-Host 'Build/test only. No installation, injection, AVRT proxy, game patch, or download artifact.'
