@@ -241,3 +241,17 @@ The last three code entries are disassembled from independent PE `.pdata` functi
 A separate direct code-pattern scan found **zero RIP-relative `mov/lea` references to any of the eight named function *entrypoints***. This is narrower than whole-program dataflow and cannot disprove all indirect Rust function addresses or other forms of linking.
 
 The cluster's semantics are unknown, but it is an actual original-client, highly specific structure and more useful than searching generic low action IDs 16/17 or string markers. `tools/native_0139_options_pointer_table_owners.py` now searches nearby code/data references to the six-function table itself, includes regression tests, and is wired to the SHA-pinned original-client audit. The existence of this table **does not validate an insertion hook** or prove a page-change event. No EXE or game save was modified, and there is still no live native Cheats tab.
+
+
+### Original 0.139 function that references the six-pointer table's neighborhood
+
+Following the strict six-pointer structural verification, `tools/native_0139_options_pointer_table_owners.py` searched all x64 RIP-relative `lea`/`mov` candidates with targets within 96 bytes before or after the six-pointer table. It subsequently disassembled all candidate instruction owners from the PE unwind function entry. [Exact original-client verified CI](https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41440832670) found **exactly two true instruction starts**, both in the same source function:
+
+| Source instruction RVA | RIP-relative target RVA | Position vs. table beginning |
+| --- | --- | --- |
+| `0x1E4135` | `0x652DBA0` | 72 bytes **before** table |
+| `0x1E4385` | `0x652DC48` | 96 bytes **after** table beginning |
+
+Both are inside original PE unwind-bounded function **`0x1E3BC0`** (length **3,636 bytes**). The function's disassembly has **60 direct call instructions, zero indirect calls/jumps**, one small literal **15** compare at **`0x1E3DE0`**, and **zero numeric `+0x1DA` accesses**. There are **no aligned absolute static-data pointers** to the exact six-pointer table start or pointer slots in the surveyed original `.rdata`/`.data` subset. This association is still indirect: neither instruction is a direct reference to an individual six-pointer slot, and the function's semantic role is not yet known.
+
+A follow-up `tools/native_0139_table_owner_call_graph.py` independently scans all genuine direct E8 call instructions in `0x1E3BC0`, known Options action-widget constructor calls, generic tagged IDs and confirmed call edges *to* this function. It is wired into the SHA-pinned original-client CI with synthetic regression checks; its results must not be represented as Bevy ECS event dispatch or a safe hook without further proof.
