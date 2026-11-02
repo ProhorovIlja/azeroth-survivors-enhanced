@@ -1,0 +1,128 @@
+name: Original Windows 0.139 native Options compatibility
+on:
+  pull_request:
+    paths:
+      - 'tools/ephemeral_client_audit.py'
+      - 'tests/test_ephemeral_client_audit.py'
+      - 'tools/native_0139_footer_probe.py'
+      - 'tests/test_native_0139_footer_probe.py'
+      - 'tools/native_0139_action_xrefs.py'
+      - 'tests/test_native_0139_action_xrefs.py'
+      - 'tools/native_0139_saves_branch.py'
+      - 'tests/test_native_0139_saves_branch.py'
+      - 'tools/native_0139_selector_xrefs.py'
+      - 'tests/test_native_0139_selector_xrefs.py'
+      - 'tools/native_0139_selector_callers.py'
+      - 'tests/test_native_0139_selector_callers.py'
+      - 'tools/native_0139_options_event_ancestry.py'
+      - 'tests/test_native_0139_options_event_ancestry.py'
+      - 'tools/native_0139_parent_event_profile.py'
+      - 'tests/test_native_0139_parent_event_profile.py'
+      - 'tools/native_0139_page_branch_map.py'
+      - 'tests/test_native_0139_page_branch_map.py'
+      - 'tools/native_0139_page_register_flow.py'
+      - 'tests/test_native_0139_page_register_flow.py'
+      - 'tools/native_0139_options_type_xrefs.py'
+      - 'tests/test_native_0139_options_type_xrefs.py'
+      - 'tools/native_0139_reflection_pointer_graph.py'
+      - 'tests/test_native_0139_reflection_pointer_graph.py'
+      - 'tools/native_0139_function_pointer_tables.py'
+      - 'tests/test_native_0139_function_pointer_tables.py'
+      - 'tools/native_0139_options_pointer_cluster.py'
+      - 'tests/test_native_0139_options_pointer_cluster.py'
+      - 'tools/native_0139_options_pointer_table_owners.py'
+      - 'tests/test_native_0139_options_pointer_table_owners.py'
+      - 'tools/native_0139_table_owner_call_graph.py'
+      - 'tests/test_native_0139_table_owner_call_graph.py'
+      - '.github/workflows/ephemeral-client-audit.yml'
+  push:
+    branches: ['feat/windows-0139-ephemeral-native-audit']
+    paths:
+      - 'tools/ephemeral_client_audit.py'
+      - 'tests/test_ephemeral_client_audit.py'
+      - 'tools/native_0139_footer_probe.py'
+      - 'tests/test_native_0139_footer_probe.py'
+      - 'tools/native_0139_action_xrefs.py'
+      - 'tests/test_native_0139_action_xrefs.py'
+      - 'tools/native_0139_saves_branch.py'
+      - 'tests/test_native_0139_saves_branch.py'
+      - 'tools/native_0139_selector_xrefs.py'
+      - 'tests/test_native_0139_selector_xrefs.py'
+      - 'tools/native_0139_selector_callers.py'
+      - 'tests/test_native_0139_selector_callers.py'
+      - 'tools/native_0139_options_event_ancestry.py'
+      - 'tests/test_native_0139_options_event_ancestry.py'
+      - 'tools/native_0139_parent_event_profile.py'
+      - 'tests/test_native_0139_parent_event_profile.py'
+      - 'tools/native_0139_page_branch_map.py'
+      - 'tests/test_native_0139_page_branch_map.py'
+      - 'tools/native_0139_page_register_flow.py'
+      - 'tests/test_native_0139_page_register_flow.py'
+      - 'tools/native_0139_options_type_xrefs.py'
+      - 'tests/test_native_0139_options_type_xrefs.py'
+      - 'tools/native_0139_reflection_pointer_graph.py'
+      - 'tests/test_native_0139_reflection_pointer_graph.py'
+      - 'tools/native_0139_function_pointer_tables.py'
+      - 'tests/test_native_0139_function_pointer_tables.py'
+      - 'tools/native_0139_options_pointer_cluster.py'
+      - 'tests/test_native_0139_options_pointer_cluster.py'
+      - 'tools/native_0139_options_pointer_table_owners.py'
+      - 'tests/test_native_0139_options_pointer_table_owners.py'
+      - 'tools/native_0139_table_owner_call_graph.py'
+      - 'tests/test_native_0139_table_owner_call_graph.py'
+      - '.github/workflows/ephemeral-client-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-exact-client:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 'Synthetic test: never use original binaries'
+        run: python -m unittest discover -s tests -p 'test_ephemeral_client_audit.py' -v
+      - name: 'Synthetic test: native action tags, no executable used'
+        run: python -m unittest discover -s tests -p 'test_native_0139_footer_probe.py' -v
+      - name: 'Synthetic test: action ID and native widget cross references'
+        run: python -m unittest discover -s tests -p 'test_native_0139_action_xrefs.py' -v
+      - name: 'Synthetic test: Saves selector conditional and exact Done target'
+        run: python -m unittest discover -s tests -p 'test_native_0139_saves_branch.py' -v
+      - name: 'Synthetic test: 0.139 native selector read/write evidence'
+        run: python -m unittest discover -s tests -p 'test_native_0139_selector_xrefs.py' -v
+      - name: 'Synthetic test: original byte-store caller graph'
+        run: python -m unittest discover -s tests -p 'test_native_0139_selector_callers.py' -v
+      - name: 'Synthetic test: original Options event ancestry and footer action IDs'
+        run: python -m unittest discover -s tests -p 'test_native_0139_options_event_ancestry.py' -v
+      - name: 'Synthetic test: parent Options event fingerprints'
+        run: python -m unittest discover -s tests -p 'test_native_0139_parent_event_profile.py' -v
+      - name: 'Synthetic test: Options page-state comparison and branch map'
+        run: python -m unittest discover -s tests -p 'test_native_0139_page_branch_map.py' -v
+      - name: 'Synthetic test: native page state register comparisons'
+        run: python -m unittest discover -s tests -p 'test_native_0139_page_register_flow.py' -v
+      - name: 'Synthetic test: original Bevy Options type-marker xrefs'
+        run: python -m unittest discover -s tests -p 'test_native_0139_options_type_xrefs.py' -v
+      - name: 'Synthetic test: original Bevy Options reflection pointer graph'
+        run: python -m unittest discover -s tests -p 'test_native_0139_reflection_pointer_graph.py' -v
+      - name: 'Synthetic test: Options UI function pointer tables'
+        run: python -m unittest discover -s tests -p 'test_native_0139_function_pointer_tables.py' -v
+      - name: 'Synthetic test: exact original Options six-pointer cluster'
+        run: python -m unittest discover -s tests -p 'test_native_0139_options_pointer_cluster.py' -v
+      - name: 'Synthetic test: code/data ownership of original Options callback table'
+        run: python -m unittest discover -s tests -p 'test_native_0139_options_pointer_table_owners.py' -v
+      - name: 'Synthetic test: original Options six-pointer table owner call graph'
+        run: python -m unittest discover -s tests -p 'test_native_0139_table_owner_call_graph.py' -v
+      - name: Privately restore pinned 0.139 EXE and extract metadata only
+        run: python -m tools.ephemeral_client_audit --report "$RUNNER_TEMP/client_0139_metadata.json"
+      - name: Archive derived metadata only (NOT the original EXE, parts or MPQ)
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-0139-native-metadata-only
+          path: ${{ runner.temp }}/client_0139_metadata.json
+          retention-days: 14
+          if-no-files-found: error

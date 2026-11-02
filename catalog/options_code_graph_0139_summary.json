@@ -1,0 +1,540 @@
+{
+  "schema": 1,
+  "version": "0.139.0",
+  "sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+  "bytes": 150595584,
+  "previous": "0.138.0",
+  "candidate_roles": {
+    "options_page_controls": {
+      "old": "0x3f74c0",
+      "new": "0x3f5d40"
+    },
+    "saves_page_content": {
+      "old": "0x1021e0",
+      "new": "0x1df770"
+    },
+    "addons_page_content": {
+      "old": "0x1038d0",
+      "new": "0x1e0e60"
+    }
+  },
+  "full_sha_verified": true,
+  "disassembler_confirmed": true,
+  "windows_runtime_verified": false,
+  "native_cheats_implemented": false,
+  "original_game_published": false,
+  "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41401071660",
+  "disassembler_confirmed_direct_calls": [
+    {
+      "caller": "options_page_controls",
+      "site_rva": "0x3f6d43",
+      "target": "saves_page_content",
+      "target_rva": "0x1df770",
+      "x64_call_instruction_verified": true
+    },
+    {
+      "caller": "options_page_controls",
+      "site_rva": "0x3f6da1",
+      "target": "addons_page_content",
+      "target_rva": "0x1e0e60",
+      "x64_call_instruction_verified": true
+    }
+  ],
+  "disassembler_tool_available": true,
+  "safe_hook_known": false,
+  "native_footer_0139": {
+    "source_run": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41406510827",
+    "options_central_rva": "0x3f5d40",
+    "shared_action_widget_helper_rva": "0x1e5530",
+    "original_defaults": {
+      "key": "options.defaults",
+      "action_tag_low_id": 16,
+      "key_load_rva": "0x3f7395",
+      "tag_rva": "0x3f73a9",
+      "direct_call_site_rva": "0x3f73cc"
+    },
+    "original_done": {
+      "key": "options.done",
+      "action_tag_low_id": 17,
+      "key_load_rva": "0x3f73d1",
+      "tag_rva": "0x3f73e5",
+      "direct_call_site_rva": "0x3f7408"
+    },
+    "both_direct_calls_disassembler_confirmed": true,
+    "click_event_consumer_found": false,
+    "safe_new_tab_hook_verified": false,
+    "native_cheat_behavior_verified": false,
+    "original_binary_unchanged": true
+  },
+  "native_action_creation_xrefs_0139": {
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41409012753",
+    "official_client_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "shared_action_widget_creation_helper_rva": "0x1e5530",
+    "helper_direct_call_count": 8,
+    "helper_call_instructions_all_disassembler_confirmed": true,
+    "scoped_tag_movabs_instruction_count": 8,
+    "scoped_tag_movabs_all_disassembler_confirmed": true,
+    "caller_function_count": 5,
+    "button_creation_candidates": [
+      {
+        "id": 9,
+        "owner": "0x1df770",
+        "tag": "0x1dfbdd",
+        "call": "0x1dfc00",
+        "nearby": true
+      },
+      {
+        "id": 13,
+        "owner": "0x1df770",
+        "tag": "0x1dfc19",
+        "call": "0x1dfc35",
+        "nearby": true
+      },
+      {
+        "id": 11,
+        "owner": "0x3f05f0",
+        "tag": "0x3f0998",
+        "call": "0x3f09bb",
+        "nearby": true
+      },
+      {
+        "id": 14,
+        "owner": "0x3f0a20",
+        "tag": "0x3f0de9",
+        "call": "0x3f0e0f",
+        "nearby": true
+      },
+      {
+        "id": 15,
+        "owner": "0x3f0a20",
+        "tag": "0x3f0e28",
+        "call": "0x3f0e47",
+        "nearby": true
+      },
+      {
+        "id": 8,
+        "owner": "0x3f0eb0",
+        "tag": "0x3f1051",
+        "call": "0x3f10f1",
+        "nearby": false
+      },
+      {
+        "id": 16,
+        "owner": "0x3f5d40",
+        "tag": "0x3f73a9",
+        "call": "0x3f73cc",
+        "nearby": true,
+        "public_key": "options.defaults"
+      },
+      {
+        "id": 17,
+        "owner": "0x3f5d40",
+        "tag": "0x3f73e5",
+        "call": "0x3f7408",
+        "nearby": true,
+        "public_key": "options.done"
+      }
+    ],
+    "warning": "8 tag loads and 8 call instructions confirmed separately, not proof that each tag is semantically attached to each nearest call. Seven are merely code-adjacent; ID8 is farther away. No Bevy click consumption, native navigation tab construction, gameplay cheat or safe hook verified.",
+    "runtime_event_consumer_confirmed": false,
+    "safe_patch_insertion_confirmed": false,
+    "original_game_modified": false
+  },
+  "native_saves_footer_selector_0139": {
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41409473700",
+    "comparison_site_rva": "0x3f738c",
+    "page_selector_byte_field_offset_in_unknown_object": "0x1da",
+    "saves_page_state_literal": 11,
+    "conditional_jump_site_rva": "0x3f7393",
+    "branch_target_original_done_key_load_rva": "0x3f73d1",
+    "compare_and_conditional_jump_both_disassembler_confirmed": true,
+    "same_field_value_as_prior_0138": true,
+    "unknown_object_owner": true,
+    "tab_selection_mutation_handler_verified": false,
+    "safe_native_page_insertion_verified": false,
+    "original_game_modified": false
+  },
+  "native_selector_field_access_inventory_0139": {
+    "official_client_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "latest_full_audit_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41411047535",
+    "field_byte_displacement": "0x1da",
+    "raw_displacement_byte_hits": 527,
+    "unwind_bounded_functions_with_raw_byte_candidate": 479,
+    "functions_fully_disassembled_from_entry": 479,
+    "unwind_function_disassembly_failures": 0,
+    "confirmed_disassembled_instructions_referring_to_displacement": 97,
+    "possible_write_accesses": 44,
+    "strict_byte_movb_write_candidates": 13,
+    "strict_byte_writer_functions": 10,
+    "central_options_function_rva": "0x3f5d40",
+    "central_options_disassembled_selector_reads": [
+      "0x3f662b",
+      "0x3f6c33",
+      "0x3f6cc3",
+      "0x3f6ffc",
+      "0x3f738c"
+    ],
+    "central_options_direct_writes_to_this_displacement_found": 0,
+    "saves_state_11_comparison": "0x3f738c",
+    "observed_movb_immediate_values_elsewhere": [
+      0,
+      1,
+      2,
+      4,
+      255
+    ],
+    "strict_byte_writer_function_rvas": [
+      "0x1f6100",
+      "0x302ec0",
+      "0x3910e0",
+      "0x98da20",
+      "0xe61910",
+      "0xe6c920",
+      "0x2bd9dd0",
+      "0x2bdac00",
+      "0x4b52c90",
+      "0x610cc10"
+    ],
+    "direct_e8_calls_to_byte_writer_function_entries": 10,
+    "direct_e8_calls_checked_with_disassembler": 10,
+    "direct_e8_calls_confirmed": 10,
+    "direct_calls_from_six_known_options_ui_functions_to_candidate_byte_writer_functions": 0,
+    "indirect_call_paths_explored": false,
+    "same_runtime_object_identity_proven": false,
+    "tab_click_event_consumer_proven": false,
+    "native_page_installation_implemented": false,
+    "working_cheat_implemented": false,
+    "original_executable_modified": false,
+    "limitations": "The field displacement is a numeric x64 encoding used by multiple unrelated object types; absence of direct E8 paths does not exclude indirect ECS dispatch. This is read-only address metadata, not a safe patch/hook."
+  },
+  "native_options_event_ancestry_0139": {
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41414687708",
+    "official_client_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "original_options_renderer_rva": "0x3f5d40",
+    "parent_options_function_rva": "0x1ffde0",
+    "first_layer_e8_sites": [
+      {
+        "site": "0x2005a5",
+        "caller": "0x1ffde0",
+        "target": "0x3f5d40"
+      },
+      {
+        "site": "0x20e324",
+        "caller": "0x20e0c0",
+        "target": "0x1ffde0"
+      },
+      {
+        "site": "0x2c19b2",
+        "caller": "0x2c1710",
+        "target": "0x1ffde0"
+      }
+    ],
+    "second_layer_additional_site": {
+      "site": "0x2c1ae7",
+      "caller": "0x2c1ad0",
+      "target": "0x2c1710"
+    },
+    "all_listed_e8_sites_disassembler_confirmed": true,
+    "all_global_movabs_high_bit_id16_id17_instruction_sites_confirmed": true,
+    "global_tag_provenance_owners": 93,
+    "global_tag_provenance_instruction_count": 152,
+    "id16_instruction_count": 86,
+    "id17_instruction_count": 66,
+    "footer_owners_id16_id17_only_two_of_152": true,
+    "critical_warning": "The values 16 and 17 are common generic tagged immediates in many unrelated original-client functions and must not be treated as unique native Options click event IDs based only on byte match.",
+    "bevy_ecs_event_consumer_identified": false,
+    "tab_state_mutation_proven": false,
+    "new_native_cheats_page_implemented": false,
+    "original_game_published_or_modified": false
+  },
+  "native_options_parent_event_profiles_0139": {
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41415142806",
+    "status": "parent_options_instruction_profiles",
+    "profiled_original_parent_functions": 4,
+    "parent_function_profiles": [
+      {
+        "function": "0x1ffde0",
+        "size_bytes": 2174,
+        "direct_calls": 12,
+        "indirect_calls": 0,
+        "indirect_jumps": 0,
+        "selector_displacement_reads": 1,
+        "selector_displacement_read_site": "0x20024a",
+        "small_15_compare_site": "0x200529"
+      },
+      {
+        "function": "0x20e0c0",
+        "size_bytes": 804,
+        "direct_calls": 5,
+        "indirect_calls": 0,
+        "indirect_jumps": 0,
+        "selector_displacement_accesses": 0
+      },
+      {
+        "function": "0x2c1710",
+        "size_bytes": 950,
+        "direct_calls": 5,
+        "indirect_calls": 0,
+        "indirect_jumps": 0,
+        "selector_displacement_accesses": 0
+      },
+      {
+        "function": "0x2c1ad0",
+        "size_bytes": 134,
+        "direct_calls": 3,
+        "indirect_calls": 0,
+        "indirect_jumps": 0,
+        "selector_displacement_accesses": 0
+      }
+    ],
+    "all_verified_from_pdata_function_start": true,
+    "comparison_15_is_proven_to_refer_to_page_selector": false,
+    "no_indirect_calls_or_jumps_in_these_four": true,
+    "actual_click_dispatcher_identified": false,
+    "runtime_selected_page_writer_identified": false,
+    "working_native_cheats_menu_implemented": false,
+    "original_game_modified": false
+  },
+  "native_page_register_flow_0139": {
+    "official_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "original_page_branch_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41416651189",
+    "original_register_flow_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41417139607",
+    "independently_confirmed_saves_skip_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41417815702",
+    "central_options_rva": "0x3f5d40",
+    "parent_options_rva": "0x1ffde0",
+    "central_disp_0x1da_access_count": 5,
+    "parent_disp_0x1da_access_count": 1,
+    "direct_memory_immediate_compare_count_central": 1,
+    "direct_memory_saves_state_11_compare_rva": "0x3f738c",
+    "direct_memory_saves_state_11_je_rva": "0x3f7393",
+    "direct_memory_saves_state_11_jump_target_rva": "0x3f73d1",
+    "central_register_loads_from_numeric_disp": [
+      "0x3f662b",
+      "0x3f6c33",
+      "0x3f6ffc"
+    ],
+    "parent_register_loads_from_numeric_disp": [
+      "0x20024a"
+    ],
+    "exact_same_gpr_literal_6_comparison": {
+      "load_rva": "0x3f6c33",
+      "compared_register": "rax",
+      "compare_rva": "0x3f6c3b",
+      "literal": 6,
+      "branch_rva": "0x3f6c3e",
+      "branch_kind": "je",
+      "branch_target_rva": "0x3f6d4a",
+      "verified_saves_builder_call_site_in_jump_over_range": "0x3f6d43",
+      "verified_saves_builder_target_function_rva": "0x1df770",
+      "disassembler_confirmed_branch_and_call": true,
+      "structurally_skips_saves_content_builder": true,
+      "actual_page_label_for_6_known": false,
+      "click_event_consumer_identified": false
+    },
+    "gameplay_cheats_implemented": false,
+    "exact_original_exe_modified": false,
+    "interpretation": "Original 0.139 renderer reads page state and contains a same-GPR compare/JE for value 6; branch skips a separately verified native Saves content builder call. Does not identify owner of the field, a tab click handler, a safe hook, or tab registration."
+  },
+  "original_bevy_options_type_xrefs_0139": {
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41418182997",
+    "official_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "exact_native_type_marker_counts": {
+      "Act": 4,
+      "Fill": 1,
+      "Footer": 1,
+      "OptionsCanvas": 1,
+      "OptionsRoot": 1,
+      "PageList": 1,
+      "Readout": 1,
+      "TipText": 1,
+      "Track": 1
+    },
+    "direct_lea_instruction_xref_count": 1,
+    "direct_lea_xref": {
+      "owner_function_rva": "0x33630",
+      "instruction_rva": "0x33768",
+      "marker": "TipText",
+      "verified_from_function_start": true
+    },
+    "confirmed_direct_lea_xrefs_to_OptionsCanvas": 0,
+    "corrected_false_positive": "Greedy type names joined adjacent Rust strings (TipTextwenilla_rogue_app); fixed by a known-type allowlist and identifier suffix check, covered by regression tests.",
+    "no_direct_OptionsCanvas_reference_does_not_disprove_indirect_reflection_registration": true,
+    "ecs_event_registration_confirmed": false,
+    "native_tab_click_dispatcher_found": false,
+    "original_exe_modified": false
+  },
+  "native_options_reflection_pointer_graph_0139": {
+    "official_client_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "exact_original_client_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41420600194",
+    "type_name_targets": [
+      "OptionsCanvas",
+      "OptionsRoot",
+      "PageList",
+      "Footer",
+      "TipText"
+    ],
+    "exact_64_bit_pointer_to_type_start_count_rdata": 0,
+    "exact_64_bit_pointer_to_type_start_count_data": 0,
+    "direct_rip_code_xrefs_to_matching_pointer_slots": 0,
+    "exact_Rust_slice_pointer_length_descriptors": 0,
+    "nearby_function_pointer_candidates": 0,
+    "inference_limits": "No exact 64-bit static pointer slot to any of the 5 exact type-name string starts in .rdata or .data on original 0.139. This does not prove no ECS event registration: type names may be inlined, hashed, stored in other sections, referenced by interior substring positions, or registered via dynamically generated structures.",
+    "bevy_system_registration_confirmed": false,
+    "in_game_native_tab_implemented": false,
+    "original_game_modified": false
+  },
+  "native_windows_clean_room_bootstrap_0139": {
+    "source_dir": "native/windows",
+    "intended_abi_exports": [
+      "AZSE_OriginalClientSha256",
+      "AZSE_OriginalClientSize",
+      "AZSE_VerifyOriginalExecutable",
+      "AZSE_NativeHookInstalled",
+      "AZSE_NativeCheatsTabInstalled"
+    ],
+    "original_sha_verification_method": "Win32 read-only file handle + exact file length + Windows BCrypt streamed SHA-256",
+    "zero_hooks_by_design": true,
+    "native_menu_present": false,
+    "actual_gameplay_cheats_present": false,
+    "build_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/workflows/native-bootstrap-windows.yml",
+    "win64_build_and_test_status": "PASS: MSVC /W4 /WX x64 Release, synthetic rejects, authentic 0.139 SHA accept, one-byte mutation same-size reject, unrelated process denied, cleanup",
+    "production_release_status": "NOT_FOR_RELEASE",
+    "danger_notice": "Do not copy DLL into game folder, inject it, rename as avrt.dll or advertise working native menu; there is no loader or hook ABI.",
+    "successful_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41421364850",
+    "negative_synthetic_client_tests_passed": true,
+    "exact_official_0139_positive_verification_tested_on_windows": false,
+    "game_process_loaded_and_tested": false,
+    "native_options_tab_runtime_tested": false,
+    "original_executable_modified": false,
+    "release_candidate": false,
+    "latest_verified_win64_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41424929306",
+    "real_original_client_whole_file_sha_accepted_by_windows_dll": true,
+    "real_original_exe_executed": false,
+    "real_original_exe_persisted_in_build_artifact": false,
+    "runner_original_exe_disposed_after_test": true,
+    "one_byte_modified_original_size_exe_rejected": true,
+    "wrong_file_length_and_missing_path_rejected": true,
+    "current_process_identity_check_added": true,
+    "unrelated_ci_test_process_rejected_as_game": true,
+    "native_hook_active": false,
+    "native_cheats_present": false
+  },
+  "original_0139_options_function_pointer_cluster": {
+    "official_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "initial_exact_original_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41439827358",
+    "six_pointer_cluster_exact_original_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41440327948",
+    "rdata_six_pointer_slots": {
+      "0x652dbe8": "0x20e0c0",
+      "0x652dbf0": "0x2c1ad0",
+      "0x652dbf8": "0x2c1710",
+      "0x652dc00": "0x20e410",
+      "0x652dc08": "0x20e450",
+      "0x652dc10": "0x20e4a0"
+    },
+    "first_three_confirmed_options_render_ancestry": true,
+    "new_neighbor_profiles": [
+      {
+        "rva": "0x20e410",
+        "function_size": 55,
+        "confirmed_direct_call_count": 1,
+        "direct_call_targets": [
+          "0x64ce330"
+        ],
+        "direct_jump_targets": [
+          "0x5bd2760"
+        ],
+        "read_numeric_0x1da": false
+      },
+      {
+        "rva": "0x20e450",
+        "function_size": 55,
+        "confirmed_direct_call_count": 1,
+        "direct_call_targets": [
+          "0x64ce330"
+        ],
+        "direct_jump_targets": [
+          "0x5bd2a80"
+        ],
+        "read_numeric_0x1da": false
+      },
+      {
+        "rva": "0x20e4a0",
+        "function_size": 283,
+        "confirmed_direct_call_count": 2,
+        "direct_call_targets": [
+          "0x64ce330",
+          "0x649311d"
+        ],
+        "direct_jump_targets": [],
+        "read_numeric_0x1da": false
+      }
+    ],
+    "exact_direct_e8_calls_into_new_three": 0,
+    "exact_rip_lea_or_mov_to_known_8_ui_function_entrypoints": 0,
+    "direct_rip_references_to_first_three_pointer_slots": 0,
+    "actual_Bevy_ECS_callback_registration_verified": false,
+    "actual_native_Options_click_consumer_verified": false,
+    "native_Options_page_writer_verified": false,
+    "exact_SHA_runtime_patch_verified": false,
+    "working_cheats_tab": false,
+    "original_exe_modified": false,
+    "warning": "Six-pointer structural cluster confirmed, but callbacks' role and Bevy interaction semantics unproven. No change to original client or live game."
+  },
+  "original_0139_options_table_owner_provenance": {
+    "exact_original_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41440832670",
+    "six_pointer_table_start": "0x652dbe8",
+    "six_pointer_table_end": "0x652dc18",
+    "only_confirmed_code_refs_near_table": [
+      {
+        "instruction_rva": "0x1e4135",
+        "target_rva": "0x652dba0",
+        "delta_before_first_pointer": -72,
+        "code_function_owner": "0x1e3bc0"
+      },
+      {
+        "instruction_rva": "0x1e4385",
+        "target_rva": "0x652dc48",
+        "delta_after_first_pointer": 96,
+        "code_function_owner": "0x1e3bc0"
+      }
+    ],
+    "unique_owner_function_rva": "0x1e3bc0",
+    "unique_owner_function_size": 3636,
+    "unique_owner_direct_call_count": 60,
+    "indirect_calls_in_owner": 0,
+    "indirect_jumps_in_owner": 0,
+    "numeric_0x1da_memory_displacement_reads_in_owner": 0,
+    "observed_cmp_15_at": "0x1e3de0",
+    "external_static_VA_refs_to_exact_table_head_or_six_slots_in_rdata_data": 0,
+    "next_step": "inspect exact owner function direct-call targets and caller graph, prove or disprove relation to native Options builder and Bevy ECS",
+    "button_event_consumer_verified": false,
+    "selected_page_writer_verified": false,
+    "safe_hook_verified": false,
+    "original_game_modified": false
+  },
+  "original_0139_table_owner_ancestry_followup": {
+    "official_client_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "actual_client_sha_pinned_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41441355283",
+    "caller_profile_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41441778429",
+    "table_associated_function": "0x1e3bc0",
+    "table_associated_function_direct_call_count": 60,
+    "table_associated_function_calls_to_known_options_render_helpers": 0,
+    "table_associated_function_direct_caller": "0x2cd550",
+    "verified_caller_E8_site": "0x2d06a9",
+    "parent_function_size_bytes": 17902,
+    "parent_function_direct_calls": 275,
+    "parent_function_indirect_calls": 0,
+    "parent_function_indirect_jumps": 0,
+    "parent_function_numeric_0x1da_memory_accesses": 0,
+    "parent_function_cmp_15_count": 10,
+    "global_direct_E8_calls_into_parent_count": 0,
+    "guess_only": "Large function with repeated cmp 15 may be application setup/registration but exact semantics are not established.",
+    "click_event_consumer_found": false,
+    "selected_page_writer_found": false,
+    "current_windows_native_CI": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41441778407",
+    "working_original_native_cheats_tab": false,
+    "actual_gameplay_cheats": false,
+    "original_exe_modified": false
+  }
+}

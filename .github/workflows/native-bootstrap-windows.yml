@@ -1,0 +1,95 @@
+name: Native Windows x64 bootstrap compile and fail-closed tests
+
+on:
+  pull_request:
+    paths:
+      - 'native/windows/**'
+      - 'tools/native_0139_windows_positive_fixture.py'
+      - '.github/workflows/native-bootstrap-windows.yml'
+  push:
+    branches: ['feat/windows-0139-ephemeral-native-audit']
+    paths:
+      - 'native/windows/**'
+      - 'tools/native_0139_windows_positive_fixture.py'
+      - '.github/workflows/native-bootstrap-windows.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-native-bootstrap:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure clean-room native x64 DLL (not an EXE patch or AVRT proxy)
+        run: cmake -S native/windows -B build/native/windows -G "Visual Studio 17 2022" -A x64
+      - name: Build with MSVC warnings-as-errors
+        run: cmake --build build/native/windows --config Release --parallel 2
+      - name: Test exact official-client SHA gate and reject synthetic binaries
+        run: ctest --test-dir build/native/windows -C Release --output-on-failure
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Positive original 0.139 SHA acceptance using unexecuted temporary original
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $original = Join-Path $env:RUNNER_TEMP 'azse-original-0139-positive-test.exe'
+          $mutated = Join-Path $env:RUNNER_TEMP 'azse-mutated-0139-negative-test.exe'
+          if (Test-Path -LiteralPath $original) {
+            throw 'Refuse to overwrite an original or a fixture'
+          }
+          if (Test-Path -LiteralPath $mutated) {
+            throw 'Refuse to overwrite a mutated fixture'
+          }
+          try {
+            python -m tools.native_0139_windows_positive_fixture --out $original
+            if ($LASTEXITCODE -ne 0) { throw 'Original client download/verify failed closed' }
+            if (-not (Test-Path -LiteralPath $original)) {
+              throw 'Official client fixture missing'
+            }
+            # One-byte corruption of a *separate temp copy*, with unchanged
+            # whole-file length. This distinguishes SHA validation from size.
+            Copy-Item -LiteralPath $original -Destination $mutated
+            $copy = [System.IO.File]::Open(
+              $mutated, [System.IO.FileMode]::Open,
+              [System.IO.FileAccess]::ReadWrite,
+              [System.IO.FileShare]::None)
+            try {
+              [void]$copy.Seek(8192, [System.IO.SeekOrigin]::Begin)
+              $originalByte = $copy.ReadByte()
+              if ($originalByte -lt 0) { throw 'Unexpected short original' }
+              [void]$copy.Seek(8192, [System.IO.SeekOrigin]::Begin)
+              $copy.WriteByte([byte]($originalByte -bxor 1))
+              $copy.Flush()
+            } finally {
+              $copy.Dispose()
+            }
+            if ((Get-Item -LiteralPath $mutated).Length -ne
+                (Get-Item -LiteralPath $original).Length) {
+              throw 'Mutated file length changed; SHA test invalid'
+            }
+            $env:AZSE_EXPECT_ORIGINAL_0139_PATH = $original
+            $env:AZSE_EXPECT_MUTATED_0139_PATH = $mutated
+            ctest --test-dir build/native/windows -C Release --output-on-failure
+            if ($LASTEXITCODE -ne 0) { throw 'Native Windows positive original SHA test failed' }
+          } finally {
+            Remove-Item -LiteralPath Env:AZSE_EXPECT_ORIGINAL_0139_PATH -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath Env:AZSE_EXPECT_MUTATED_0139_PATH -ErrorAction SilentlyContinue
+            if (Test-Path -LiteralPath $mutated) {
+              Remove-Item -LiteralPath $mutated -Force -ErrorAction Stop
+            }
+            if (Test-Path -LiteralPath $original) {
+              Remove-Item -LiteralPath $original -Force -ErrorAction Stop
+            }
+          }
+          Write-Host 'Positive native original SHA gate verified, temporary EXE deleted.'
+      - name: Confirm no original game file or DLL artifact is distributed
+        shell: pwsh
+        run: |
+          if (-not (Test-Path build/native/windows/Release/azse_native_bootstrap.dll)) {
+            throw 'Native x64 DLL did not build'
+          }
+          Write-Host 'Build/test only. No installation, injection, AVRT proxy, game patch, or download artifact.'
