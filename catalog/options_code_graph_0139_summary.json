@@ -418,5 +418,66 @@
     "unrelated_ci_test_process_rejected_as_game": true,
     "native_hook_active": false,
     "native_cheats_present": false
+  },
+  "original_0139_options_function_pointer_cluster": {
+    "official_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "initial_exact_original_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41439827358",
+    "six_pointer_cluster_exact_original_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41440327948",
+    "rdata_six_pointer_slots": {
+      "0x652dbe8": "0x20e0c0",
+      "0x652dbf0": "0x2c1ad0",
+      "0x652dbf8": "0x2c1710",
+      "0x652dc00": "0x20e410",
+      "0x652dc08": "0x20e450",
+      "0x652dc10": "0x20e4a0"
+    },
+    "first_three_confirmed_options_render_ancestry": true,
+    "new_neighbor_profiles": [
+      {
+        "rva": "0x20e410",
+        "function_size": 55,
+        "confirmed_direct_call_count": 1,
+        "direct_call_targets": [
+          "0x64ce330"
+        ],
+        "direct_jump_targets": [
+          "0x5bd2760"
+        ],
+        "read_numeric_0x1da": false
+      },
+      {
+        "rva": "0x20e450",
+        "function_size": 55,
+        "confirmed_direct_call_count": 1,
+        "direct_call_targets": [
+          "0x64ce330"
+        ],
+        "direct_jump_targets": [
+          "0x5bd2a80"
+        ],
+        "read_numeric_0x1da": false
+      },
+      {
+        "rva": "0x20e4a0",
+        "function_size": 283,
+        "confirmed_direct_call_count": 2,
+        "direct_call_targets": [
+          "0x64ce330",
+          "0x649311d"
+        ],
+        "direct_jump_targets": [],
+        "read_numeric_0x1da": false
+      }
+    ],
+    "exact_direct_e8_calls_into_new_three": 0,
+    "exact_rip_lea_or_mov_to_known_8_ui_function_entrypoints": 0,
+    "direct_rip_references_to_first_three_pointer_slots": 0,
+    "actual_Bevy_ECS_callback_registration_verified": false,
+    "actual_native_Options_click_consumer_verified": false,
+    "native_Options_page_writer_verified": false,
+    "exact_SHA_runtime_patch_verified": false,
+    "working_cheats_tab": false,
+    "original_exe_modified": false,
+    "warning": "Six-pointer structural cluster confirmed, but callbacks' role and Bevy interaction semantics unproven. No change to original client or live game."
   }
 }
