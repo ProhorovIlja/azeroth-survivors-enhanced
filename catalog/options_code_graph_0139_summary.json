@@ -65,5 +65,79 @@
     "safe_new_tab_hook_verified": false,
     "native_cheat_behavior_verified": false,
     "original_binary_unchanged": true
+  },
+  "native_action_creation_xrefs_0139": {
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41409012753",
+    "official_client_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "shared_action_widget_creation_helper_rva": "0x1e5530",
+    "helper_direct_call_count": 8,
+    "helper_call_instructions_all_disassembler_confirmed": true,
+    "scoped_tag_movabs_instruction_count": 8,
+    "scoped_tag_movabs_all_disassembler_confirmed": true,
+    "caller_function_count": 5,
+    "button_creation_candidates": [
+      {
+        "id": 9,
+        "owner": "0x1df770",
+        "tag": "0x1dfbdd",
+        "call": "0x1dfc00",
+        "nearby": true
+      },
+      {
+        "id": 13,
+        "owner": "0x1df770",
+        "tag": "0x1dfc19",
+        "call": "0x1dfc35",
+        "nearby": true
+      },
+      {
+        "id": 11,
+        "owner": "0x3f05f0",
+        "tag": "0x3f0998",
+        "call": "0x3f09bb",
+        "nearby": true
+      },
+      {
+        "id": 14,
+        "owner": "0x3f0a20",
+        "tag": "0x3f0de9",
+        "call": "0x3f0e0f",
+        "nearby": true
+      },
+      {
+        "id": 15,
+        "owner": "0x3f0a20",
+        "tag": "0x3f0e28",
+        "call": "0x3f0e47",
+        "nearby": true
+      },
+      {
+        "id": 8,
+        "owner": "0x3f0eb0",
+        "tag": "0x3f1051",
+        "call": "0x3f10f1",
+        "nearby": false
+      },
+      {
+        "id": 16,
+        "owner": "0x3f5d40",
+        "tag": "0x3f73a9",
+        "call": "0x3f73cc",
+        "nearby": true,
+        "public_key": "options.defaults"
+      },
+      {
+        "id": 17,
+        "owner": "0x3f5d40",
+        "tag": "0x3f73e5",
+        "call": "0x3f7408",
+        "nearby": true,
+        "public_key": "options.done"
+      }
+    ],
+    "warning": "8 tag loads and 8 call instructions confirmed separately, not proof that each tag is semantically attached to each nearest call. Seven are merely code-adjacent; ID8 is farther away. No Bevy click consumption, native navigation tab construction, gameplay cheat or safe hook verified.",
+    "runtime_event_consumer_confirmed": false,
+    "safe_patch_insertion_confirmed": false,
+    "original_game_modified": false
   }
 }
