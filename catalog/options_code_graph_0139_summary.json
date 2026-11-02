@@ -479,5 +479,38 @@
     "working_cheats_tab": false,
     "original_exe_modified": false,
     "warning": "Six-pointer structural cluster confirmed, but callbacks' role and Bevy interaction semantics unproven. No change to original client or live game."
+  },
+  "original_0139_options_table_owner_provenance": {
+    "exact_original_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41440832670",
+    "six_pointer_table_start": "0x652dbe8",
+    "six_pointer_table_end": "0x652dc18",
+    "only_confirmed_code_refs_near_table": [
+      {
+        "instruction_rva": "0x1e4135",
+        "target_rva": "0x652dba0",
+        "delta_before_first_pointer": -72,
+        "code_function_owner": "0x1e3bc0"
+      },
+      {
+        "instruction_rva": "0x1e4385",
+        "target_rva": "0x652dc48",
+        "delta_after_first_pointer": 96,
+        "code_function_owner": "0x1e3bc0"
+      }
+    ],
+    "unique_owner_function_rva": "0x1e3bc0",
+    "unique_owner_function_size": 3636,
+    "unique_owner_direct_call_count": 60,
+    "indirect_calls_in_owner": 0,
+    "indirect_jumps_in_owner": 0,
+    "numeric_0x1da_memory_displacement_reads_in_owner": 0,
+    "observed_cmp_15_at": "0x1e3de0",
+    "external_static_VA_refs_to_exact_table_head_or_six_slots_in_rdata_data": 0,
+    "next_step": "inspect exact owner function direct-call targets and caller graph, prove or disprove relation to native Options builder and Bevy ECS",
+    "button_event_consumer_verified": false,
+    "selected_page_writer_verified": false,
+    "safe_hook_verified": false,
+    "original_game_modified": false
   }
 }
