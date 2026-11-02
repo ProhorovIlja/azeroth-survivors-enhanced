@@ -153,5 +153,58 @@
     "tab_selection_mutation_handler_verified": false,
     "safe_native_page_insertion_verified": false,
     "original_game_modified": false
+  },
+  "native_selector_field_access_inventory_0139": {
+    "official_client_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "latest_full_audit_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41411047535",
+    "field_byte_displacement": "0x1da",
+    "raw_displacement_byte_hits": 527,
+    "unwind_bounded_functions_with_raw_byte_candidate": 479,
+    "functions_fully_disassembled_from_entry": 479,
+    "unwind_function_disassembly_failures": 0,
+    "confirmed_disassembled_instructions_referring_to_displacement": 97,
+    "possible_write_accesses": 44,
+    "strict_byte_movb_write_candidates": 13,
+    "strict_byte_writer_functions": 10,
+    "central_options_function_rva": "0x3f5d40",
+    "central_options_disassembled_selector_reads": [
+      "0x3f662b",
+      "0x3f6c33",
+      "0x3f6cc3",
+      "0x3f6ffc",
+      "0x3f738c"
+    ],
+    "central_options_direct_writes_to_this_displacement_found": 0,
+    "saves_state_11_comparison": "0x3f738c",
+    "observed_movb_immediate_values_elsewhere": [
+      0,
+      1,
+      2,
+      4,
+      255
+    ],
+    "strict_byte_writer_function_rvas": [
+      "0x1f6100",
+      "0x302ec0",
+      "0x3910e0",
+      "0x98da20",
+      "0xe61910",
+      "0xe6c920",
+      "0x2bd9dd0",
+      "0x2bdac00",
+      "0x4b52c90",
+      "0x610cc10"
+    ],
+    "direct_e8_calls_to_byte_writer_function_entries": 10,
+    "direct_e8_calls_checked_with_disassembler": 10,
+    "direct_e8_calls_confirmed": 10,
+    "direct_calls_from_six_known_options_ui_functions_to_candidate_byte_writer_functions": 0,
+    "indirect_call_paths_explored": false,
+    "same_runtime_object_identity_proven": false,
+    "tab_click_event_consumer_proven": false,
+    "native_page_installation_implemented": false,
+    "working_cheat_implemented": false,
+    "original_executable_modified": false,
+    "limitations": "The field displacement is a numeric x64 encoding used by multiple unrelated object types; absence of direct E8 paths does not exclude indirect ECS dispatch. This is read-only address metadata, not a safe patch/hook."
   }
 }
