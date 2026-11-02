@@ -206,5 +206,45 @@
     "working_cheat_implemented": false,
     "original_executable_modified": false,
     "limitations": "The field displacement is a numeric x64 encoding used by multiple unrelated object types; absence of direct E8 paths does not exclude indirect ECS dispatch. This is read-only address metadata, not a safe patch/hook."
+  },
+  "native_options_event_ancestry_0139": {
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41414687708",
+    "official_client_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "original_options_renderer_rva": "0x3f5d40",
+    "parent_options_function_rva": "0x1ffde0",
+    "first_layer_e8_sites": [
+      {
+        "site": "0x2005a5",
+        "caller": "0x1ffde0",
+        "target": "0x3f5d40"
+      },
+      {
+        "site": "0x20e324",
+        "caller": "0x20e0c0",
+        "target": "0x1ffde0"
+      },
+      {
+        "site": "0x2c19b2",
+        "caller": "0x2c1710",
+        "target": "0x1ffde0"
+      }
+    ],
+    "second_layer_additional_site": {
+      "site": "0x2c1ae7",
+      "caller": "0x2c1ad0",
+      "target": "0x2c1710"
+    },
+    "all_listed_e8_sites_disassembler_confirmed": true,
+    "all_global_movabs_high_bit_id16_id17_instruction_sites_confirmed": true,
+    "global_tag_provenance_owners": 93,
+    "global_tag_provenance_instruction_count": 152,
+    "id16_instruction_count": 86,
+    "id17_instruction_count": 66,
+    "footer_owners_id16_id17_only_two_of_152": true,
+    "critical_warning": "The values 16 and 17 are common generic tagged immediates in many unrelated original-client functions and must not be treated as unique native Options click event IDs based only on byte match.",
+    "bevy_ecs_event_consumer_identified": false,
+    "tab_state_mutation_proven": false,
+    "new_native_cheats_page_implemented": false,
+    "original_game_published_or_modified": false
   }
 }
