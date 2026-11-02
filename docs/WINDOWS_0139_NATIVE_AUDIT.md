@@ -19,3 +19,16 @@ The first large original EXE download exposed a critical update-format detail: G
 The original-game native Cheats & Enhancements tab, button click-event dispatcher, Windows runtime smoke test and real HP/damage/gold cheats **remain unimplemented/unverified**. The next technical work must disassemble actual 0.139 UI calls and event ownership before introducing any native code into the owner's game.
 
 The user's Google Drive still contained v0.138 EXE during this audit. Research no longer waits for a manual Drive upload.
+
+## Additional independent x64 disassembly confirmation (2026-11-02)
+
+After the exact v0.139 EXE was restored and authenticated, the runner checked original direct-call instruction boundaries with a native disassembler (LLVM objdump or GNU objdump fallback). Both page-construction calls within the candidate central Options function were actually observed as x64 call instructions:
+
+| Callsite (RVA) | Confirmed destination RVA | Role |
+|---|---|---|
+| **0x3F6D43** | **0x1DF770** | Saves content |
+| **0x3F6DA1** | **0x1E0E60** | AddOns content |
+
+Only the derived site/destination RVAs and Boolean confirmation were reported. Original instruction bytes or a game executable were **not** uploaded to GitHub. Live Bevy click-event dispatch, tab creation and game-engine hook safety are still unknown, so **these are not usable native cheat integration points**.
+
+Actual original v0.139 read-only disassembler crosscheck and synthetic tests succeeded: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41401071660 . The revised metadata-only report is archived as an Actions artifact for 14 days and the persistent address pairs are retained in catalog/options_code_graph_0139_summary.json.
