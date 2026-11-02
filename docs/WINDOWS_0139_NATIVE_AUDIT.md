@@ -92,3 +92,30 @@ The original code contains a disassembler-confirmed **byte comparison against Sa
 This confirms one exact original **page-state read** continues to use the `+0x1DA` field in 0.139 despite the engine update. It does **not** identify who owns this state object, who writes the field on navigation, the full set of page IDs or how to register another Bevy page. **Do not write to that byte or reuse 0.138 RVA values**; a field read is not an injection ABI.
 
 Next static/runtime task: identify actual writers to that state field and the UI tab-click consumers, then verify event ownership/lifetime on an isolated Windows copy. A genuine Cheats & Enhancements tab and real solo-only God Mode/XP/Gold/Damage toggles remain unimplemented.
+
+
+## Complete original 0.139 Options selector access inventory and direct-call provenance (2026-11-02)
+
+Continuing the original native Saves/Defaults selector read `cmpb $11, +0x1DA(...)` at `0x3F738C`, a new exact-SHA-pinned analysis scanned the entire original 0.139 x64 `.text` for the displacement value `+0x1DA`. Each byte-pattern hit was assigned, where possible, to a PE `.pdata` function. GNU objdump disassembled **every candidate function from its actual unwind entrypoint** before classifying genuine instruction accesses; disassembly from arbitrary candidate bytes was expressly avoided.
+
+| Read-only original Windows client 0.139 result | Observed |
+| --- | ---: |
+| Raw `DA 01 00 00` displacement shapes in original x64 `.text` | 527 |
+| Candidate PE functions, all disassembled from entry | **479 / 479** |
+| Disassembly failures / oversized skipped functions | **0 / 0** |
+| Real instructions mentioning memory displacement `+0x1DA` | **97** |
+| Instruction accesses classified as possible writes | 44 |
+| Explicit byte-sized `movb` write candidates | **13** |
+| Distinct function owners of those 13 byte stores | **10** |
+| Actual candidate `+0x1DA` reads in original central Options `0x3F5D40` | **5** |
+| Direct `+0x1DA` stores in original central Options | **0** |
+
+The five real read sites in central Options `0x3F5D40` are `0x3F662B`, `0x3F6C33`, `0x3F6CC3`, `0x3F6FFC`, and `0x3F738C`. The final site confirms the same `Saves = 11` comparison and skips Defaults, as independently checked in the earlier focused probe.
+
+Some stores use immediate byte values **0, 1, 2, 4 and 255**, none of which by itself establishes an Options page ID: this literal memory displacement also occurs in unrelated types, including byte and wider-word fields. The verified `movb` function owners are listed in `catalog/options_code_graph_0139_summary.json`.
+
+A separate new read-only cross-reference probe (`tools/native_0139_selector_callers.py`) scanned x64 direct E8 calls targeting exactly the ten byte-writer function entrypoints, then independently verified every potential call with objdump. **10 real direct calls confirmed**, but **none** came from the six already observed original UI builder/content functions (`0x3F5D40`, `0x1DF770`, `0x1E0E60`, `0x3F05F0`, `0x3F0A20`, `0x3F0EB0`). This is a negative finding **only for this narrow set of direct calls**. Other intermediate functions or indirect Bevy ECS event dispatch may exist.
+
+Both the complete selector read/write probe (`tools/native_0139_selector_xrefs.py`) and caller graph run against the exact verified original 0.139 EXE, with synthetic regression tests: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41411047535 . Only derived RVA, value and classification metadata is archived, never any original client bytes. Details and flags are in `catalog/options_code_graph_0139_summary.json`. All work remains reversible research and PR #23 remains DRAFT.
+
+**Do not treat the 13 `movb` sites or 10 caller edges as safe hooks.** We have not proven any byte store belongs to the same *runtime object instance* that central Options reads at `+0x1DA`; nor have we identified the handler that changes tabs on clicks. The next defensible investigation is the **OptionsCanvas/Bevy ECS update and interaction system**, particularly whether selected-page changes are performed through a dynamic dispatch, distinct state component, or copied memory. A working native Cheats & Enhancements tab, actual God Mode/Gold/XP/Damage toggles, and Windows runtime tests remain outstanding.
