@@ -107,7 +107,7 @@ def _tag_move_disassembled(exe, imagebase, row, game):
     proc = subprocess.run([exe, "-d", f"--start-address=0x{va:x}",
                            f"--stop-address=0x{va+10:x}", str(game)],
                           capture_output=True, text=True, check=False, timeout=25)
-    pattern = rf"^\\s*{va:x}:\\s+[^\\n]*\\bmovabs(?:q)?\\b[^\\n]*0x{value:x}\\b"
+    pattern = rf"^\s*{va:x}:\s+[^\n]*\bmovabs(?:q)?\b[^\n]*0x{value:x}\b"
     return proc.returncode == 0 and re.search(pattern, proc.stdout, re.M | re.I) is not None
 
 
