@@ -15,6 +15,9 @@
 AZSE_EXPORT const char* AZSE_OriginalClientSha256() noexcept;
 AZSE_EXPORT unsigned long long AZSE_OriginalClientSize() noexcept;
 AZSE_EXPORT int AZSE_VerifyOriginalExecutable(const wchar_t* path) noexcept;
+// On a game process: verify the current process image, not an arbitrary file.
+// In the CI test host this MUST return false, even if an original EXE exists.
+AZSE_EXPORT int AZSE_VerifyCurrentProcessOriginal() noexcept;
 
 // Deliberate no-op safety flags. No hooks, memory writes, menus or cheats.
 AZSE_EXPORT int AZSE_NativeHookInstalled() noexcept;
