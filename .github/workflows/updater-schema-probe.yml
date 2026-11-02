@@ -7,6 +7,8 @@ on:
       - 'tests/test_official_manifest_probe.py'
       - 'tests/test_official_update_manager.py'
       - '.github/workflows/updater-schema-probe.yml'
+  push:
+    branches: ['feat/official-update-manager']
   workflow_dispatch:
 permissions:
   contents: read
@@ -31,7 +33,7 @@ jobs:
         run: |
           python - <<'PY'
           import io
-          from tools.official_update_manager import fetch_records,fetch_part
+          from tools.official_update_manager import fetch_records,fetch_parts
           import hashlib
           import urllib.request
           from tools.official_manifest_probe import NoRedirect
@@ -42,8 +44,9 @@ jobs:
           out=io.BytesIO()
           opener=urllib.request.build_opener(NoRedirect())
           # URL is already origin-whitelisted by validate_entry.
-          for part in obj['parts']:
-              fetch_part(opener,part['url'],out,part['size'],obj['size']-out.tell())
+          expanded=fetch_parts(opener,obj['parts'],out,obj['size'])
+          if expanded!=obj['size']:
+              raise ValueError('Original tiny MPQ expansion size mismatch')
           final=out.getvalue()
           if len(final)!=obj['size'] or hashlib.sha256(final).hexdigest()!=obj['sha256']:
               raise ValueError('Real official GZIP restoration failed')
