@@ -52,7 +52,7 @@ class Tests(unittest.TestCase):
             with tempfile.TemporaryDirectory() as folder:
                 dest=Path(folder)/"private.exe"
                 with self.assertRaises(Exception):
-                    a.download_verified([(url,len(gz))],dest,Client({url:gz[:-1]+b"\x00"}))
+                    a.download_verified([(url,len(gz))],dest,Client({url:b"\x00"+gz[1:]}))
                 self.assertFalse(dest.exists())
     def test_bad_sha_unlinks_file(self):
         raw=b"MZ"+b"X"*20;gz=gzip.compress(raw)
