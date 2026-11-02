@@ -183,6 +183,7 @@ def main(argv=None):
         output.write("\n")
     print(json.dumps({"version":VERSION,"official_sha256":identity["sha256"],
                      "native_options_candidates":report["reviewed_static_ui_role_candidates"],
+                     "disassembler":report["direct_calls_disassembler_crosscheck"],
                      "original_exe_published":False},sort_keys=True))
     return 0
 
