@@ -12,9 +12,30 @@ Export AZSE_VerifyOriginalExecutable(path) reads a supplied file using a Win32 r
 - Official byte length: 150595584
 - Hash implementation: Windows BCrypt SHA-256, streamed in bounded chunks.
 
+The additional AZSE_VerifyCurrentProcessOriginal() gate resolves the main
+executable of the *current process* and hashes that binary. This rejects a
+foreign application or synthetic Windows test host even if a real original
+AzerothSurvivors.exe is present elsewhere on disk. Passing either gate
+does not give permission to install a hook or mutate the game.
+
 A return value of 1 verifies *only that file's identity*. It is not proof the current process is the game or that any memory write is safe. The DLL has no injection, event hook, menu registration or gameplay modification code. AZSE_NativeHookInstalled() and AZSE_NativeCheatsTabInstalled() both always return zero. No code from other mods is copied.
 
-The GitHub Actions Windows job builds the module on MSVC and runs invalid-path and synthetic-fixture tests. It never uploads or distributes a compiled DLL.
+The Windows Server 2022 / MSVC x64 Release pipeline builds the DLL with warnings
+treated as errors and runs the following actual Windows checks:
+
+- Null, missing, non-original synthetic files must be rejected.
+- The unrelated CI test-host process must be rejected by current-process SHA.
+- An authentic original 0.139.0 EXE downloaded from the developer's official
+  pinned manifest is **accepted** by the native SHA verifier, without executing it.
+- A separate temp copy of that file, identical in length but changed by exactly
+  one byte, must be **rejected**, independently validating SHA beyond file size.
+- Both temporary proprietary EXE fixtures are deleted in a finally block;
+  no original game bytes, DLL artifacts or source bytes are published.
+
+Verified Windows CI: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41424929306 .
+
+No native game-process injection or actual native menu runtime testing has occurred.
+The GitHub Actions job does not upload or distribute a compiled DLL.
 
 ## Developer commands on Windows x64
 
