@@ -294,5 +294,45 @@
     "runtime_selected_page_writer_identified": false,
     "working_native_cheats_menu_implemented": false,
     "original_game_modified": false
+  },
+  "native_page_register_flow_0139": {
+    "official_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "original_page_branch_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41416651189",
+    "original_register_flow_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41417139607",
+    "independently_confirmed_saves_skip_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41417815702",
+    "central_options_rva": "0x3f5d40",
+    "parent_options_rva": "0x1ffde0",
+    "central_disp_0x1da_access_count": 5,
+    "parent_disp_0x1da_access_count": 1,
+    "direct_memory_immediate_compare_count_central": 1,
+    "direct_memory_saves_state_11_compare_rva": "0x3f738c",
+    "direct_memory_saves_state_11_je_rva": "0x3f7393",
+    "direct_memory_saves_state_11_jump_target_rva": "0x3f73d1",
+    "central_register_loads_from_numeric_disp": [
+      "0x3f662b",
+      "0x3f6c33",
+      "0x3f6ffc"
+    ],
+    "parent_register_loads_from_numeric_disp": [
+      "0x20024a"
+    ],
+    "exact_same_gpr_literal_6_comparison": {
+      "load_rva": "0x3f6c33",
+      "compared_register": "rax",
+      "compare_rva": "0x3f6c3b",
+      "literal": 6,
+      "branch_rva": "0x3f6c3e",
+      "branch_kind": "je",
+      "branch_target_rva": "0x3f6d4a",
+      "verified_saves_builder_call_site_in_jump_over_range": "0x3f6d43",
+      "verified_saves_builder_target_function_rva": "0x1df770",
+      "disassembler_confirmed_branch_and_call": true,
+      "structurally_skips_saves_content_builder": true,
+      "actual_page_label_for_6_known": false,
+      "click_event_consumer_identified": false
+    },
+    "gameplay_cheats_implemented": false,
+    "exact_original_exe_modified": false,
+    "interpretation": "Original 0.139 renderer reads page state and contains a same-GPR compare/JE for value 6; branch skips a separately verified native Saves content builder call. Does not identify owner of the field, a tab click handler, a safe hook, or tab registration."
   }
 }
