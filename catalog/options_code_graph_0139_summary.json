@@ -139,5 +139,19 @@
     "runtime_event_consumer_confirmed": false,
     "safe_patch_insertion_confirmed": false,
     "original_game_modified": false
+  },
+  "native_saves_footer_selector_0139": {
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41409473700",
+    "comparison_site_rva": "0x3f738c",
+    "page_selector_byte_field_offset_in_unknown_object": "0x1da",
+    "saves_page_state_literal": 11,
+    "conditional_jump_site_rva": "0x3f7393",
+    "branch_target_original_done_key_load_rva": "0x3f73d1",
+    "compare_and_conditional_jump_both_disassembler_confirmed": true,
+    "same_field_value_as_prior_0138": true,
+    "unknown_object_owner": true,
+    "tab_selection_mutation_handler_verified": false,
+    "safe_native_page_insertion_verified": false,
+    "original_game_modified": false
   }
 }
