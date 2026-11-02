@@ -37,8 +37,12 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $original = Join-Path $env:RUNNER_TEMP 'azse-original-0139-positive-test.exe'
+          $mutated = Join-Path $env:RUNNER_TEMP 'azse-mutated-0139-negative-test.exe'
           if (Test-Path -LiteralPath $original) {
             throw 'Refuse to overwrite an original or a fixture'
+          }
+          if (Test-Path -LiteralPath $mutated) {
+            throw 'Refuse to overwrite a mutated fixture'
           }
           try {
             python -m tools.native_0139_windows_positive_fixture --out $original
@@ -46,11 +50,37 @@ jobs:
             if (-not (Test-Path -LiteralPath $original)) {
               throw 'Official client fixture missing'
             }
+            # One-byte corruption of a *separate temp copy*, with unchanged
+            # whole-file length. This distinguishes SHA validation from size.
+            Copy-Item -LiteralPath $original -Destination $mutated
+            $copy = [System.IO.File]::Open(
+              $mutated, [System.IO.FileMode]::Open,
+              [System.IO.FileAccess]::ReadWrite,
+              [System.IO.FileShare]::None)
+            try {
+              [void]$copy.Seek(8192, [System.IO.SeekOrigin]::Begin)
+              $originalByte = $copy.ReadByte()
+              if ($originalByte -lt 0) { throw 'Unexpected short original' }
+              [void]$copy.Seek(8192, [System.IO.SeekOrigin]::Begin)
+              $copy.WriteByte([byte]($originalByte -bxor 1))
+              $copy.Flush()
+            } finally {
+              $copy.Dispose()
+            }
+            if ((Get-Item -LiteralPath $mutated).Length -ne
+                (Get-Item -LiteralPath $original).Length) {
+              throw 'Mutated file length changed; SHA test invalid'
+            }
             $env:AZSE_EXPECT_ORIGINAL_0139_PATH = $original
+            $env:AZSE_EXPECT_MUTATED_0139_PATH = $mutated
             ctest --test-dir build/native/windows -C Release --output-on-failure
             if ($LASTEXITCODE -ne 0) { throw 'Native Windows positive original SHA test failed' }
           } finally {
             Remove-Item -LiteralPath Env:AZSE_EXPECT_ORIGINAL_0139_PATH -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath Env:AZSE_EXPECT_MUTATED_0139_PATH -ErrorAction SilentlyContinue
+            if (Test-Path -LiteralPath $mutated) {
+              Remove-Item -LiteralPath $mutated -Force -ErrorAction Stop
+            }
             if (Test-Path -LiteralPath $original) {
               Remove-Item -LiteralPath $original -Force -ErrorAction Stop
             }
