@@ -512,5 +512,29 @@
     "selected_page_writer_verified": false,
     "safe_hook_verified": false,
     "original_game_modified": false
+  },
+  "original_0139_table_owner_ancestry_followup": {
+    "official_client_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "actual_client_sha_pinned_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41441355283",
+    "caller_profile_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41441778429",
+    "table_associated_function": "0x1e3bc0",
+    "table_associated_function_direct_call_count": 60,
+    "table_associated_function_calls_to_known_options_render_helpers": 0,
+    "table_associated_function_direct_caller": "0x2cd550",
+    "verified_caller_E8_site": "0x2d06a9",
+    "parent_function_size_bytes": 17902,
+    "parent_function_direct_calls": 275,
+    "parent_function_indirect_calls": 0,
+    "parent_function_indirect_jumps": 0,
+    "parent_function_numeric_0x1da_memory_accesses": 0,
+    "parent_function_cmp_15_count": 10,
+    "global_direct_E8_calls_into_parent_count": 0,
+    "guess_only": "Large function with repeated cmp 15 may be application setup/registration but exact semantics are not established.",
+    "click_event_consumer_found": false,
+    "selected_page_writer_found": false,
+    "current_windows_native_CI": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41441778407",
+    "working_original_native_cheats_tab": false,
+    "actual_gameplay_cheats": false,
+    "original_exe_modified": false
   }
 }
