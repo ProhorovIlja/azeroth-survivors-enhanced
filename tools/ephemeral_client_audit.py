@@ -177,6 +177,8 @@ def static_report(game, identity):
     options_six_pointer_cluster = audit_options_six_pointer_cluster(game, identity["sha256"], ui_function_pointer_tables)
     from tools.native_0139_options_pointer_table_owners import audit_pointer_table_owners
     options_table_owners = audit_pointer_table_owners(game, identity["sha256"], options_six_pointer_cluster)
+    from tools.native_0139_table_owner_call_graph import audit_table_owner_call_graph
+    table_owner_calls = audit_table_owner_call_graph(game, identity["sha256"], options_table_owners)
     from tools.native_0139_page_register_flow import correlate_page_6_with_saves_builder
     page_6_saves_skip = correlate_page_6_with_saves_builder(page_register_flow, verified_calls)
     return {
@@ -204,6 +206,7 @@ def static_report(game, identity):
         "original_options_function_pointer_tables": ui_function_pointer_tables,
         "original_options_six_pointer_cluster": options_six_pointer_cluster,
         "original_options_table_owners": options_table_owners,
+        "original_options_table_owner_call_graph": table_owner_calls,
         "native_page_6_saves_builder_skip_crosscheck": page_6_saves_skip,
         "static_evidence_only": True, "disassembler_confirmed": bool(verified_calls["checked"]) and all(c["call_instruction_confirmed"] for c in verified_calls["checked"]),
         "native_cheats_menu_implemented": False, "live_game_verified": False,
