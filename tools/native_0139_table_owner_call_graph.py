@@ -22,6 +22,7 @@ from tools.native_0139_options_event_ancestry import find_e8_edges
 from tools.native_0139_options_pointer_table_owners import TABLE_BEGIN
 from tools.native_menu_probe import read_pe_sections
 from tools.native_options_xrefs import unwind_functions
+from tools.native_0139_parent_event_profile import profile_disassembly
 
 OWNER_RVA = 0x1E3BC0
 KNOWN_TABLE_REFS = {0x1E4135: 0x652DBA0, 0x1E4385: 0x652DC48}
@@ -132,6 +133,57 @@ def profile_owner(disasm, imagebase, begin, end, rdata, rdata_rva, cap=MAX_CALLS
     }
 
 
+def verified_direct_caller_owners(call_edges, target=OWNER_RVA, limit=8):
+    """Only disassembler-confirmed E8 calls to the exact original table owner."""
+    if call_edges.get("truncated"):
+        return []
+    owners = sorted({
+        int(x["caller_function_rva"], 16)
+        for x in call_edges.get("edges", [])
+        if x.get("instruction_confirmed") is True
+        and int(x["target_function_rva"], 16) == target
+    })
+    return owners if len(owners) <= limit else []
+
+
+def profile_owner_callers(path, disassembler, base, functions, code, code_rva, owner_calls):
+    """Follow one real direct E8 ancestor layer, still not an ECS event graph."""
+    starts=[start for start,_ in functions]
+    out=[]
+    for owner in verified_direct_caller_owners(owner_calls):
+        ix=bisect_right(starts, owner)-1
+        if ix<0 or functions[ix][0]!=owner:
+            out.append({"function_entry_rva":hex(owner),"status":"not_unwind_entry"})
+            continue
+        begin,end=functions[ix]
+        if end-begin>MAX_FUNC_SIZE:
+            out.append({"function_entry_rva":hex(owner),"status":"oversized"})
+            continue
+        proc=subprocess.run([disassembler,"-d","--no-show-raw-insn",
+                             f"--start-address=0x{base+begin:x}",
+                             f"--stop-address=0x{base+end:x}",str(path)],
+                            capture_output=True,text=True,check=False,timeout=30)
+        if proc.returncode:
+            out.append({"function_entry_rva":hex(owner),"status":"disassembly_failed"})
+            continue
+        profile=profile_disassembly(proc.stdout,base,begin,end)
+        above=find_e8_edges(code,code_rva,functions,{owner},limit=MAX_CALLERS)
+        if not above["truncated"]:
+            for row in above["edges"]:
+                row["instruction_confirmed"]=_call_disassembled(
+                    disassembler,base,int(row["site_rva"],16),owner,path)
+        out.append({
+            "function_entry_rva":hex(owner),
+            "status":"verified_caller_profile",
+            "function_size":end-begin,
+            "instruction_shape_profile":profile,
+            "direct_E8_callers_of_this_parent":above,
+            "ECS_callback_role_verified":False,
+            "gameplay_modification_authorized":False,
+        })
+    return out
+
+
 def audit_table_owner_call_graph(game, sha, owner_report):
     if sha != EXPECTED_SHA:
         return {"status":"unconfirmed","reason":"unexpected_original_client"}
@@ -177,12 +229,14 @@ def audit_table_owner_call_graph(game, sha, owner_report):
         for record in calls_to_owner["edges"]:
             record["instruction_confirmed"]=_call_disassembled(
                 disassembler,imagebase,int(record["site_rva"],16),OWNER_RVA,path)
+    caller_profiles=profile_owner_callers(path,disassembler,imagebase,funcs,code,t["rva"],calls_to_owner)
     return {
         "status":"original_native_table_owner_callgraph",
         "original_client_sha256":EXPECTED_SHA,
         "table_owner_rva":hex(OWNER_RVA),
         "table_owner_metadata":profile,
         "direct_E8_callers_of_table_owner":calls_to_owner,
+        "confirmed_owner_direct_caller_profiles":caller_profiles,
         "Bevy_event_dispatcher_identified":False,
         "selected_options_page_writer_identified":False,
         "safe_original_client_hook_identified":False,
