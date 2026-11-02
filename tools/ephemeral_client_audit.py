@@ -11,7 +11,6 @@ import shutil
 import struct
 import subprocess
 from pathlib import Path
-import re
 import tempfile
 import urllib.request
 import zlib
@@ -149,7 +148,9 @@ def static_report(game, identity):
         graph = map_binary(mm, identity["sha256"], require_known=False)
         types = collect_static_evidence(mm, identity["sha256"], strict=False)
     verified_calls = verify_direct_calls_with_disassembler(game, graph)
+    from tools.native_0139_footer_probe import probe_file
     observed = graph["candidate_ui_entrypoints"]
+    footer = probe_file(game, identity["sha256"], observed.get("options_page_controls", ""))
     return {
         "version": VERSION, "sha256": identity["sha256"], "bytes": identity["size"],
         "baseline": "0.138.0", "reviewed_static_ui_role_candidates": observed,
@@ -161,7 +162,8 @@ def static_report(game, identity):
         "unwind_function_count": graph["unwind_function_count"],
         "direct_call_candidates": graph["direct_call_candidates"][:30],
         "direct_calls_disassembler_crosscheck": verified_calls,
-        "static_evidence_only": True, "disassembler_confirmed": False,
+        "footer_action_probe": footer,
+        "static_evidence_only": True, "disassembler_confirmed": bool(verified_calls["checked"]) and all(c["call_instruction_confirmed"] for c in verified_calls["checked"]),
         "native_cheats_menu_implemented": False, "live_game_verified": False,
         "original_binary_modified": False,
         "caution": "Byte-pattern candidate map, not verified instruction boundaries or safe hook/event ABI. No EXE/MPQ distributed."
