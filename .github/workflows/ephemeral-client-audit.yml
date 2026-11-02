@@ -4,12 +4,16 @@ on:
     paths:
       - 'tools/ephemeral_client_audit.py'
       - 'tests/test_ephemeral_client_audit.py'
+      - 'tools/native_0139_footer_probe.py'
+      - 'tests/test_native_0139_footer_probe.py'
       - '.github/workflows/ephemeral-client-audit.yml'
   push:
     branches: ['feat/windows-0139-ephemeral-native-audit']
     paths:
       - 'tools/ephemeral_client_audit.py'
       - 'tests/test_ephemeral_client_audit.py'
+      - 'tools/native_0139_footer_probe.py'
+      - 'tests/test_native_0139_footer_probe.py'
       - '.github/workflows/ephemeral-client-audit.yml'
   workflow_dispatch:
 
@@ -27,6 +31,8 @@ jobs:
           python-version: '3.12'
       - name: 'Synthetic test: never use original binaries'
         run: python -m unittest discover -s tests -p 'test_ephemeral_client_audit.py' -v
+      - name: 'Synthetic test: native action tags, no executable used'
+        run: python -m unittest discover -s tests -p 'test_native_0139_footer_probe.py' -v
       - name: Privately restore pinned 0.139 EXE and extract metadata only
         run: python -m tools.ephemeral_client_audit --report "$RUNNER_TEMP/client_0139_metadata.json"
       - name: Archive derived metadata only (NOT the original EXE, parts or MPQ)
