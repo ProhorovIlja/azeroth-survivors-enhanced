@@ -362,5 +362,43 @@
     "ecs_event_registration_confirmed": false,
     "native_tab_click_dispatcher_found": false,
     "original_exe_modified": false
+  },
+  "native_options_reflection_pointer_graph_0139": {
+    "official_client_sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+    "exact_original_client_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41420600194",
+    "type_name_targets": [
+      "OptionsCanvas",
+      "OptionsRoot",
+      "PageList",
+      "Footer",
+      "TipText"
+    ],
+    "exact_64_bit_pointer_to_type_start_count_rdata": 0,
+    "exact_64_bit_pointer_to_type_start_count_data": 0,
+    "direct_rip_code_xrefs_to_matching_pointer_slots": 0,
+    "exact_Rust_slice_pointer_length_descriptors": 0,
+    "nearby_function_pointer_candidates": 0,
+    "inference_limits": "No exact 64-bit static pointer slot to any of the 5 exact type-name string starts in .rdata or .data on original 0.139. This does not prove no ECS event registration: type names may be inlined, hashed, stored in other sections, referenced by interior substring positions, or registered via dynamically generated structures.",
+    "bevy_system_registration_confirmed": false,
+    "in_game_native_tab_implemented": false,
+    "original_game_modified": false
+  },
+  "native_windows_clean_room_bootstrap_0139": {
+    "source_dir": "native/windows",
+    "intended_abi_exports": [
+      "AZSE_OriginalClientSha256",
+      "AZSE_OriginalClientSize",
+      "AZSE_VerifyOriginalExecutable",
+      "AZSE_NativeHookInstalled",
+      "AZSE_NativeCheatsTabInstalled"
+    ],
+    "original_sha_verification_method": "Win32 read-only file handle + exact file length + Windows BCrypt streamed SHA-256",
+    "zero_hooks_by_design": true,
+    "native_menu_present": false,
+    "actual_gameplay_cheats_present": false,
+    "build_ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/workflows/native-bootstrap-windows.yml",
+    "win64_build_and_test_status": "pending_confirmation",
+    "production_release_status": "NOT_FOR_RELEASE",
+    "danger_notice": "Do not copy DLL into game folder, inject it, rename as avrt.dll or advertise working native menu; there is no loader or hook ABI."
   }
 }
