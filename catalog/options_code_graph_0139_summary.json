@@ -19,9 +19,27 @@
     }
   },
   "full_sha_verified": true,
-  "disassembler_confirmed": false,
+  "disassembler_confirmed": true,
   "windows_runtime_verified": false,
   "native_cheats_implemented": false,
   "original_game_published": false,
-  "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41399754590"
+  "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41401071660",
+  "disassembler_confirmed_direct_calls": [
+    {
+      "caller": "options_page_controls",
+      "site_rva": "0x3f6d43",
+      "target": "saves_page_content",
+      "target_rva": "0x1df770",
+      "x64_call_instruction_verified": true
+    },
+    {
+      "caller": "options_page_controls",
+      "site_rva": "0x3f6da1",
+      "target": "addons_page_content",
+      "target_rva": "0x1e0e60",
+      "x64_call_instruction_verified": true
+    }
+  ],
+  "disassembler_tool_available": true,
+  "safe_hook_known": false
 }
