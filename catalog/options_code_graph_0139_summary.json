@@ -246,5 +246,53 @@
     "tab_state_mutation_proven": false,
     "new_native_cheats_page_implemented": false,
     "original_game_published_or_modified": false
+  },
+  "native_options_parent_event_profiles_0139": {
+    "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41415142806",
+    "status": "parent_options_instruction_profiles",
+    "profiled_original_parent_functions": 4,
+    "parent_function_profiles": [
+      {
+        "function": "0x1ffde0",
+        "size_bytes": 2174,
+        "direct_calls": 12,
+        "indirect_calls": 0,
+        "indirect_jumps": 0,
+        "selector_displacement_reads": 1,
+        "selector_displacement_read_site": "0x20024a",
+        "small_15_compare_site": "0x200529"
+      },
+      {
+        "function": "0x20e0c0",
+        "size_bytes": 804,
+        "direct_calls": 5,
+        "indirect_calls": 0,
+        "indirect_jumps": 0,
+        "selector_displacement_accesses": 0
+      },
+      {
+        "function": "0x2c1710",
+        "size_bytes": 950,
+        "direct_calls": 5,
+        "indirect_calls": 0,
+        "indirect_jumps": 0,
+        "selector_displacement_accesses": 0
+      },
+      {
+        "function": "0x2c1ad0",
+        "size_bytes": 134,
+        "direct_calls": 3,
+        "indirect_calls": 0,
+        "indirect_jumps": 0,
+        "selector_displacement_accesses": 0
+      }
+    ],
+    "all_verified_from_pdata_function_start": true,
+    "comparison_15_is_proven_to_refer_to_page_selector": false,
+    "no_indirect_calls_or_jumps_in_these_four": true,
+    "actual_click_dispatcher_identified": false,
+    "runtime_selected_page_writer_identified": false,
+    "working_native_cheats_menu_implemented": false,
+    "original_game_modified": false
   }
 }
