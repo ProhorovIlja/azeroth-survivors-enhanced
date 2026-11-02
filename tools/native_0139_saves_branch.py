@@ -50,8 +50,8 @@ def _disassembler_confirms(exe, imagebase, game, evidence):
     proc = subprocess.run([exe, "-d", f"--start-address=0x{va:x}",
                            f"--stop-address=0x{va+9:x}", str(game)],
                           capture_output=True, text=True, check=False, timeout=25)
-    cmp_pat = rf"^\\s*{va:x}:\\s+[^\\n]*\\bcmp(?:b)?\\b[^\\n]*0xb\\b"
-    jump_pat = rf"^\\s*{va+7:x}:\\s+[^\\n]*\\bj(?:e|z)\\b[^\\n]*0x{imagebase+dest:x}\\b"
+    cmp_pat = rf"^\s*{va:x}:\s+[^\n]*\bcmp(?:b)?\b[^\n]*0xb\b"
+    jump_pat = rf"^\s*{va+7:x}:\s+[^\n]*\bj(?:e|z)\b[^\n]*0x{imagebase+dest:x}\b"
     return bool(proc.returncode == 0 and re.search(cmp_pat, proc.stdout, re.M | re.I)
                 and re.search(jump_pat, proc.stdout, re.M | re.I))
 
