@@ -122,6 +122,47 @@ def register_comparison_paths(disasm, base, begin, end, max_forward=MAX_FORWARD)
     return results
 
 
+def correlate_page_6_with_saves_builder(register_report, verified_calls):
+    """Exact-reviewed original 0.139 structural skip of existing Saves builder.
+
+    The true branch bypasses the instruction range containing a verified call.
+    This does not establish which *named tab* ID6 represents or any click ABI.
+    """
+    matching = [
+        path for function in register_report.get("function_profiles", [])
+        if function.get("owner_function_rva") == "0x3f5d40"
+        for load in function.get("candidate_same_gpr_paths", [])
+        if load.get("field_load_rva") == "0x3f6c33"
+        for path in load.get("candidate_comparisons", [])
+        if path.get("compare_site_rva") == "0x3f6c3b"
+        and path.get("literal") == 6
+        and path.get("following_conditional", {}).get("branch_site_rva") == "0x3f6c3e"
+        and path["following_conditional"].get("branch_condition") in ("je", "jz")
+        and path["following_conditional"].get("branch_target_rva") == "0x3f6d4a"
+    ]
+    save_call = [
+        x for x in verified_calls.get("checked", [])
+        if x.get("role") == "saves_page_content"
+        and x.get("site_rva") == "0x3f6d43"
+        and x.get("target_rva") == "0x1df770"
+        and x.get("call_instruction_confirmed") is True
+    ]
+    valid = len(matching) == len(save_call) == 1
+    return {
+        "structurally_verified_skip": valid,
+        "page_value_under_test": 6 if valid else None,
+        "load_rva": "0x3f6c33" if valid else None,
+        "compare_rva": "0x3f6c3b" if valid else None,
+        "branch_rva": "0x3f6c3e" if valid else None,
+        "jump_target_rva": "0x3f6d4a" if valid else None,
+        "call_in_skipped_range_rva": "0x3f6d43" if valid else None,
+        "skipped_native_builder_role": "saves_page_content" if valid else None,
+        "page_label_of_value_6_confirmed": False,
+        "tab_change_event_consumer_confirmed": False,
+        "safe_injection_site_confirmed": False,
+    }
+
+
 def audit_page_register_flow(game, sha, branch_report):
     if sha != EXPECTED_SHA:
         return {"status": "unconfirmed", "reason": "unknown_client_sha"}
