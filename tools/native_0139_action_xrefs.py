@@ -32,7 +32,7 @@ def owner_of(rva, starts, functions, instruction_bytes):
     return functions[idx][0]
 
 
-def scan_action_tag_moves(code, code_rva, functions, limit=MAX_OUTPUT):
+def scan_action_tag_moves(code, code_rva, functions, limit=MAX_OUTPUT, allowed_owners=None):
     """Syntactic movabs + tagged small-ID candidates, not full disassembly."""
     starts = [a for a, _ in functions]
     matches = []
@@ -44,7 +44,7 @@ def scan_action_tag_moves(code, code_rva, functions, limit=MAX_OUTPUT):
             continue
         site = code_rva + m.start()
         owner = owner_of(site, starts, functions, 10)
-        if owner is None:
+        if owner is None or (allowed_owners is not None and owner not in allowed_owners):
             continue
         total += 1
         ids.add(tag & 63)
@@ -114,8 +114,11 @@ def analyze_action_flow(game, expected_sha):
         funcs = unwind_functions(raw[p["raw_offset"]:p["raw_offset"] + p["raw_bytes"]],
                                  t, p["virtual_bytes"])
         code = raw[t["raw_offset"]:t["raw_offset"] + t["raw_bytes"]]
-        tags = scan_action_tag_moves(code, t["rva"], funcs)
         calls = scan_helper_calls(code, t["rva"], funcs)
+        relevant_functions = {int(x["owner_begin_rva"], 16) for x in calls["records"]}
+        # Only investigate functions actually calling the reviewed original UI helper.
+        # A global search finds thousands of unrelated tagged values.
+        tags = scan_action_tag_moves(code, t["rva"], funcs, allowed_owners=relevant_functions)
         header = raw[:8192]
         peoff = struct.unpack_from("<I", header, 0x3C)[0]
         imagebase = struct.unpack_from("<Q", header, peoff + 48)[0]
@@ -144,7 +147,8 @@ def analyze_action_flow(game, expected_sha):
         "status": "candidate_inventory",
         "version": "0.139.0", "sha256": EXPECTED_SHA,
         "shared_ui_action_widget_helper_rva": hex(HELPER_RVA),
-        "tagged_movabs": tags, "direct_helper_calls": calls,
+        "tagged_movabs_scoped_to_helper_calling_functions": tags, "direct_helper_calls": calls,
+        "scoped_owner_function_count": len(relevant_functions),
         "tag_to_widget_creation_hypotheses": links[:MAX_OUTPUT],
         "disassembled_helper_call_count": confirmed,
         "all_helper_calls_disassembled": bool(disasm) and confirmed == calls["total_candidate_count"] and not calls["truncated"],
