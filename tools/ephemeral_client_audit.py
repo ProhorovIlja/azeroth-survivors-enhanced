@@ -58,49 +58,56 @@ def read_manifest(opener):
     except (ValueError, UnicodeError): raise AuditError("Invalid official manifest UTF-8 JSON") from None
 
 def download_verified(parts, output, opener):
-    """GZIP members are individually decompressed, with strict size bounds."""
-    target = Path(output)
+    """Stream GZIP over ordered HTTP parts.
+
+    Important: large author updates split ONE gzip stream into 20MiB parts.
+    When a gzip member ends exactly at a part boundary, a subsequent member
+    can begin there. Neither format authorizes any output beyond pinned SHA.
+    """
+    target=Path(output)
     if target.exists() or target.is_symlink(): raise AuditError("Never overwrite game or other files")
-    hashed = hashlib.sha256()
-    total = 0
+    hashed=hashlib.sha256()
+    total=0
+    decoder=None
     try:
         with target.open("xb") as stream:
-            for url, length in parts:
+            for index,(url,length) in enumerate(parts):
                 if not url.startswith(ORIGIN): raise AuditError("Unexpected download origin")
-                request = urllib.request.Request(url, headers={"Accept-Encoding":"identity", "User-Agent":"AZSE-0139-audit/1"})
-                decoder = zlib.decompressobj(16 + zlib.MAX_WBITS)
-                received = 0
-                with opener.open(request, timeout=50) as response:
-                    if response.status != 200: raise AuditError("Official part HTTP failure")
+                if decoder is None or decoder.eof:
+                    decoder=zlib.decompressobj(16+zlib.MAX_WBITS)
+                request=urllib.request.Request(url,headers={"Accept-Encoding":"identity","User-Agent":"AZSE-0139-audit/1"})
+                received=0
+                with opener.open(request,timeout=50) as response:
+                    if response.status!=200: raise AuditError("Official part HTTP failure")
                     while True:
-                        chunk = response.read(min(CHUNK, length - received + 1))
+                        chunk=response.read(min(CHUNK,length-received+1))
                         if not chunk: break
-                        received += len(chunk)
-                        if received > length: raise AuditError("Compressed part exceeds manifest")
-                        data = chunk
+                        received+=len(chunk)
+                        if received>length: raise AuditError("Compressed part oversize")
+                        data=chunk
                         while data:
-                            decoded = decoder.decompress(data, min(CHUNK, SIZE - total + 1))
-                            if total + len(decoded) > SIZE: raise AuditError("Decompressed beyond expected target size")
+                            decoded=decoder.decompress(data,min(CHUNK,SIZE-total+1))
+                            if total+len(decoded)>SIZE: raise AuditError("Decompressed output exceeded official size")
                             stream.write(decoded)
                             hashed.update(decoded)
-                            total += len(decoded)
-                            data = decoder.unconsumed_tail
+                            total+=len(decoded)
+                            data=decoder.unconsumed_tail
                             if decoder.eof:
-                                if data or decoder.unused_data: raise AuditError("Extra data after GZIP member")
+                                if data or decoder.unused_data: raise AuditError("Trailing data after GZIP stream")
                                 break
-                trailer = decoder.flush()
-                if total + len(trailer) > SIZE: raise AuditError("Excess final GZIP output")
-                stream.write(trailer)
-                hashed.update(trailer)
-                total += len(trailer)
-                if received != length or not decoder.eof or decoder.unused_data:
-                    raise AuditError("Incomplete/corrupt GZIP member")
-        if total != SIZE or hashed.hexdigest() != SHA:
-            raise AuditError("Whole original EXE SHA256 or size does not match official manifest")
-        return {"sha256": hashed.hexdigest(), "size": total}
+                if received!=length:
+                    raise AuditError(f"Part {index} transfer length mismatch: received {received} expected {length}")
+        if decoder is None or not decoder.eof:
+            raise AuditError("GZIP stream not finished across supplied parts")
+        tail=decoder.flush()
+        if tail: raise AuditError("Unexpected decompressor tail after stream")
+        if total!=SIZE or hashed.hexdigest()!=SHA:
+            raise AuditError("Finished original EXE does not match official whole-file size/SHA256")
     except Exception:
         target.unlink(missing_ok=True)
         raise
+    return {"sha256":hashed.hexdigest(),"size":total}
+
 
 def static_report(game, identity):
     from tools.native_options_xrefs import map_binary
