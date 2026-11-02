@@ -4,11 +4,13 @@ on:
   pull_request:
     paths:
       - 'native/windows/**'
+      - 'tools/native_0139_windows_positive_fixture.py'
       - '.github/workflows/native-bootstrap-windows.yml'
   push:
     branches: ['feat/windows-0139-ephemeral-native-audit']
     paths:
       - 'native/windows/**'
+      - 'tools/native_0139_windows_positive_fixture.py'
       - '.github/workflows/native-bootstrap-windows.yml'
   workflow_dispatch:
 
@@ -27,6 +29,33 @@ jobs:
         run: cmake --build build/native/windows --config Release --parallel 2
       - name: Test exact official-client SHA gate and reject synthetic binaries
         run: ctest --test-dir build/native/windows -C Release --output-on-failure
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Positive original 0.139 SHA acceptance using unexecuted temporary original
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $original = Join-Path $env:RUNNER_TEMP 'azse-original-0139-positive-test.exe'
+          if (Test-Path -LiteralPath $original) {
+            throw 'Refuse to overwrite an original or a fixture'
+          }
+          try {
+            python -m tools.native_0139_windows_positive_fixture --out $original
+            if ($LASTEXITCODE -ne 0) { throw 'Original client download/verify failed closed' }
+            if (-not (Test-Path -LiteralPath $original)) {
+              throw 'Official client fixture missing'
+            }
+            $env:AZSE_EXPECT_ORIGINAL_0139_PATH = $original
+            ctest --test-dir build/native/windows -C Release --output-on-failure
+            if ($LASTEXITCODE -ne 0) { throw 'Native Windows positive original SHA test failed' }
+          } finally {
+            Remove-Item -LiteralPath Env:AZSE_EXPECT_ORIGINAL_0139_PATH -ErrorAction SilentlyContinue
+            if (Test-Path -LiteralPath $original) {
+              Remove-Item -LiteralPath $original -Force -ErrorAction Stop
+            }
+          }
+          Write-Host 'Positive native original SHA gate verified, temporary EXE deleted.'
       - name: Confirm no original game file or DLL artifact is distributed
         shell: pwsh
         run: |
