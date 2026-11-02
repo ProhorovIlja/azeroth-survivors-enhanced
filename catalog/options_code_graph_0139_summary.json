@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "version": "0.139.0",
+  "sha256": "0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274",
+  "bytes": 150595584,
+  "previous": "0.138.0",
+  "candidate_roles": {
+    "options_page_controls": {
+      "old": "0x3f74c0",
+      "new": "0x3f5d40"
+    },
+    "saves_page_content": {
+      "old": "0x1021e0",
+      "new": "0x1df770"
+    },
+    "addons_page_content": {
+      "old": "0x1038d0",
+      "new": "0x1e0e60"
+    }
+  },
+  "full_sha_verified": true,
+  "disassembler_confirmed": false,
+  "windows_runtime_verified": false,
+  "native_cheats_implemented": false,
+  "original_game_published": false,
+  "ci": "https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41399754590"
+}
