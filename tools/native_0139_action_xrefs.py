@@ -99,6 +99,18 @@ def correlate_tag_to_button_builder(tags, calls):
     return links
 
 
+def _tag_move_disassembled(exe, imagebase, row, game):
+    """Confirm a tagged movabs instruction starts exactly at the candidate RVA."""
+    site = int(row["site_rva"], 16)
+    value = (1 << 63) | row["action_low_id_candidate"]
+    va = imagebase + site
+    proc = subprocess.run([exe, "-d", f"--start-address=0x{va:x}",
+                           f"--stop-address=0x{va+10:x}", str(game)],
+                          capture_output=True, text=True, check=False, timeout=25)
+    pattern = rf"^\\s*{va:x}:\\s+[^\\n]*\\bmovabs(?:q)?\\b[^\\n]*0x{value:x}\\b"
+    return proc.returncode == 0 and re.search(pattern, proc.stdout, re.M | re.I) is not None
+
+
 def analyze_action_flow(game, expected_sha):
     """Reads the SHA-pinned original EXE, exports only bounded address metadata."""
     if expected_sha != EXPECTED_SHA:
@@ -142,6 +154,12 @@ def analyze_action_flow(game, expected_sha):
                 disasm, imagebase, int(row["site_rva"], 16), HELPER_RVA, path)
             if row["disassembler_confirmed"]:
                 confirmed += 1
+    confirmed_tags = 0
+    if disasm and not tags["truncated"] and len(tags["records"]) <= 48:
+        for row in tags["records"]:
+            row["disassembler_confirmed"] = _tag_move_disassembled(disasm, imagebase, row, path)
+            if row["disassembler_confirmed"]:
+                confirmed_tags += 1
     links = correlate_tag_to_button_builder(tags["records"], calls["records"])
     return {
         "status": "candidate_inventory",
@@ -151,6 +169,8 @@ def analyze_action_flow(game, expected_sha):
         "scoped_owner_function_count": len(relevant_functions),
         "tag_to_widget_creation_hypotheses": links[:MAX_OUTPUT],
         "disassembled_helper_call_count": confirmed,
+        "disassembled_tag_move_count": confirmed_tags,
+        "all_scoped_tag_movabs_disassembled": bool(disasm) and confirmed_tags == tags["total_candidate_count"] and not tags["truncated"],
         "all_helper_calls_disassembled": bool(disasm) and confirmed == calls["total_candidate_count"] and not calls["truncated"],
         "observed_footer_baseline_preserved": True,
         "native_tab_navigation_confirmed": False,
