@@ -105,6 +105,40 @@ class TestUpdates(unittest.TestCase):
         with self.assertRaises(UpdateError):apply(self.game,self.stage_dir,yes=True)
         self.assertEqual(self.original_exe,(self.game/'AzerothSurvivors.exe').read_bytes())
 
+    def test_compressed_gzip_stream_split_across_http_parts(self):
+        """Original EXE parts split one compressed stream, NOT each a gzip."""
+        import gzip
+        original=gzip.compress(self.new_exe,mtime=0)
+        midpoint=len(original)//2
+        url0=part_url('exe','0.138.0/part-000.bin')
+        url1=part_url('exe','0.138.0/part-001.bin')
+        self.manifest_data[url0]=original[:midpoint]
+        self.manifest_data[url1]=original[midpoint:]
+        self.exe['parts']=[
+            {'url':'0.138.0/part-000.bin','size':midpoint},
+            {'url':'0.138.0/part-001.bin','size':len(original)-midpoint}]
+        version,records=release_records(self.exe,{'patches':[self.mpq]})
+        result=stage(self.game,self.stage_dir,version,records,yes=True,opener=self.opener)
+        self.assertEqual('ready',result['status'])
+        self.assertEqual(self.new_exe,(self.stage_dir/'payload'/'AzerothSurvivors.exe').read_bytes())
+
+    def test_split_gzip_member_missing_last_part_refused(self):
+        """A valid gzip prefix is insufficient even when the lengths align."""
+        import gzip
+        original=gzip.compress(self.new_exe,mtime=0)
+        midpoint=len(original)//2
+        url0=part_url('exe','0.138.0/part-000.bin')
+        url1=part_url('exe','0.138.0/part-001.bin')
+        self.manifest_data[url0]=original[:midpoint]
+        self.manifest_data[url1]=original[midpoint:-4]
+        self.exe['parts']=[
+            {'url':'0.138.0/part-000.bin','size':midpoint},
+            {'url':'0.138.0/part-001.bin','size':len(original)-midpoint-4}]
+        version,records=release_records(self.exe,{'patches':[self.mpq]})
+        with self.assertRaises(UpdateError):
+            stage(self.game,self.stage_dir,version,records,yes=True,opener=self.opener)
+        self.assertFalse(self.stage_dir.exists())
+
     def test_refuse_corrupt_download(self):
         for key in list(self.manifest_data):
             self.manifest_data[key]=b'not a gzip stream'
