@@ -50,3 +50,25 @@ We added a read-only, **exact-SHA-pinned** footer probe (`tools/native_0139_foot
 **Precise boundary:** this verifies **creation** of two existing clickable buttons, **not** the click-event consumer, Bevy entity ownership, new navigation-tab construction or in-run cheat semantics. Never call the native helper blindly or install hooks at these sites. No original EXE, MPQ, original instruction bytes, game saves or gameplay cheats were distributed or modified.
 
 Next investigate consumers of the confirmed Defaults/Done action tags and identify the separate native navigation tab renderer; conduct disposable-copy Windows runtime tests before attempting a true Cheats & Enhancements page.
+
+
+## Read-only original 0.139 action IDs and constructor call owners (2026-11-02)
+
+The original menu action helper `0x1E5530` now has **8 direct call sites confirmed by objdump**, spread over **5 PE unwind-bounded functions**. Within just those five functions, the separate action-tag scan found **8 tagged `movabs` instructions**, each also independently confirmed at its original x64 instruction boundary by objdump. We deliberately scoped this probe: a global scan of tagged small ID values across the client has thousands of hits and is misleading.
+
+| Candidate low ID | Enclosing native function RVA | Tagged instruction RVA | Widget helper direct-call RVA | Code-adjacent pair? |
+| ---: | ---: | ---: | ---: | :---: |
+| 9 | `0x1DF770` (Saves content) | `0x1DFBDD` | `0x1DFC00` | Yes |
+| 13 | `0x1DF770` (Saves content) | `0x1DFC19` | `0x1DFC35` | Yes |
+| 11 | `0x3F05F0` | `0x3F0998` | `0x3F09BB` | Yes |
+| 14 | `0x3F0A20` | `0x3F0DE9` | `0x3F0E0F` | Yes |
+| 15 | `0x3F0A20` | `0x3F0E28` | `0x3F0E47` | Yes |
+| 8 | `0x3F0EB0` | `0x3F1051` | `0x3F10F1` | **Not yet established**, too distant for the narrow proximity criterion |
+| 16 | `0x3F5D40` (central Options) | `0x3F73A9` | `0x3F73CC` | Yes, reviewed Defaults |
+| 17 | `0x3F5D40` (central Options) | `0x3F73E5` | `0x3F7408` | Yes, reviewed Done |
+
+Original exact-SHA 0.139.0 GitHub Actions test, including synthetic tests: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41409012753 . Source: `tools/native_0139_action_xrefs.py`, tests `tests/test_native_0139_action_xrefs.py`; source-only durable summary: `catalog/options_code_graph_0139_summary.json`.
+
+**Interpretation:** This is a metadata-only **button creation** map. Even if a tag and a helper call are close in code, their semantic dataflow or the identity of the eventual click-event handler has not been established. The IDs **must not** be called cheat switches or unused IDs; none is a confirmed menu-extension slot. In particular, action ID 8 is an unassociated tagged instruction within a helper-calling function, not a verified pair.
+
+**Next frontier:** identify the consumer of these actions in the native ECS event/update path, separate the actual Options tab navigation system from the reused localized action widget helper, and test any eventual native menu extension on a disposable copy of Windows 0.139 before enabling changes. No original EXE/MPQ, code bytes, save data, DLL proxy, or gameplay cheat was modified or released.
