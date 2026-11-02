@@ -6,6 +6,10 @@ import argparse
 import hashlib
 import json
 import mmap
+import re
+import shutil
+import struct
+import subprocess
 from pathlib import Path
 import re
 import tempfile
@@ -108,6 +112,35 @@ def download_verified(parts, output, opener):
         raise
     return {"sha256":hashed.hexdigest(),"size":total}
 
+
+def verify_direct_calls_with_disassembler(game, graph):
+    """Only corroborate concrete direct E8 calls; never export original bytes."""
+    exe=shutil.which("llvm-objdump") or shutil.which("objdump")
+    if not exe:
+        return {"tool_available":False,"checked":[]}
+    with open(game,"rb") as src:
+        header=src.read(8192)
+    peoff=struct.unpack_from("<I",header,0x3c)[0]
+    imagebase=struct.unpack_from("<Q",header,peoff+24+24)[0]
+    central=graph["candidate_ui_entrypoints"].get("options_page_controls")
+    targets={"saves_page_content","addons_page_content"}
+    results=[]
+    for candidate in graph.get("direct_call_candidates",[]):
+        role=candidate["function"]
+        if role not in targets or candidate["caller_begin_rva"]!=central:
+            continue
+        site=int(candidate["call_site_rva"],16)
+        target=int(candidate["called_begin_rva"],16)
+        va=imagebase+site
+        proc=subprocess.run([exe,"-d",f"--start-address=0x{va:x}",
+                             f"--stop-address=0x{va+5:x}",str(game)],
+                            capture_output=True,text=True,timeout=25,check=False)
+        pattern=rf"^\s*{va:x}:\s+[^\n]*\bcallq?\s+0x{imagebase+target:x}\b"
+        confirmed=proc.returncode==0 and re.search(pattern,proc.stdout,re.M|re.I) is not None
+        results.append({"role":role,"site_rva":candidate["call_site_rva"],
+                        "target_rva":candidate["called_begin_rva"],
+                        "call_instruction_confirmed":confirmed})
+    return {"tool_available":True,"checked":results}
 
 def static_report(game, identity):
     from tools.native_options_xrefs import map_binary
