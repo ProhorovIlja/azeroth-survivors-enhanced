@@ -167,6 +167,8 @@ def static_report(game, identity):
     native_page_branches = audit_native_page_branches(game, identity["sha256"])
     from tools.native_0139_page_register_flow import audit_page_register_flow
     page_register_flow = audit_page_register_flow(game, identity["sha256"], native_page_branches)
+    from tools.native_0139_page_register_flow import correlate_page_6_with_saves_builder
+    page_6_saves_skip = correlate_page_6_with_saves_builder(page_register_flow, verified_calls)
     return {
         "version": VERSION, "sha256": identity["sha256"], "bytes": identity["size"],
         "baseline": "0.138.0", "reviewed_static_ui_role_candidates": observed,
@@ -187,6 +189,7 @@ def static_report(game, identity):
         "native_options_parent_event_profiles": parent_event_profiles,
         "original_page_state_branches": native_page_branches,
         "native_page_register_flow": page_register_flow,
+        "native_page_6_saves_builder_skip_crosscheck": page_6_saves_skip,
         "static_evidence_only": True, "disassembler_confirmed": bool(verified_calls["checked"]) and all(c["call_instruction_confirmed"] for c in verified_calls["checked"]),
         "native_cheats_menu_implemented": False, "live_game_verified": False,
         "original_binary_modified": False,
