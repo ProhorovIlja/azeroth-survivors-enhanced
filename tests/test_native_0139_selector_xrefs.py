@@ -84,6 +84,21 @@ class SelectorCrossReferenceTests(unittest.TestCase):
         self.assertEqual(1, len(events))
         self.assertEqual(4, total)
 
+    def test_byte_literals_in_byte_store_or_comparison_are_explicit(self):
+        self.assertEqual(11, x.selector_literal("cmpb", "$0xb,0x1da(%rax)"))
+        self.assertEqual(17, x.selector_literal("movb", "$0x11,0x1da(%rdi)"))
+        self.assertIsNone(x.selector_literal("movl", "$0xb,0x1da(%rax)"))
+        self.assertIsNone(x.selector_literal("cmpb", "%al,0x1da(%rdi)"))
+        self.assertIsNone(x.selector_literal("cmpb", "$0x100,0x1da(%rdi)"))
+
+    def test_parser_records_literal_only_for_confirmed_instruction_line(self):
+        lines = ("  1403f738c:    cmpb $0xb,0x1da(%rax)\n"
+                 "  1403f739c:    movb $0xc,0x1da(%rdx)\n")
+        records, total = x.parse_accesses(lines, 0x140000000, 0x3f7300, 0x3f7500)
+        self.assertEqual(2, total)
+        self.assertEqual([(11, "comparison"), (12, "possible_byte_store")],
+                         [(r["immediate_byte_value"], r["immediate_role"]) for r in records])
+
     def test_unknown_client_sha_refused_before_opening_file(self):
         r = x.analyze_selector_xrefs("/no/file", "0" * 64)
         self.assertEqual("wrong_client_identity", r["reason"])
