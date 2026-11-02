@@ -1,0 +1,38 @@
+name: Original Windows 0.139 native Options compatibility
+on:
+  pull_request:
+    paths:
+      - 'tools/ephemeral_client_audit.py'
+      - 'tests/test_ephemeral_client_audit.py'
+      - '.github/workflows/ephemeral-client-audit.yml'
+  push:
+    branches: ['feat/windows-0139-ephemeral-native-audit']
+    paths:
+      - 'tools/ephemeral_client_audit.py'
+      - 'tests/test_ephemeral_client_audit.py'
+      - '.github/workflows/ephemeral-client-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-exact-client:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic test: never use original binaries
+        run: python -m unittest discover -s tests -p 'test_ephemeral_client_audit.py' -v
+      - name: Privately restore pinned 0.139 EXE and extract metadata only
+        run: python -m tools.ephemeral_client_audit --report "$RUNNER_TEMP/client_0139_metadata.json"
+      - name: Archive derived metadata only (NOT the original EXE, parts or MPQ)
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-0139-native-metadata-only
+          path: ${{ runner.temp }}/client_0139_metadata.json
+          retention-days: 14
+          if-no-files-found: error
