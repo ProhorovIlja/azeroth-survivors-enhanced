@@ -13,7 +13,7 @@ add_library(azse_native_bootstrap SHARED
   include/azse_native_bootstrap.h)
 target_include_directories(azse_native_bootstrap PUBLIC include)
 target_compile_features(azse_native_bootstrap PUBLIC cxx_std_17)
-target_compile_definitions(azse_native_bootstrap PRIVATE AZSE_BUILDING_DLL WIN32_LEAN_AND_MEAN)
+target_compile_definitions(azse_native_bootstrap PRIVATE AZSE_BUILDING_DLL)
 target_link_libraries(azse_native_bootstrap PRIVATE bcrypt)
 
 if(MSVC)
