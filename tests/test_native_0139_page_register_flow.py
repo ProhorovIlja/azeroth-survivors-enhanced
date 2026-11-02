@@ -70,6 +70,33 @@ class PageRegisterFlowTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             flow.register_comparison_paths("", 0, 0, 1, max_forward=0)
 
+    def test_structural_page_six_skip_requires_independent_saves_call(self):
+        register_report = {"function_profiles": [{
+            "owner_function_rva": "0x3f5d40",
+            "candidate_same_gpr_paths": [{
+                "field_load_rva": "0x3f6c33",
+                "candidate_comparisons": [{
+                    "compare_site_rva": "0x3f6c3b", "literal": 6,
+                    "following_conditional": {
+                        "branch_site_rva": "0x3f6c3e",
+                        "branch_condition": "je",
+                        "branch_target_rva": "0x3f6d4a"}}]}]}]}
+        calls = {"checked": [{"role": "saves_page_content",
+                              "site_rva": "0x3f6d43",
+                              "target_rva": "0x1df770",
+                              "call_instruction_confirmed": True}]}
+        result = flow.correlate_page_6_with_saves_builder(register_report, calls)
+        self.assertTrue(result["structurally_verified_skip"])
+        self.assertFalse(result["page_label_of_value_6_confirmed"])
+        self.assertFalse(result["tab_change_event_consumer_confirmed"])
+        calls["checked"][0]["call_instruction_confirmed"] = False
+        self.assertFalse(flow.correlate_page_6_with_saves_builder(
+            register_report, calls)["structurally_verified_skip"])
+        calls["checked"][0]["call_instruction_confirmed"] = True
+        register_report["function_profiles"][0]["candidate_same_gpr_paths"][0]["candidate_comparisons"][0]["literal"] = 5
+        self.assertFalse(flow.correlate_page_6_with_saves_builder(
+            register_report, calls)["structurally_verified_skip"])
+
     def test_sha_rejected_without_opening_game(self):
         self.assertEqual("unknown_client_sha", flow.audit_page_register_flow(
             "/missing.exe", "0"*64, {})["reason"])
