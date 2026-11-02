@@ -181,3 +181,20 @@ Just **one** x64 `lea` instruction directly referenced a detected type-name star
 One false positive was caught in the first pass: adjacent Rust UTF-8 names had been conflated into the artificial type label `TipTextwenilla_rogue_app`. The revised scanner uses exact known type names with suffix checks; its synthetic tests reject this mistake and avoid overclaiming. The corrected final metadata is persisted in `catalog/options_code_graph_0139_summary.json`.
 
 **Current next task:** locate the actual event system registered for Options/PageList (potentially indirect Bevy ECS reflection rather than an immediate string LEA), then trace which original function writes the selected tab when a real Options button is activated. A confirmed type marker, a constructor or a branch to a known page is **not** an ABI-safe native hook and is not a functioning Cheats tab.
+
+
+## 2026-11-02: Static Rust Options pointer graph and first independently compiled Win64 native module
+
+### Original 0.139 Rust/Bevy type pointer graph
+
+A new exact-official-SHA, read-only probe `tools/native_0139_reflection_pointer_graph.py` checks whether native 64-bit virtual-address slots in the original client's `.rdata` or `.data` point to the **exact start** of known Rust Options marker strings: `OptionsCanvas`, `OptionsRoot`, `PageList`, `Footer`, `TipText`. It then checks plausible `&str` pointer/length descriptors, RIP-relative x64 code references to any discovered slots, and nearby function-entry virtual addresses. In the original 0.139 EXE **zero exact pointer slots** were found in the scanned static sections, and hence there were **zero direct code xrefs or nearby function-pointer candidates** of this constrained form. All synthetic pointer/descriptor tests and original EXE SHA gate passed: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41420600194 .
+
+This negative result does **not** disprove Bevy ECS registration. Code may use other metadata layouts, inlined strings, hashed identifiers, pointer aliasing, dynamically generated structures, interior string references, etc. Do not claim any ECS event-consumer, direct pointer table or safe hook from this probe.
+
+### First native Windows x64 code, compiled from our own sources
+
+Instead of only adding further read-only Python scanners, we created **`native/windows`**, a clean-room C++17 Windows-native DLL bootstrap with a strictly gated Win32/BCrypt original-client SHA verifier. Public exports report the exact official 0.139 SHA and file size, verify a specified read-only EXE by full SHA/length, and truthfully report `AZSE_NativeHookInstalled() == 0` and `AZSE_NativeCheatsTabInstalled() == 0`. It has **no DLL proxy, loader, injection, Bevy hook, gameplay memory write or fake menu**.
+
+The first Windows/MSVC build was rejected due to a duplicated `WIN32_LEAN_AND_MEAN` macro under `/WX`. We fixed the duplicate; the subsequent genuine **Windows Server 2022 / Visual Studio 2022 x64 Release** build and synthetic wrong-client fail-closed CTest succeeded: https://github.com/ProhorovIlja/azeroth-survivors-enhanced/actions/runs/41421364850 . The job explicitly does not distribute the compiled DLL, execute the game, or patch an EXE. Original 0.139 file positive verification inside Windows is not yet runtime-tested; only negatives are exercised on synthetic files.
+
+**Not a working mod:** this bootstrap must not be installed or renamed to `avrt.dll`. Current primary blockers remain identifying original Options Bevy ECS button click event consumer, selected-tab writer, a reversible exact-version-safe integration seam, and actual offline Windows game runtime tests. The original EXE/save data remains untouched; draft PR #23 must stay open. See `native/windows/README.md` and `docs/NATIVE_WINDOWS_0139_INTEGRATION_RESEARCH.md` for scope and acceptance gates.
