@@ -82,6 +82,17 @@ def classify_instruction(mnemonic, operands):
     return "unknown_access_candidate"
 
 
+def selector_literal(mnemonic, operands):
+    """Only record literal byte operations when AT&T operand syntax is exact."""
+    if mnemonic.lower() not in ("cmpb", "movb"):
+        return None
+    match = re.fullmatch(r"\s*\$0x([0-9a-f]+),\s*0x1da\([^)]*\)\s*", operands, re.I)
+    if not match:
+        return None
+    literal = int(match.group(1), 16)
+    return literal if 0 <= literal <= 255 else None
+
+
 def parse_accesses(stdout, imagebase, owner, end, cap=MAX_RECORDS):
     """Parse disassembled *instruction starts*, returning address-only evidence."""
     out = []
@@ -99,10 +110,16 @@ def parse_accesses(stdout, imagebase, owner, end, cap=MAX_RECORDS):
             continue
         count += 1
         if len(out) < cap:
-            out.append({"instruction_rva": hex(rva), "function_begin_rva": hex(owner),
-                        "instruction_mnemonic": m.group(2).lower(),
-                        "access_candidate": role,
-                        "disassembled_from_function_start": True})
+            item = {"instruction_rva": hex(rva), "function_begin_rva": hex(owner),
+                    "instruction_mnemonic": m.group(2).lower(),
+                    "access_candidate": role,
+                    "disassembled_from_function_start": True}
+            literal = selector_literal(m.group(2), m.group(3))
+            if literal is not None:
+                item["immediate_byte_value"] = literal
+                item["immediate_role"] = ("comparison" if m.group(2).lower() == "cmpb"
+                                          else "possible_byte_store")
+            out.append(item)
     return out, count
 
 
@@ -170,7 +187,8 @@ def analyze_selector_xrefs(game, expected_sha):
                         for x in events)
     complete = (not inventory["truncated"] and not oversized and not failures
                 and scanned == inventory["candidate_function_count"])
-    status = "confirmed_partial_inventory" if baseline_read else "unconfirmed"
+    status = ("confirmed_full_displacement_inventory" if complete else
+              "confirmed_partial_inventory") if baseline_read else "unconfirmed"
     return {"status": status,
             "reason": None if baseline_read else "baseline_read_instruction_not_found",
             "official_sha256": EXPECTED_SHA,
@@ -188,6 +206,9 @@ def analyze_selector_xrefs(game, expected_sha):
             "function_count_disassembly_failed": len(failures),
             "failed_owner_rvas": failures[:12],
             "parsed_instruction_access_count": total,
+            "byte_store_candidate_count": sum(x["instruction_mnemonic"] == "movb" and x["access_candidate"] == "write_candidate" for x in events),
+            "central_options_read_count": sum(x["function_begin_rva"] == "0x3f5d40" and x["access_candidate"] == "read_or_address_candidate" for x in events),
+            "central_options_write_count": sum(x["function_begin_rva"] == "0x3f5d40" and x["access_candidate"] == "write_candidate" for x in events),
             "access_records": events,
             "access_records_truncated": total > len(events),
             "raw_prefilter_fully_examined": complete,
