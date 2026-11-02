@@ -19,7 +19,10 @@ from tools.native_0139_footer_probe import EXPECTED_SHA
 from tools.native_menu_probe import read_pe_sections
 from tools.native_options_xrefs import unwind_functions
 
-TYPE_PATTERN = re.compile(rb"wenilla_rogue_app::screens::options::([A-Za-z][A-Za-z0-9_]*)")
+TYPE_PREFIX = b"wenilla_rogue_app::screens::options::"
+KNOWN_TYPE_NAMES = (b"OptionsCanvas", b"OptionsRoot", b"PageList", b"Footer",
+                    b"Act", b"Fill", b"Readout", b"Track", b"TipText")
+TYPE_PATTERN = re.compile(re.escape(TYPE_PREFIX) + b"(" + b"|".join(KNOWN_TYPE_NAMES) + b")")
 TYPE_CANVAS = "OptionsCanvas"
 MAX_TYPES = 60
 MAX_XREFS = 120
@@ -32,6 +35,15 @@ def find_type_names(rdata, base_rva):
     """Only actual ASCII namespace-qualified type names, not raw game prose."""
     result = {}
     for m in TYPE_PATTERN.finditer(rdata):
+        following = rdata[m.end():m.end() + 1]
+        # Rust type-name byte strings may be tightly packed, with the next
+        # fully-qualified name beginning immediately. Reject a genuine suffix
+        # within one longer type identifier such as OptionsCanvasExtra.
+        is_other_identifier_char = bool(following and (
+            65 <= following[0] <= 90 or 97 <= following[0] <= 122 or
+            48 <= following[0] <= 57 or following[0] == 95))
+        if is_other_identifier_char and not rdata[m.end():].startswith(b"wenilla_rogue_app::"):
+            continue
         name = m.group(1).decode("ascii")
         result.setdefault(name, []).append(base_rva + m.start())
     return result
@@ -134,6 +146,8 @@ def audit_options_type_xrefs(game, sha):
         "type_marker_names_and_counts": {k: len(v) for k, v in sorted(types.items())},
         "raw_rip_relative_type_marker_lea_xrefs": xrefs["raw_lea_xref_count"],
         "confirmed_lea_instruction_sites": confirmed,
+        "direct_options_canvas_lea_instruction_count": sum(int(x["instruction_confirmed"]) for x in xrefs["records"] if x["target_type_marker"] == TYPE_CANVAS),
+        "only_known_native_type_names_scanned": True,
         "lea_xrefs": xrefs["records"],
         "xrefs_truncated": xrefs["truncated"],
         "disassembly_failed_function_rvas": failures,
