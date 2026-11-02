@@ -14,6 +14,21 @@ class BevyOptionsTypeTests(unittest.TestCase):
         self.assertEqual(2, len(names["OptionsCanvas"]))
         self.assertEqual(1, len(names["OptionsRoot"]))
 
+    def test_concatenated_names_do_not_create_fabricated_long_type(self):
+        packed = (b"wenilla_rogue_app::screens::options::TipText"
+                  b"wenilla_rogue_app::screens::options::OptionsCanvas\x00")
+        names = m.find_type_names(packed, 0x2000)
+        self.assertIn("TipText", names)
+        self.assertIn("OptionsCanvas", names)
+        self.assertNotIn("TipTextwenilla_rogue_app", names)
+
+    def test_partial_prefix_of_longer_name_refused(self):
+        packed = (b"wenilla_rogue_app::screens::options::OptionsCanvasExtra\x00"
+                  b"wenilla_rogue_app::screens::options::Footer\x00")
+        names = m.find_type_names(packed, 0x2000)
+        self.assertNotIn("OptionsCanvas", names)
+        self.assertEqual(1, len(names["Footer"]))
+
     def test_raw_lea_reference_has_correct_rip_relative_target(self):
         start = 0x1000
         target = 0x2000
