@@ -32,6 +32,7 @@ KNOWN_EXE = {
     'eb744751b4e17ec1397b0cdc85a22af63b6af63c1da1d9c2861762c3c4d8947c',
     'aa6b254f905e2f7a4cbc7c2c8f11af822ec362e3d2b8e84cabd8c38893a10dc8',
     'eb5fd1c1b96e6180fcf5f3d685d90a61471af28d22e5f060c02b7b7663fbf79e',
+    '0e8e314df4d78ab211b1bef5c48d78d713ed64260894af342f998d298d74d274',  # original 0.139.0
 }
 
 class UpdateError(ValueError):
