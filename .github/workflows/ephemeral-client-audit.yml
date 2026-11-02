@@ -12,6 +12,8 @@ on:
       - 'tests/test_native_0139_saves_branch.py'
       - 'tools/native_0139_selector_xrefs.py'
       - 'tests/test_native_0139_selector_xrefs.py'
+      - 'tools/native_0139_selector_callers.py'
+      - 'tests/test_native_0139_selector_callers.py'
       - '.github/workflows/ephemeral-client-audit.yml'
   push:
     branches: ['feat/windows-0139-ephemeral-native-audit']
@@ -26,6 +28,8 @@ on:
       - 'tests/test_native_0139_saves_branch.py'
       - 'tools/native_0139_selector_xrefs.py'
       - 'tests/test_native_0139_selector_xrefs.py'
+      - 'tools/native_0139_selector_callers.py'
+      - 'tests/test_native_0139_selector_callers.py'
       - '.github/workflows/ephemeral-client-audit.yml'
   workflow_dispatch:
 
@@ -51,6 +55,8 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_native_0139_saves_branch.py' -v
       - name: 'Synthetic test: 0.139 native selector read/write evidence'
         run: python -m unittest discover -s tests -p 'test_native_0139_selector_xrefs.py' -v
+      - name: 'Synthetic test: original byte-store caller graph'
+        run: python -m unittest discover -s tests -p 'test_native_0139_selector_callers.py' -v
       - name: Privately restore pinned 0.139 EXE and extract metadata only
         run: python -m tools.ephemeral_client_audit --report "$RUNNER_TEMP/client_0139_metadata.json"
       - name: Archive derived metadata only (NOT the original EXE, parts or MPQ)
